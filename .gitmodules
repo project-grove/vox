@@ -1,0 +1,6 @@
+[submodule "External/OpenAL-CS"]
+	path = External/OpenAL-CS
+	url = https://github.com/project-grove/OpenAL-CS
+[submodule "External/NVorbis"]
+	path = External/NVorbis
+	url = git@github.com:project-grove/NVorbis.git
