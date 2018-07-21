@@ -2,7 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\External\NVorbis\NVorbis\NVorbis.Core.csproj" />
-    <ProjectReference Include="..\External\OpenAL-CS\OpenAL-CS.Core.csproj" />
+    <ProjectReference Include="..\External\OpenALSoft.NETCore\src\OpenALSoft.NETCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>
