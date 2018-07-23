@@ -4,53 +4,117 @@ using static OpenAL.AL10;
 using static OpenAL.ALC10;
 using static OpenAL.AL11;
 using static OpenAL.ALC11;
+using static Vox.ErrorHandler;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.InteropServices;
 
 namespace Vox
 {
-    public class SoundDevice
+    public class SoundDevice : IDisposable
     {
-        public static IEnumerable<string> GetNames()
-        {
-            ErrorHandler.Reset();
-            var extPresent = alcIsExtensionPresent(IntPtr.Zero, "ALC_ENUMERATION_EXT");
-            ErrorHandler.Check("alcIsExtensionPresent");
+        private static SoundDevice s_current;
+        public static SoundDevice Current => s_current;
+    
+        internal IntPtr _handle;
+        private readonly DeviceContext _context;
+        public DeviceContext Context => _context;
 
-            if (extPresent) {
+        public SoundDevice() : this(null)
+        {
+            MakeCurrent();
+        }
+
+        public SoundDevice(string name)
+        {
+            _handle = ALC(() => alcOpenDevice(name), "alcOpenDevice", IntPtr.Zero);
+            _context = new DeviceContext(this);
+        }
+
+        public void MakeCurrent() {
+            _context.MakeCurrent();
+            s_current = this;
+        }
+
+        public static IEnumerable<string> GetOutputDevices()
+        {
+            var NULL = IntPtr.Zero;
+            var extPresent = ALC(() =>
+                alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT"),
+                "alcIsExtensionPresent(ALC_ENUMERATION_EXT)",
+                NULL);
+
+            if (extPresent)
+            {
                 var result = new List<string>(5);
                 unsafe
                 {
-                    ErrorHandler.Reset();
-                    byte* listData = (byte*)alcGetString(IntPtr.Zero, ALC_DEVICE_SPECIFIER);
-                    ErrorHandler.Check("alcGetString");
+                    var enumerateAll = ALC(() =>
+                        alcIsExtensionPresent(NULL, "ALC_ENUMERATE_ALL_EXT"),
+                        "alcIsExtensionPresent(ALC_ENUMERATE_ALL_EXT)",
+                        NULL);
 
-                    var markers = new List<int>(5) { 0 };
-                    var i = 0;
-                    while (true) {
-                        var cur = *listData + i;
-                        var next = *(listData + i + 1);
-                        var next_2 = *(listData + i + 2);
-                        if (next == 0) {
-                            markers.Add(i++);
-                        }
-                        if (next == 0 && next_2 == 0) {
-                            break;
-                        }
-                        i++;
-                    }
-                    var data = new Span<byte>(listData, i);
-                    for (int j = 0; j < markers.Count - 1; j++) {
-                        var start = markers[j];
-                        var length = markers[j + 1] - start;
-                        result.Add(Encoding.UTF8.GetString(data.Slice(start, length).ToArray()));
-                    }
-                    return result;
+                    ErrorHandler.Reset();
+                    byte* listData = enumerateAll ?
+                        (byte*)alcGetString(NULL, ALC_ALL_DEVICES_SPECIFIER) :
+                        (byte*)alcGetString(NULL, ALC_DEVICE_SPECIFIER);
+                    ErrorHandler.CheckALC("alcGetString", NULL);
+                    return ParseDeviceString(listData);
+                }
+            }
+            else
+            {
+                return Enumerable.Empty<string>();
+            }
+        }
+
+        public static IEnumerable<string> GetCaptureDevices()
+        {
+            var NULL = IntPtr.Zero;
+            var extPresent = ALC(() =>
+                alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT"),
+                "alcIsExtensionPresent(ALC_ENUMERATION_EXT)",
+                NULL);
+
+            if (extPresent)
+            {
+                unsafe 
+                {
+                    Reset();
+                    byte* listData = (byte*)alcGetString(NULL, ALC_CAPTURE_DEVICE_SPECIFIER);
+                    CheckALC("alcGetString(ALC_CAPTURE_DEVICE_SPECIFIER)", NULL);
+                    return ParseDeviceString(listData);
                 }
             } else {
                 return Enumerable.Empty<string>();
             }
         }
+
+        private static unsafe List<string> ParseDeviceString(byte* listData)
+        {
+            var result = new List<string>();
+            var i = 0;
+            var start = listData;
+            while (true)
+            {
+                var cur = *listData + i;
+                var next = *(listData + i + 1);
+                var next_2 = *(listData + i + 2);
+                if (next == 0)
+                {
+                    result.Add(Marshal.PtrToStringAnsi((IntPtr)start));
+                    i++; start = listData + i + 1;
+                }
+                if (next == 0 && next_2 == 0)
+                {
+                    break;
+                }
+                i++;
+            }
+            return result;
+        }
+
+        public void Dispose() => _context.Dispose();
     }
 }
