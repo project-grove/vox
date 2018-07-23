@@ -31,7 +31,8 @@ namespace Vox
             { ALC_INVALID_VALUE, "Invalid value" }
         };
 
-        public static void Reset() => alGetError();
+        public static void ResetAL() => alGetError();
+        public static void ResetALC(IntPtr device) => alcGetError(device);
 
         public static void CheckAL(string methodName)
         {
@@ -49,14 +50,14 @@ namespace Vox
 
         public static void AL(Action action, string methodName)
         {
-            Reset();
+            ResetAL();
             action();
             CheckAL(methodName);
         }
 
         public static T AL<T>(Func<T> function, string methodName)
         {
-            Reset();
+            ResetAL();
             var result = function();
             CheckAL(methodName);
             return result;
@@ -64,14 +65,14 @@ namespace Vox
 
         public static void ALC(Action action, string methodName, IntPtr device)
         {
-            Reset();
+            ResetALC(device);
             action();
             CheckALC(methodName, device);
         }
 
         public static T ALC<T>(Func<T> function, string methodName, IntPtr device)
         {
-            Reset();
+            ResetALC(device);
             var result = function();
             CheckALC(methodName, device);
             return result;

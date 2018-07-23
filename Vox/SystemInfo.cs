@@ -1,17 +1,59 @@
 using static OpenAL.AL10;
+using static OpenAL.ALC10;
 using static Vox.ErrorHandler;
 
 namespace Vox
 {
+    /// <summary>
+    /// Contains various informational properties about audio subsystem
+    /// </summary>
     public static class SystemInfo
     {
-        public static string OpenALVendor => 
+        /// <summary>
+        /// Gets the vendor string for the currently used sound device
+        /// </summary>
+        public static string OpenALVendor =>
             AL(() => alGetString(AL_VENDOR), "alGetString(AL_VENDOR)");
-        public static string OpenALRenderer => 
+
+        /// <summary>
+        /// Gets the renderer string for the currently used sound device
+        /// </summary>
+        public static string OpenALRenderer =>
             AL(() => alGetString(AL_RENDERER), "alGetString(AL_RENDERER)");
-        public static string OpenALVersion => 
+
+        /// <summary>
+        /// Gets the version string for the currently used sound device
+        /// </summary>
+        public static string OpenALVersion =>
             AL(() => alGetString(AL_VERSION), "alGetString(AL_VERSION)");
-        public static string OpenALExtensions => 
+
+        /// <summary>
+        /// Gets the extensions string for the currently used sound device
+        /// </summary>
+        public static string OpenALExtensions =>
             AL(() => alGetString(AL_EXTENSIONS), "alGetString(AL_EXTENSIONS)");
+
+        /// <summary>
+        /// Gets the ALC version for the currently used sound device
+        /// </summary>
+        public static string ALCVersion
+        {
+            get
+            {
+                unsafe
+                {
+                    var major = new int[1];
+                    var minor = new int[1];
+                    var device = SoundDevice.Current._handle;
+                    ALC(() => 
+                        alcGetIntegerv(device, ALC_MAJOR_VERSION, 1, major),
+                        "alcGetIntegerv(ALC_MAJOR_VERSION)", device);
+                    ALC(() => 
+                        alcGetIntegerv(device, ALC_MINOR_VERSION, 1, major),
+                        "alcGetIntegerv(ALC_MINOR_VERSION)", device);
+                    return $"{major[0]}.{minor[0]}";
+                }
+            }
+        }
     }
 }

@@ -14,27 +14,54 @@ namespace Vox
 {
     public class SoundDevice : IDisposable
     {
+        private static readonly IntPtr NULL = IntPtr.Zero;
+
         private static SoundDevice s_current;
         public static SoundDevice Current => s_current;
-    
+
         internal IntPtr _handle;
         private readonly DeviceContext _context;
-        public DeviceContext Context => _context;
 
+        /// <summary>
+        /// Opens the default sound device and makes it current
+        /// </summary>
         public SoundDevice() : this(null)
         {
             MakeCurrent();
         }
 
+        /// <summary>
+        /// Opens a sound device with the specified name
+        /// </summary>
+        /// <param name="name">Device name</param>
+        /// <seealso cref="GetOutputDevices" />
+        /// <seealso cref="GetCaptureDevices" />
         public SoundDevice(string name)
         {
             _handle = ALC(() => alcOpenDevice(name), "alcOpenDevice", IntPtr.Zero);
             _context = new DeviceContext(this);
         }
 
-        public void MakeCurrent() {
+        public void MakeCurrent()
+        {
             _context.MakeCurrent();
             s_current = this;
+        }
+
+        public void Close()
+        {
+            var successful = ALC(() => alcCloseDevice(_handle), "alcCloseDevice", _handle);
+            if (!successful)
+                throw new AudioLibraryException("Could not close the device");
+        }
+
+        public static string GetDefaultOutputDevice()
+        {
+            var ptr = ALC(() => 
+                alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER),
+                "alcGetString(ALC_DEFAULT_DEVICE_SPECIFIER)", NULL);
+            if (ptr == IntPtr.Zero || ptr == null) return null;
+            return Marshal.PtrToStringAnsi(ptr);
         }
 
         public static IEnumerable<string> GetOutputDevices()
@@ -55,7 +82,7 @@ namespace Vox
                         "alcIsExtensionPresent(ALC_ENUMERATE_ALL_EXT)",
                         NULL);
 
-                    ErrorHandler.Reset();
+                    ErrorHandler.ResetALC(NULL);
                     byte* listData = enumerateAll ?
                         (byte*)alcGetString(NULL, ALC_ALL_DEVICES_SPECIFIER) :
                         (byte*)alcGetString(NULL, ALC_DEVICE_SPECIFIER);
@@ -69,9 +96,16 @@ namespace Vox
             }
         }
 
+        public static string GetDefaultCaptureDevice()
+        {
+            var ptr = ALC(() => alcGetString(NULL, ALC_CAPTURE_DEFAULT_DEVICE_SPECIFIER),
+                "alcGetString(ALC_CAPTURE_DEFAULT_DEVICE_SPECIFIER", NULL);
+            if (ptr == IntPtr.Zero || ptr == null) return null;
+            return Marshal.PtrToStringAnsi(ptr);
+        }
+
         public static IEnumerable<string> GetCaptureDevices()
         {
-            var NULL = IntPtr.Zero;
             var extPresent = ALC(() =>
                 alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT"),
                 "alcIsExtensionPresent(ALC_ENUMERATION_EXT)",
@@ -79,14 +113,16 @@ namespace Vox
 
             if (extPresent)
             {
-                unsafe 
+                unsafe
                 {
-                    Reset();
+                    ResetALC(NULL);
                     byte* listData = (byte*)alcGetString(NULL, ALC_CAPTURE_DEVICE_SPECIFIER);
                     CheckALC("alcGetString(ALC_CAPTURE_DEVICE_SPECIFIER)", NULL);
                     return ParseDeviceString(listData);
                 }
-            } else {
+            }
+            else
+            {
                 return Enumerable.Empty<string>();
             }
         }
@@ -115,6 +151,10 @@ namespace Vox
             return result;
         }
 
-        public void Dispose() => _context.Dispose();
+        public void Dispose()
+        {
+            _context.Dispose();
+            Close();
+        }
     }
 }

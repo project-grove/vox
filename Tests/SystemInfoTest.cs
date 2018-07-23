@@ -18,16 +18,19 @@ namespace Tests
             var renderer = SystemInfo.OpenALRenderer;
             var version = SystemInfo.OpenALVersion;
             var extensions = SystemInfo.OpenALExtensions;
+            var alcVersion = SystemInfo.ALCVersion;
 
             Assert.NotNull(vendor);
             Assert.NotNull(renderer);
             Assert.NotNull(version);
             Assert.NotNull(extensions);
+            Assert.NotNull(alcVersion);
 
             output.WriteLine($"Vendor: {vendor}");
             output.WriteLine($"Renderer: {renderer}");
             output.WriteLine($"Version: {version}");
             output.WriteLine($"Extensions:\n{extensions}");
+            output.WriteLine($"ALC Version:\n{alcVersion}");
         }
     }
 }

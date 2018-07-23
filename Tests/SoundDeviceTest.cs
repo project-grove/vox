@@ -27,5 +27,21 @@ namespace Tests
             foreach(var device in devices)
                 output.WriteLine(device);
         }
+
+        [Fact]
+        public void ShouldReturnDefaultOutputDevice()
+        {
+            var result = SoundDevice.GetDefaultOutputDevice();
+            Assert.NotNull(result);
+            output.WriteLine(result);
+        }
+
+        [Fact]
+        public void ShouldReturnDefaultCaptureDevice()
+        {
+            var result = SoundDevice.GetDefaultCaptureDevice();
+            Assert.NotNull(result);
+            output.WriteLine(result);
+        }
     }
 }
