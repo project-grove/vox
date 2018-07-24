@@ -22,6 +22,9 @@ namespace Vox
         internal IntPtr _handle;
         private readonly DeviceContext _context;
 
+        private readonly Listener _listener = new Listener();
+        public Listener Listener => _listener;
+
         /// <summary>
         /// Opens the default sound device and makes it current
         /// </summary>
@@ -45,6 +48,7 @@ namespace Vox
         public void MakeCurrent()
         {
             _context.MakeCurrent();
+            _listener.UpdateValues();
             s_current = this;
         }
 
