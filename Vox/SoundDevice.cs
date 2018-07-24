@@ -22,8 +22,8 @@ namespace Vox
         internal IntPtr _handle;
         private readonly DeviceContext _context;
 
-        private readonly Listener _listener = new Listener();
-        public Listener Listener => _listener;
+        private readonly SoundListener _listener = new SoundListener();
+        public SoundListener Listener => _listener;
 
         /// <summary>
         /// Opens the default sound device and makes it current

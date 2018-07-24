@@ -4,7 +4,7 @@ using static Vox.ErrorHandler;
 
 namespace Vox
 {
-    public class DeviceContext : IDisposable
+    internal class DeviceContext : IDisposable
     {
         internal SoundDevice _device;
         internal IntPtr _handle;

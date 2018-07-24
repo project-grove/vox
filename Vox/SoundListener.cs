@@ -8,12 +8,12 @@ namespace Vox
     /// <summary>
     /// Represents a sound listener object.
     /// </summary>
-    public class Listener
+    public class SoundListener
     {
         /// <summary>
         /// Retrieves the listener for the currently selected sound device.
         /// </summary>
-        public static Listener Current => SoundDevice.Current?.Listener;
+        public static SoundListener Current => SoundDevice.Current?.Listener;
 
         private float _gain;
         /// <summary>

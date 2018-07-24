@@ -20,7 +20,8 @@ namespace Vox
             { AL_INVALID_NAME, "Invalid name" },
             { AL_INVALID_ENUM, "Invalid enum" },
             { AL_INVALID_VALUE, "Invalid value" },
-            { AL_INVALID_OPERATION, "Invalid operation" }
+            { AL_INVALID_OPERATION, "Invalid operation" },
+            { AL_OUT_OF_MEMORY, "Out of memory" }
         };
 
         private static Dictionary<int, string> messagesALC = new Dictionary<int, string>()
@@ -28,7 +29,8 @@ namespace Vox
             { ALC_INVALID_CONTEXT, "Invalid context" },
             { ALC_INVALID_DEVICE, "Invalid device" },
             { ALC_INVALID_ENUM, "Invalid enum" },
-            { ALC_INVALID_VALUE, "Invalid value" }
+            { ALC_INVALID_VALUE, "Invalid value" },
+            { ALC_OUT_OF_MEMORY, "Out of memory" }
         };
 
         public static void ResetAL() => alGetError();
