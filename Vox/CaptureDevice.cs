@@ -235,5 +235,12 @@ namespace Vox
                 disposed = true;
             }
         }
+
+        private bool Equals(CaptureDevice other) {
+            if (other == null) return false;
+            return _handle == other._handle;
+        }
+        public override bool Equals(object obj) => Equals(obj as CaptureDevice);
+        public override int GetHashCode() => _handle.GetHashCode();
     }
 }

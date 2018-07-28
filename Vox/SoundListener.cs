@@ -65,6 +65,8 @@ namespace Vox
 
         private float[] _orientation;
 
+        internal SoundListener() {}
+
         /// <summary>
         /// Gets the listener's orientations described by 'at' and 'up' vectors.
         /// </summary>

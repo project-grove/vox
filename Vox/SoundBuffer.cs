@@ -84,17 +84,34 @@ namespace Vox
         public void SetData(PCM format, byte[] data, int size, int frequency)
         {
             if (disposed) throw new ObjectDisposedException(nameof(SoundBuffer));
-            AL(() => 
+            AL(() =>
                 alBufferData(_bufferId, (int)format, data, size, frequency),
                 "alBufferData");
         }
 
         private bool disposed = false;
 
-        public void Dispose() {
-            if (!disposed) {
+        public void Dispose()
+        {
+            if (!disposed)
+            {
                 DeleteBuffer();
                 disposed = true;
+            }
+        }
+
+        private bool Equals(SoundBuffer other)
+        {
+            if (other == null) return false;
+            return _bufferId == other._bufferId &&
+                Owner == other.Owner;
+        }
+            
+        public override bool Equals(object obj) => Equals(obj as SoundBuffer);
+        public override int GetHashCode()
+        {
+            unchecked {
+                return (int)_bufferId * 17 + Owner.GetHashCode();
             }
         }
     }
