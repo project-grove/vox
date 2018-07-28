@@ -21,12 +21,30 @@ namespace Vox
     public class SoundBuffer : IDisposable
     {
         internal uint _bufferId;
-        public SoundBuffer()
+        public OutputDevice Owner { get; internal set; }
+
+        /// <summary>
+        /// Initializes a new sound buffer for the specified device.
+        /// </summary>
+        /// <param name="device"></param>
+        public SoundBuffer(OutputDevice device)
         {
+            // store the currently selected device
+            var curDevice = OutputDevice.Current;
+            // make the specified device current for buffer generation
+            device.MakeCurrent();
             uint[] id = new uint[1];
             AL(() => alGenBuffers(1, id), "alGenBuffers");
-            _bufferId = id[0];
+            Setup(id[0], device);
+            // make the previous one current (in case it was different)
+            curDevice.MakeCurrent();
         }
+
+        internal SoundBuffer(uint id, OutputDevice device) =>
+            Setup(id, device);
+
+        private void Setup(uint id, OutputDevice device) =>
+            (_bufferId, Owner) = (id, device);
 
         public void Dispose() =>
             AL(() =>

@@ -49,7 +49,7 @@ namespace Vox
                 {
                     var major = new int[1];
                     var minor = new int[1];
-                    var device = SoundDevice.Current._handle;
+                    var device = OutputDevice.Current._handle;
                     ALC(() => 
                         alcGetIntegerv(device, ALC_MAJOR_VERSION, 1, major),
                         "alcGetIntegerv(ALC_MAJOR_VERSION)", device);

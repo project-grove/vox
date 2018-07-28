@@ -10,7 +10,7 @@ namespace Tests
         public void ShouldAllowGainChange()
         {
             var gain = 1.0f;
-            var listener = new SoundDevice().Listener;
+            var listener = new OutputDevice().Listener;
 
             listener.Gain = gain;
             Assert.Equal(gain, listener.Gain);
@@ -22,7 +22,7 @@ namespace Tests
         public void ShouldAllowPositionChange()
         {
             var position = Vector3.One;
-            var listener = new SoundDevice().Listener;
+            var listener = new OutputDevice().Listener;
 
             listener.Position = position;
             Assert.Equal(position, listener.Position);
@@ -34,7 +34,7 @@ namespace Tests
         public void ShouldAllowVelocityChange()
         {
             var velocity = Vector3.One;
-            var listener = new SoundDevice().Listener;
+            var listener = new OutputDevice().Listener;
 
             listener.Velocity = velocity;
             Assert.Equal(velocity, listener.Velocity);
@@ -47,7 +47,7 @@ namespace Tests
         {
             var at = Vector3.UnitX;
             var up = Vector3.UnitZ;
-            var listener = new SoundDevice().Listener;
+            var listener = new OutputDevice().Listener;
 
             listener.SetOrientation(at, up);
             listener.GetOrientation(out Vector3 at1, out Vector3 up1);

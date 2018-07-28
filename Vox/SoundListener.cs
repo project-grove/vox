@@ -13,7 +13,7 @@ namespace Vox
         /// <summary>
         /// Retrieves the listener for the currently selected sound device.
         /// </summary>
-        public static SoundListener Current => SoundDevice.Current?.Listener;
+        public static SoundListener Current => OutputDevice.Current?.Listener;
 
         private float _gain;
         /// <summary>

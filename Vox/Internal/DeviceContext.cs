@@ -2,14 +2,14 @@ using System;
 using static OpenAL.ALC10;
 using static Vox.ErrorHandler;
 
-namespace Vox
+namespace Vox.Internal
 {
     internal class DeviceContext : IDisposable
     {
-        internal SoundDevice _device;
+        internal OutputDevice _device;
         internal IntPtr _handle;
         
-        internal DeviceContext(SoundDevice device)
+        internal DeviceContext(OutputDevice device)
         {
             _handle = ALC(() => 
                 alcCreateContext(device._handle, null),
@@ -26,13 +26,13 @@ namespace Vox
                 throw new AudioLibraryException("Failed to set current context");
         }
 
+        internal bool IsCurrent() => OutputDevice.Current == _device;
+
         public void Dispose() => Destroy();
 
-        internal void Destroy()
-        {
+        internal void Destroy() =>
             ALC(() => 
                 alcDestroyContext(_handle),
                 "alcDestroyContext", _device._handle);
-        }
     }
 }

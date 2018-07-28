@@ -12,7 +12,7 @@ namespace Tests
         [Fact]
         public void ShouldProvideOpenALInfo()
         {
-            var device = new SoundDevice();
+            var device = new OutputDevice();
 
             var vendor = SystemInfo.OpenALVendor;
             var renderer = SystemInfo.OpenALRenderer;

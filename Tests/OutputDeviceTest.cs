@@ -13,16 +13,7 @@ namespace Tests
         [Fact]
         public void ShouldListOutputDevices()
         {
-            var devices = SoundDevice.GetOutputDevices();
-            Assert.NotNull(devices);
-            foreach(var device in devices)
-                output.WriteLine(device);
-        }
-
-        [Fact]
-        public void ShouldListCaptureDevices()
-        {
-            var devices = SoundDevice.GetCaptureDevices();
+            var devices = OutputDevice.GetOutputDevices();
             Assert.NotNull(devices);
             foreach(var device in devices)
                 output.WriteLine(device);
@@ -31,15 +22,7 @@ namespace Tests
         [Fact]
         public void ShouldReturnDefaultOutputDevice()
         {
-            var result = SoundDevice.GetDefaultOutputDevice();
-            Assert.NotNull(result);
-            output.WriteLine(result);
-        }
-
-        [Fact]
-        public void ShouldReturnDefaultCaptureDevice()
-        {
-            var result = SoundDevice.GetDefaultCaptureDevice();
+            var result = OutputDevice.GetDefaultOutputDevice();
             Assert.NotNull(result);
             output.WriteLine(result);
         }
