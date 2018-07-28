@@ -88,9 +88,10 @@ namespace Vox
         public void MakeCurrent()
         {
             if (IsCurrent()) return;
+            if (disposed) throw new ObjectDisposedException(nameof(OutputDevice));
             _context.MakeCurrent();
             _listener.UpdateValues();
-            _distanceModel = (DistanceModel)AL(() => 
+            _distanceModel = (DistanceModel)AL(() =>
                 alGetInteger(AL_DISTANCE_MODEL),
                 "alGetInteger(AL_DISTANCE_MODEL)");
             s_current = this;
@@ -106,9 +107,11 @@ namespace Vox
         /// </summary>
         public void Close()
         {
+            if (disposed) throw new ObjectDisposedException(nameof(OutputDevice));
             var successful = ALC(() => alcCloseDevice(_handle), "alcCloseDevice", _handle);
             if (!successful)
                 throw new AudioLibraryException("Could not close the device");
+            s_current = null;
         }
 
 
@@ -117,7 +120,7 @@ namespace Vox
         /// </summary>
         public static string GetDefaultOutputDevice()
         {
-            var ptr = ALC(() => 
+            var ptr = ALC(() =>
                 alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER),
                 "alcGetString(ALC_DEFAULT_DEVICE_SPECIFIER)", NULL);
             if (ptr == IntPtr.Zero || ptr == null) return null;
@@ -160,13 +163,18 @@ namespace Vox
         }
 
 
+        bool disposed = false;
         /// <summary>
         /// Closes the device and disposes the context.
         /// </summary>
         public void Dispose()
         {
-            _context.Dispose();
-            Close();
+            if (!disposed)
+            {
+                _context.Dispose();
+                Close();
+                disposed = true;
+            }
         }
     }
 }

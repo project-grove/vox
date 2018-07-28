@@ -114,6 +114,7 @@ namespace Vox
         /// </summary>
         public void StartCapture()
         {
+            if (disposed) throw new ObjectDisposedException(nameof(OutputDevice));
             if (IsCapturing) return;
             ALC(() => alcCaptureStart(_handle), "alcCaptureStart", _handle);
             IsCapturing = true;
@@ -124,6 +125,7 @@ namespace Vox
         /// </summary>
         public void StopCapture()
         {
+            if (disposed) throw new ObjectDisposedException(nameof(OutputDevice));
             if (!IsCapturing) return;
             ALC(() => alcCaptureStop(_handle), "alcCaptureStop", _handle);
             IsCapturing = false;
@@ -134,6 +136,7 @@ namespace Vox
         /// </summary>
         public void ToggleCapture()
         {
+            if (disposed) throw new ObjectDisposedException(nameof(OutputDevice));
             if (IsCapturing) StopCapture(); else StartCapture();
         }
 
@@ -153,6 +156,7 @@ namespace Vox
         /// <remarks>If you intend to use sample data later, <b>copy it</b>, because the buffer is pooled and will be reused.</remarks>
         public void ProcessSamples(int sampleCount, Action<byte[]> callback)
         {
+            if (disposed) throw new ObjectDisposedException(nameof(OutputDevice));
             if (AvailableSamples < sampleCount)
                 throw new AudioLibraryException("Too many samples requested");
             var buffer = _arrayPool.Rent(BytesPerSample * sampleCount);
@@ -219,9 +223,17 @@ namespace Vox
             alcCaptureCloseDevice(_handle),
             "alcCaptureCloseDevice", _handle);
 
+        bool disposed = false;
         /// <summary>
         /// Disposes and closes the device.
         /// </summary>
-        public void Dispose() => Close();
+        public void Dispose()
+        {
+            if (!disposed)
+            {
+                Close();
+                disposed = true;
+            }
+        }
     }
 }

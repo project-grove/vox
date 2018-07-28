@@ -46,11 +46,11 @@ namespace Vox
         private void Setup(uint id, OutputDevice device) =>
             (_bufferId, Owner) = (id, device);
 
-        public void Dispose() =>
+        private void DeleteBuffer() =>
             AL(() =>
                 alDeleteBuffers(1, new uint[] { _bufferId }),
                 "alDeleteBuffers");
-        
+
         /// <summary>
         /// Sets the audio buffer PCM data.
         /// </summary>
@@ -81,9 +81,21 @@ namespace Vox
         /// <param name="data">Byte array with sound data</param>
         /// <param name="size">Size of data in bytes</param>
         /// <param name="frequency">Sound frequency</param>
-        public void SetData(PCM format, byte[] data, int size, int frequency) =>
+        public void SetData(PCM format, byte[] data, int size, int frequency)
+        {
+            if (disposed) throw new ObjectDisposedException(nameof(SoundBuffer));
             AL(() => 
                 alBufferData(_bufferId, (int)format, data, size, frequency),
                 "alBufferData");
+        }
+
+        private bool disposed = false;
+
+        public void Dispose() {
+            if (!disposed) {
+                DeleteBuffer();
+                disposed = true;
+            }
+        }
     }
 }
