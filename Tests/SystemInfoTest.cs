@@ -20,6 +20,8 @@ namespace Tests
             var extensions = SystemInfo.OpenALExtensions;
             var alcVersion = SystemInfo.ALCVersion;
 
+            device.Close();
+
             Assert.NotNull(vendor);
             Assert.NotNull(renderer);
             Assert.NotNull(version);

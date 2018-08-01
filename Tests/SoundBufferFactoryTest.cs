@@ -13,6 +13,7 @@ namespace Tests
             var buffers = SoundBufferFactory.Create(count);
             Assert.Equal(count, buffers.Length);
             Assert.All(buffers, buffer => Assert.Equal(device, buffer.Owner));
+            device.Close();
         }        
     }
 }

@@ -40,6 +40,8 @@ namespace Tests
             Assert.Equal(frequency, device.Frequency);
             Assert.Equal(format, device.Format);
             Assert.Equal(bufSize, device.BufferSize);
+
+            device.Close();
         }
 
         [Fact]
@@ -59,6 +61,7 @@ namespace Tests
 
             var nonNullBytes = container.Data.Where(b => b != 0).Count();
             output.WriteLine($"{nonNullBytes} non-null bytes captured");
+            device.Close();
         }
 
         /// <summary>

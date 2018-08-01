@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using static OpenAL.AL10;
 using static OpenAL.ALC10;
 
@@ -54,6 +55,7 @@ namespace Vox
         {
             ResetAL();
             action();
+            Trace.WriteLine(methodName);
             CheckAL(methodName);
         }
 
@@ -61,6 +63,7 @@ namespace Vox
         {
             ResetAL();
             var result = function();
+            Trace.WriteLine($"{methodName}: {result}");
             CheckAL(methodName);
             return result;
         }
@@ -69,6 +72,7 @@ namespace Vox
         {
             ResetALC(device);
             action();
+            Trace.WriteLine(methodName);
             CheckALC(methodName, device);
         }
 
@@ -76,6 +80,7 @@ namespace Vox
         {
             ResetALC(device);
             var result = function();
+            Trace.WriteLine($"{methodName}: {result}");
             CheckALC(methodName, device);
             return result;
         }

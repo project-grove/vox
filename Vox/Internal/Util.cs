@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Vox.Internal
@@ -28,6 +29,20 @@ namespace Vox.Internal
                 i++;
             }
             return result;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void UseDevice(OutputDevice device, Action action)
+        {
+            var oldDevice = device.Swap();
+            try
+            {
+                action();
+            }
+            finally
+            {
+                oldDevice?.MakeCurrent();
+            }
         }
     }
 }

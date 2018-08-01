@@ -2,6 +2,7 @@ using System;
 using System.Numerics;
 using static OpenAL.AL10;
 using static Vox.ErrorHandler;
+using static Vox.Internal.Util;
 
 namespace Vox
 {
@@ -26,7 +27,11 @@ namespace Vox
             {
                 if (value < 0.0f)
                     throw new ArgumentOutOfRangeException("Gain must be a positive number");
-                AL(() => alListenerf(AL_GAIN, value), "alListenerf(AL_GAIN)");
+                if (_owner.IsDisposed)
+                    throw new ObjectDisposedException(nameof(OutputDevice));
+                UseDevice(_owner, () =>
+                    AL(() =>
+                        alListenerf(AL_GAIN, value), "alListenerf(AL_GAIN)"));
                 _gain = value;
             }
         }
@@ -40,9 +45,12 @@ namespace Vox
             get => _position;
             set
             {
-                AL(() =>
-                    alListener3f(AL_POSITION, value.X, value.Y, value.Z),
-                    "alListener3f(AL_POSITION)");
+                if (_owner.IsDisposed)
+                    throw new ObjectDisposedException(nameof(OutputDevice));
+                UseDevice(_owner, () =>
+                    AL(() =>
+                        alListener3f(AL_POSITION, value.X, value.Y, value.Z),
+                        "alListener3f(AL_POSITION)"));
                 _position = value;
             }
         }
@@ -56,16 +64,20 @@ namespace Vox
             get => _velocity;
             set
             {
-                AL(() =>
-                    alListener3f(AL_VELOCITY, value.X, value.Y, value.Z),
-                    "alListener3f(AL_VELOCITY)");
+                if (_owner.IsDisposed)
+                    throw new ObjectDisposedException(nameof(OutputDevice));
+                UseDevice(_owner, () =>
+                    AL(() =>
+                        alListener3f(AL_VELOCITY, value.X, value.Y, value.Z),
+                        "alListener3f(AL_VELOCITY)"));
                 _velocity = value;
             }
         }
 
         private float[] _orientation;
 
-        internal SoundListener() {}
+        private readonly OutputDevice _owner;
+        internal SoundListener(OutputDevice owner) => _owner = owner;
 
         /// <summary>
         /// Gets the listener's orientations described by 'at' and 'up' vectors.
@@ -81,11 +93,14 @@ namespace Vox
         /// </summary>
         public void SetOrientation(Vector3 at, Vector3 up)
         {
+            if (_owner.IsDisposed)
+                throw new ObjectDisposedException(nameof(OutputDevice));
             _orientation[0] = at.X; _orientation[1] = at.Y; _orientation[2] = at.Z;
             _orientation[3] = up.X; _orientation[4] = up.Y; _orientation[5] = up.Z;
-            AL(() =>
-                alListenerfv(AL_ORIENTATION, _orientation),
-                "alListenerfv(AL_ORIENTATION)");
+            UseDevice(_owner, () =>
+                AL(() =>
+                    alListenerfv(AL_ORIENTATION, _orientation),
+                    "alListenerfv(AL_ORIENTATION)"));
         }
 
         internal void UpdateValues()

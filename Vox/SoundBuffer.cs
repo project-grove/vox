@@ -1,6 +1,7 @@
 using System;
 using static OpenAL.AL10;
 using static Vox.ErrorHandler;
+using static Vox.Internal.Util;
 
 namespace Vox
 {
@@ -21,7 +22,7 @@ namespace Vox
     public class SoundBuffer : IDisposable
     {
         internal uint _bufferId;
-        public OutputDevice Owner { get; internal set; }
+        public OutputDevice Owner { get; private set; }
 
         /// <summary>
         /// Initializes a new sound buffer for the specified device.
@@ -29,27 +30,34 @@ namespace Vox
         /// <param name="device"></param>
         public SoundBuffer(OutputDevice device)
         {
-            // store the currently selected device
-            var curDevice = OutputDevice.Current;
-            // make the specified device current for buffer generation
-            device.MakeCurrent();
-            uint[] id = new uint[1];
-            AL(() => alGenBuffers(1, id), "alGenBuffers");
-            Setup(id[0], device);
-            // make the previous one current (in case it was different)
-            curDevice.MakeCurrent();
+            UseDevice(device, () =>
+            {
+                uint[] id = new uint[1];
+                AL(() => alGenBuffers(1, id), "alGenBuffers");
+                Setup(id[0], device);
+            });
         }
 
         internal SoundBuffer(uint id, OutputDevice device) =>
             Setup(id, device);
 
-        private void Setup(uint id, OutputDevice device) =>
+        private void Setup(uint id, OutputDevice device)
+        {
             (_bufferId, Owner) = (id, device);
+            device._resources.Add(this);
+        }
 
         private void DeleteBuffer() =>
-            AL(() =>
-                alDeleteBuffers(1, new uint[] { _bufferId }),
-                "alDeleteBuffers");
+            UseDevice(Owner, () =>
+                AL(() =>
+                    alDeleteBuffers(1, new uint[] { _bufferId }),
+                    "alDeleteBuffers"));
+
+        internal void AfterDelete()
+        {
+            Owner._resources.Remove(this);
+            disposed = true;
+        }
 
         /// <summary>
         /// Sets the audio buffer PCM data.
@@ -84,19 +92,21 @@ namespace Vox
         public void SetData(PCM format, byte[] data, int size, int frequency)
         {
             if (disposed) throw new ObjectDisposedException(nameof(SoundBuffer));
-            AL(() =>
-                alBufferData(_bufferId, (int)format, data, size, frequency),
-                "alBufferData");
+            UseDevice(Owner, () =>
+                AL(() =>
+                    alBufferData(_bufferId, (int)format, data, size, frequency),
+                    "alBufferData"));
         }
 
         private bool disposed = false;
+        public bool IsDisposed => disposed;
 
         public void Dispose()
         {
             if (!disposed)
             {
                 DeleteBuffer();
-                disposed = true;
+                AfterDelete();
             }
         }
 
@@ -106,11 +116,12 @@ namespace Vox
             return _bufferId == other._bufferId &&
                 Owner == other.Owner;
         }
-            
+
         public override bool Equals(object obj) => Equals(obj as SoundBuffer);
         public override int GetHashCode()
         {
-            unchecked {
+            unchecked
+            {
                 return (int)_bufferId * 17 + Owner.GetHashCode();
             }
         }

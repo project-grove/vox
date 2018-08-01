@@ -40,8 +40,9 @@ namespace Vox
 
         internal IntPtr _handle;
         private readonly DeviceContext _context;
+        internal HashSet<IDisposable> _resources = new HashSet<IDisposable>();
 
-        private readonly SoundListener _listener = new SoundListener();
+        private readonly SoundListener _listener;
 
         /// <summary>
         /// Returns the listener associated with this device.
@@ -80,6 +81,7 @@ namespace Vox
         {
             _handle = ALC(() => alcOpenDevice(name), "alcOpenDevice", IntPtr.Zero);
             _context = new DeviceContext(this);
+            _listener = new SoundListener(this);
         }
 
         /// <summary>
@@ -164,6 +166,7 @@ namespace Vox
 
 
         bool disposed = false;
+        public bool IsDisposed => disposed;
         /// <summary>
         /// Closes the device and disposes the context.
         /// </summary>
@@ -171,6 +174,9 @@ namespace Vox
         {
             if (!disposed)
             {
+                foreach(var disposable in _resources)
+                    disposable.Dispose();
+                _resources = null;
                 _context.Dispose();
                 Close();
                 disposed = true;
@@ -184,5 +190,13 @@ namespace Vox
         }
         public override bool Equals(object obj) => Equals(obj as OutputDevice);
         public override int GetHashCode() => _handle.GetHashCode();
+
+        internal OutputDevice Swap()
+        {
+            if (s_current == this) return this;
+            var current = s_current;
+            MakeCurrent();
+            return current;
+        }
     }
 }
