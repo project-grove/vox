@@ -13,15 +13,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vox", "Vox\Vox.csproj", "{0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{FF619295-CB23-414E-8902-3BE2816765AB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OpenALSoft.NETCore", "OpenALSoft.NETCore", "{24BFA94D-6480-424E-B85A-181CB39DA0AB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OpenAL.NETCore", "OpenAL.NETCore", "{24BFA94D-6480-424E-B85A-181CB39DA0AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenALSoft.NETCore", "External\OpenALSoft.NETCore\src\OpenALSoft.NETCore.csproj", "{1FCB31CB-F1F7-4212-966D-28BFFD99F100}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenAL.NETCore", "External\OpenAL.NETCore\src\OpenAL.NETCore.csproj", "{1FCB31CB-F1F7-4212-966D-28BFFD99F100}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deps", "deps", "{F6BF5F54-BCFC-414C-8147-FEF6BFE04896}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nativelibraryloader", "nativelibraryloader", "{65AFA91C-FEF2-42EB-ADC6-952C9B4219BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeLibraryLoader", "External\OpenALSoft.NETCore\deps\nativelibraryloader\NativeLibraryLoader\NativeLibraryLoader.csproj", "{5FA6612C-20DE-4405-9A7E-04381466F3B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeLibraryLoader", "External\OpenAL.NETCore\deps\nativelibraryloader\NativeLibraryLoader\NativeLibraryLoader.csproj", "{5FA6612C-20DE-4405-9A7E-04381466F3B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

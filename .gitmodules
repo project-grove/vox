@@ -1,6 +1,6 @@
 [submodule "External/NVorbis"]
 	path = External/NVorbis
 	url = git@github.com:project-grove/NVorbis.git
-[submodule "External/OpenALSoft.NETCore"]
-	path = External/OpenALSoft.NETCore
-	url = git@github.com:project-grove/OpenALSoft.NETCore.git
+[submodule "External/OpenAL.NETCore"]
+	path = External/OpenAL.NETCore
+	url = git@github.com:project-grove/OpenAL.NETCore.git
