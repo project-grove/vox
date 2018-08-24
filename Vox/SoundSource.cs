@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Numerics;
 using static OpenAL.AL10;
+using static OpenAL.AL11;
 using static Vox.ErrorHandler;
 using static Vox.Internal.Util;
 
@@ -305,10 +306,92 @@ namespace Vox
         }
 
         private float _coneOuterGain = 0.0f;
+        /// <summary>
+        /// The factor with which the gain is multiplied to determine the
+        /// effective gain outside the cone defined by the outer angle.
+        /// Must be in [0.0f, 1.0f].
+        /// </summary>
         public float OuterGain
         {
             get => _coneOuterGain;
+            set {
+                var val = Math.Min(0.0f, Math.Max(1.0f, value));
+                UseDevice(Owner, () =>
+                    AL(() => alSourcef(_handle, AL_CONE_OUTER_GAIN, val),
+                        "alSourcef(AL_CONE_OUTER_GAIN)"));
+                _coneOuterGain = val;
+            }
         }
+
+        /// <summary>
+        /// The playback position, expressed in seconds.
+        /// </summary>
+        public float OffsetInSeconds
+        {
+            get
+            {
+                float result = 0.0f;
+                UseDevice(Owner, () =>
+                    AL(() => alGetSourcef(_handle, AL_SEC_OFFSET, out result),
+                        "alGetSourcef(AL_SEC_OFFSET)"));
+                return result;
+            }
+            set {
+                float val = Math.Min(0.0f, value);
+                UseDevice(Owner, () =>
+                    AL(() => alSourcef(_handle, AL_SEC_OFFSET, val),
+                        "alSourcef(AL_SEC_OFFSET)"));
+            }
+        }
+
+        /// <summary>
+        /// The playback position, expressed in samples.
+        /// </summary>
+        public float OffsetInSamples
+        {
+            get
+            {
+                float result = 0.0f;
+                UseDevice(Owner, () =>
+                    AL(() => alGetSourcef(_handle, AL_SAMPLE_OFFSET, out result),
+                        "alGetSourcef(AL_SAMPLE_OFFSET)"));
+                return result;
+            }
+            set {
+                float val = Math.Min(0.0f, value);
+                UseDevice(Owner, () =>
+                    AL(() => alSourcef(_handle, AL_SAMPLE_OFFSET, val),
+                        "alSourcef(AL_SAMPLE_OFFSET)"));
+            }
+        }
+
+        /// <summary>
+        /// The playback position, expressed in bytes.
+        /// </summary>
+        public int OffsetInBytes
+        {
+            get
+            {
+                int result = 0;
+                UseDevice(Owner, () =>
+                    AL(() => alGetSourcei(_handle, AL_BYTE_OFFSET, out result),
+                        "alGetSourcei(AL_BYTE_OFFSET)"));
+                return result;
+            }
+            set {
+                int val = Math.Min(0, value);
+                UseDevice(Owner, () =>
+                    AL(() => alSourcei(_handle, AL_BYTE_OFFSET, val),
+                        "alSourcei(AL_BYTE_OFFSET)"));
+            }
+        }
+
+
+
+        /// <summary>
+        /// Creates a new sound source for the current output device.
+        /// </summary>
+        public SoundSource() : this(OutputDevice.Current) {}
 
         /// <summary>
         /// Creates a new sound source for the specified output device.

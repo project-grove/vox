@@ -34,6 +34,7 @@ namespace Vox.Internal
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void UseDevice(OutputDevice device, Action action)
         {
+            if (device == null) throw new AudioLibraryException("No active output device is set");
             var oldDevice = device.Swap();
             try
             {

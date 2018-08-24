@@ -165,6 +165,18 @@ namespace Vox
         }
 
 
+        /// <summary>
+        /// Resumes the output device processing (if was suspended). That means
+        /// the sound playback offsets will be incremented.
+        /// </summary>
+        public void ResumeProcessing() => _context.ResumeProcessing();
+
+        /// <summary>
+        /// Suspends the output device processing (if wasn't suspended). That
+        /// means the sound playback offsets will NOT be incremented.
+        /// </summary>
+        public void SuspendProcessing() => _context.SuspendProcessing();
+
         bool disposed = false;
         public bool IsDisposed => disposed;
         /// <summary>

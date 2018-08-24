@@ -1,5 +1,6 @@
 using System;
 using static OpenAL.ALC10;
+using static OpenAL.ALC11;
 using static Vox.ErrorHandler;
 
 namespace Vox.Internal
@@ -25,6 +26,14 @@ namespace Vox.Internal
             if (!successful)
                 throw new AudioLibraryException("Failed to set current context");
         }
+
+        internal void ResumeProcessing() =>
+            ALC(() => alcProcessContext(_handle),
+                "alcProcessContext", _device._handle);
+
+        internal void SuspendProcessing() => 
+            ALC(() => alcSuspendContext(_handle),
+                "alcSuspendContext", _device._handle);
 
         internal bool IsCurrent() => OutputDevice.Current == _device;
 
