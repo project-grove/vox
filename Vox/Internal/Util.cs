@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -44,6 +45,15 @@ namespace Vox.Internal
             {
                 oldDevice?.MakeCurrent();
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T[] EnlargePooledArray<T>(this ArrayPool<T> pool, T[] src, int sizeIncrement)
+        {
+            T[] dst = pool.Rent(src.Length + sizeIncrement);
+            Array.Copy(src, dst, src.Length);
+            pool.Return(src);
+            return dst;
         }
     }
 }
