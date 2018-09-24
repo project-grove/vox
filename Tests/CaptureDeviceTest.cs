@@ -52,7 +52,7 @@ namespace Tests
             device.StartCapture();
             Thread.Sleep(100);
             Assert.NotEqual(0, device.AvailableSamples);
-            device.ProcessSamples(buf => {
+            device.ProcessSamples((buf, bytesRead) => {
                 container.Data = new byte[buf.Length];
                 Array.Copy(buf, container.Data, buf.Length);
             });

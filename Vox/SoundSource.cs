@@ -66,7 +66,8 @@ namespace Vox
         public bool IsRelative
         {
             get => _isRelative;
-            set {
+            set
+            {
                 UseDevice(Owner, () =>
                     AL(() => alSourcei(_handle, AL_SOURCE_RELATIVE, value ? 1 : 0),
                         "alSourcei(AL_SOURCE_RELATIVE)"));
@@ -81,7 +82,8 @@ namespace Vox
         public bool IsLooping
         {
             get => _isLooping;
-            set {
+            set
+            {
                 UseDevice(Owner, () =>
                     AL(() => alSourcei(_handle, AL_LOOPING, value ? 1 : 0),
                         "alSourcei(AL_LOOPING)"));
@@ -94,13 +96,15 @@ namespace Vox
         /// <remarks>If set to null, releases the current buffer queue (only in Initial and Stopped states).</remarks>
         public SoundBuffer CurrentBuffer
         {
-            set {
-                if (value == null) {
+            set
+            {
+                if (value == null)
+                {
                     switch (State)
                     {
                         case SourceState.Initial:
                         case SourceState.Stopped:
-                            UseDevice(Owner, () => 
+                            UseDevice(Owner, () =>
                                 AL(() => alSourcei(_handle, AL_BUFFER, AL_NONE),
                                     "alSourcei(AL_BUFFER)"));
                             return;
@@ -113,7 +117,8 @@ namespace Vox
                     AL(() => alSourcei(_handle, AL_BUFFER, (int)value._bufferId),
                         "alSourcei(AL_BUFFER)"));
             }
-            get {
+            get
+            {
                 var bufferId = AL_NONE;
                 UseDevice(Owner, () =>
                     AL(() => alGetSourcei(_handle, AL_BUFFER, out bufferId),
@@ -131,7 +136,8 @@ namespace Vox
         /// </summary>
         public int QueuedBuffers
         {
-            get {
+            get
+            {
                 var result = 0;
                 UseDevice(Owner, () =>
                     AL(() => alGetSourcei(_handle, AL_BUFFERS_QUEUED, out result),
@@ -145,7 +151,8 @@ namespace Vox
         /// </summary>
         public int ProcessedBuffers
         {
-            get {
+            get
+            {
                 var result = 0;
                 UseDevice(Owner, () =>
                     AL(() => alGetSourcei(_handle, AL_BUFFERS_PROCESSED, out result),
@@ -162,7 +169,8 @@ namespace Vox
         public float MinGain
         {
             get => _minGain;
-            set {
+            set
+            {
                 var val = Math.Max(0.0f, Math.Min(1.0f, value));
                 UseDevice(Owner, () =>
                     AL(() => alSourcef(_handle, AL_MIN_GAIN, val),
@@ -179,7 +187,8 @@ namespace Vox
         public float MaxGain
         {
             get => _maxGain;
-            set {
+            set
+            {
                 var val = Math.Max(0.0f, Math.Min(1.0f, value));
                 UseDevice(Owner, () =>
                     AL(() => alSourcef(_handle, AL_MAX_GAIN, val),
@@ -212,7 +221,7 @@ namespace Vox
         public float RolloffFactor
         {
             get => _rolloffFactor;
-            set 
+            set
             {
                 var val = Math.Min(0.0f, value);
                 UseDevice(Owner, () =>
@@ -230,7 +239,8 @@ namespace Vox
         public float MaxDistance
         {
             get => _maxDistance;
-            set {
+            set
+            {
                 var val = Math.Min(0.0f, value);
                 UseDevice(Owner, () =>
                     AL(() => alSourcef(_handle, AL_MAX_DISTANCE, val),
@@ -249,7 +259,8 @@ namespace Vox
         public float Pitch
         {
             get => _pitch;
-            set {
+            set
+            {
                 var val = Math.Min(float.Epsilon, value);
                 UseDevice(Owner, () =>
                     AL(() => alSourcef(_handle, AL_PITCH, val),
@@ -266,7 +277,8 @@ namespace Vox
         public Vector3 Direction
         {
             get => _direction;
-            set {
+            set
+            {
                 UseDevice(Owner, () =>
                     AL(() => alSource3f(_handle, AL_DIRECTION, value.X, value.Y, value.Z),
                         "alSource3f(AL_DIRECTION)"));
@@ -282,7 +294,8 @@ namespace Vox
         public float InnerAngle
         {
             get => _innerAngle;
-            set {
+            set
+            {
                 UseDevice(Owner, () =>
                     AL(() => alSourcef(_handle, AL_CONE_INNER_ANGLE, value),
                         "alSource3f(AL_CONE_INNER_ANGLE)"));
@@ -297,7 +310,8 @@ namespace Vox
         public float OuterAngle
         {
             get => _outerAngle;
-            set {
+            set
+            {
                 UseDevice(Owner, () =>
                     AL(() => alSourcef(_handle, AL_CONE_OUTER_ANGLE, value),
                         "alSource3f(AL_CONE_OUTER_ANGLE)"));
@@ -314,7 +328,8 @@ namespace Vox
         public float OuterGain
         {
             get => _coneOuterGain;
-            set {
+            set
+            {
                 var val = Math.Min(0.0f, Math.Max(1.0f, value));
                 UseDevice(Owner, () =>
                     AL(() => alSourcef(_handle, AL_CONE_OUTER_GAIN, val),
@@ -336,7 +351,8 @@ namespace Vox
                         "alGetSourcef(AL_SEC_OFFSET)"));
                 return result;
             }
-            set {
+            set
+            {
                 float val = Math.Min(0.0f, value);
                 UseDevice(Owner, () =>
                     AL(() => alSourcef(_handle, AL_SEC_OFFSET, val),
@@ -357,7 +373,8 @@ namespace Vox
                         "alGetSourcef(AL_SAMPLE_OFFSET)"));
                 return result;
             }
-            set {
+            set
+            {
                 float val = Math.Min(0.0f, value);
                 UseDevice(Owner, () =>
                     AL(() => alSourcef(_handle, AL_SAMPLE_OFFSET, val),
@@ -378,7 +395,8 @@ namespace Vox
                         "alGetSourcei(AL_BYTE_OFFSET)"));
                 return result;
             }
-            set {
+            set
+            {
                 int val = Math.Min(0, value);
                 UseDevice(Owner, () =>
                     AL(() => alSourcei(_handle, AL_BYTE_OFFSET, val),
@@ -391,7 +409,7 @@ namespace Vox
         /// <summary>
         /// Creates a new sound source for the current output device.
         /// </summary>
-        public SoundSource() : this(OutputDevice.Current) {}
+        public SoundSource() : this(OutputDevice.Current) { }
 
         /// <summary>
         /// Creates a new sound source for the specified output device.
@@ -423,7 +441,7 @@ namespace Vox
             if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
             UseDevice(Owner, () => AL(() => alSourcePause(_handle), "alSourcePause"));
         }
-    
+
         /// <summary>
         /// Stops the sound source.
         /// </summary>
@@ -441,6 +459,39 @@ namespace Vox
         {
             if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
             UseDevice(Owner, () => AL(() => alSourceRewind(_handle), "alSourceRewind"));
+        }
+
+        /// <summary>
+        /// Adds the specified buffers to the source playback queue.
+        /// </summary>
+        public void Enqueue(params SoundBuffer[] buffers)
+        {
+            if (buffers.Length == 1)
+            {
+                UseDevice(Owner, () =>
+                    AL(() => alSourceQueueBuffers(_handle, 1, new uint[] { buffers[0]._bufferId }),
+                        "alSourceQueueBuffers"));
+                return;
+            }
+            uint[] bufHandles = new uint[buffers.Length];
+            for (int i = 0; i < bufHandles.Length; i++)
+                bufHandles[i] = buffers[i]._bufferId;
+            UseDevice(Owner, () =>
+                AL(() => alSourceQueueBuffers(_handle, bufHandles.Length, bufHandles),
+                    "alSourceQueueBuffers"));
+        }
+        /// <summary>
+        /// removes a number of buffers entries that have
+        /// finished processing, in the order of appearance, from the queue.
+        /// </summary>
+        public void Unqueue(int entries, params SoundBuffer[] buffers)
+        {
+            uint[] bufHandles = new uint[buffers.Length];
+            for (int i = 0; i < bufHandles.Length; i++)
+                bufHandles[i] = buffers[i]._bufferId;
+            UseDevice(Owner, () =>
+                AL(() => alSourceUnqueueBuffers(_handle, entries, bufHandles),
+                    "alSourceUnqueueBuffers"));
         }
 
         internal SoundSource(uint handle, OutputDevice owner) =>

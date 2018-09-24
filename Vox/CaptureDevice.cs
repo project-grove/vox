@@ -72,10 +72,10 @@ namespace Vox
                 {
                     case PCM.Mono8:
                     case PCM.Stereo8:
-                        return 8;
+                        return 1;
                     case PCM.Mono16:
                     case PCM.Stereo16:
-                        return 16;
+                        return 2;
                     default:
                         return -1;
                 }
@@ -144,7 +144,7 @@ namespace Vox
         /// Reads all available samples and passes them to the callback.
         /// </summary>
         /// <remarks>If you intend to use sample data later, <b>copy it</b>, because the buffer is pooled and will be reused.</remarks>
-        public void ProcessSamples(Action<byte[]> callback) =>
+        public void ProcessSamples(Action<byte[], int> callback) =>
             ProcessSamples(AvailableSamples, callback);
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Vox
         /// <param name="sampleCount">Sample count. Must be less or equal to <see cref="AvailableSamples" />.</param>
         /// <param name="callback">Callback</param>
         /// <remarks>If you intend to use sample data later, <b>copy it</b>, because the buffer is pooled and will be reused.</remarks>
-        public void ProcessSamples(int sampleCount, Action<byte[]> callback)
+        public void ProcessSamples(int sampleCount, Action<byte[], int> callback)
         {
             if (disposed) throw new ObjectDisposedException(nameof(OutputDevice));
             if (AvailableSamples < sampleCount)
@@ -169,7 +169,7 @@ namespace Vox
                     CheckALC("alcCaptureSamples", _handle);
                     try
                     {
-                        callback(buffer);
+                        callback(buffer, BytesPerSample * sampleCount);
                     }
                     finally
                     {
