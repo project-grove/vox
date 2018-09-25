@@ -52,16 +52,16 @@ namespace Vox.Decoders
             out int sampleRate, out SampleQuality quality, out byte[] data)
         {
             var chunkId = reader.ReadInt32();
-            if (chunkId != 0x52494646)
+            if (chunkId != 1179011410)
                 throw new AudioImportException("Invalid header, expected RIFF");
             var chunkSize = reader.ReadInt32();
             var format = reader.ReadInt32();
-            if (format != 0x57415645)
+            if (format != 0x45564157)
                 throw new AudioImportException("Invalid header, expected WAVE");
 
             // fmt subchunk
             var subchunk1Id = reader.ReadInt32();
-            if (subchunk1Id != 0x666d7420)
+            if (subchunk1Id != 0x20746d66)
                 throw new AudioImportException("Invalid data, expected 'fmt ' chunk");
             var subchunk1Size = reader.ReadInt32();
             if (subchunk1Size != 16)
@@ -88,7 +88,7 @@ namespace Vox.Decoders
 
             // data subchunk
             var subchunk2Id = reader.ReadInt32();
-            if (subchunk2Id != 0x64617461)
+            if (subchunk2Id != 0x61746164)
                 throw new AudioImportException("Invalid data, expected 'data' chunk");
             var subchunk2Size = reader.ReadInt32();
             data = reader.ReadBytes(subchunk2Size);
