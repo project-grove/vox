@@ -3,6 +3,7 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Vox.Decoders;
 
 namespace Vox.Internal
 {
@@ -54,6 +55,21 @@ namespace Vox.Internal
             Array.Copy(src, dst, src.Length);
             pool.Return(src);
             return dst;
+        }
+
+        public static PCM GetFormat(int channels, SampleQuality quality)
+        {
+            if (channels < 1 || channels > 2)
+            {
+                throw new AudioImportException("Only 1 and 2-channel audio is supported");
+            }
+            switch (quality)
+            {
+                case SampleQuality.SixteenBits:
+                    return channels > 1 ? PCM.Stereo16 : PCM.Mono16;
+                default:
+                    return channels > 1 ? PCM.Stereo8 : PCM.Mono8;
+            }
         }
     }
 }

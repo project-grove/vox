@@ -4,6 +4,7 @@ using System.IO;
 using NVorbis;
 using NVorbis.Ogg;
 using Vox.Internal;
+using static Vox.Internal.Util;
 
 /// <summary>
 /// Contains various audio importers for use with SoundBuffer.
@@ -20,14 +21,6 @@ namespace Vox.Decoders
         /// </summary>
         public static ArrayPool<byte> ArrayPool { get; set; } = ArrayPool<byte>.Shared;
 
-        /// <summary>
-        /// Defines a sample quality.
-        /// </summary>
-        public enum SampleQuality
-        {
-            EightBits = 1,
-            SixteenBits = 2
-        }
 
         /// <summary>
         /// Creates new SoundBuffer for the current output device and loads
@@ -42,7 +35,7 @@ namespace Vox.Decoders
 
         /// <summary>
         /// Creates new SoundBuffer for the current output device and loads
-        /// data from stream.
+        /// data from OGG stream.
         /// </summary>
         /// <remarks>
         /// The stream should be finite.
@@ -63,7 +56,7 @@ namespace Vox.Decoders
             buffer.LoadFromOgg(new FileStream(path, FileMode.Open), quality, true);
 
         /// <summary>
-        /// Loads and resamples the data from stream to the specified SoundBuffer.
+        /// Loads and resamples the data from OGG stream to the specified SoundBuffer.
         /// </summary>
         /// <remarks>
         /// The stream should be finite.
@@ -109,9 +102,10 @@ namespace Vox.Decoders
                     ArrayPool.Return(data);
                 }
             }
+            if (closeStream) stream.Close();
         }
 
-        internal static void ResampleToPCM(float[] src, byte[] dst, int srcCount,
+        private static void ResampleToPCM(float[] src, byte[] dst, int srcCount,
             SampleQuality quality, int srcIndex = 0, int dstIndex = 0)
         {
             for (int i = 0; i < srcCount; i++)
@@ -147,19 +141,5 @@ namespace Vox.Decoders
             }
         }
 
-        internal static PCM GetFormat(int channels, SampleQuality quality)
-        {
-            if (channels < 1 || channels > 2)
-            {
-                throw new AudioLibraryException("Only 1 and 2-channel audio is supported");
-            }
-            switch (quality)
-            {
-                case SampleQuality.SixteenBits:
-                    return channels > 1 ? PCM.Stereo16 : PCM.Mono16;
-                default:
-                    return channels > 1 ? PCM.Stereo8 : PCM.Mono8;
-            }
-        }
     }
 }
