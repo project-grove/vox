@@ -4,3 +4,6 @@
 [submodule "External/OpenAL.NETCore"]
 	path = External/OpenAL.NETCore
 	url = git@github.com:project-grove/OpenAL.NETCore.git
+[submodule "External/NLayer"]
+	path = External/NLayer
+	url = git@github.com:project-grove/NLayer.git

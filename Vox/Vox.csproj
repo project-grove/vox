@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\External\NVorbis\NVorbis\NVorbis.Core.csproj" />
     <ProjectReference Include="..\External\OpenAL.NETCore\src\OpenAL.NETCore.csproj" />
+    <ProjectReference Include="..\External\NLayer\NLayer\NLayer.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
