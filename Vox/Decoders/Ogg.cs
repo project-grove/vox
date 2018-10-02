@@ -6,9 +6,6 @@ using NVorbis.Ogg;
 using Vox.Internal;
 using static Vox.Internal.Util;
 
-/// <summary>
-/// Contains various audio importers for use with SoundBuffer.
-/// </summary>
 namespace Vox.Decoders
 {
     /// <summary>

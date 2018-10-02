@@ -1,0 +1,427 @@
+<!DOCTYPE HTML>
+<html><head><title></title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<style>
+        pre code.hljs {
+            display: block;
+        }
+
+        code.hljs {
+            display: inline;
+        }</style>
+</head><body>
+<h1>API Documentation</h1>
+<ul>
+<li><a href="Vox.html">Vox</a></li>
+<ul>
+<li><a href="Vox.AudioLibraryException.html">AudioLibraryException</a></li>
+<ul>
+<li><a href="Vox.AudioLibraryException.AudioLibraryException().html">AudioLibraryException()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.AudioLibraryException.AudioLibraryException(string).html">AudioLibraryException(string)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.AudioLibraryException.AudioLibraryException(string,Exception).html">AudioLibraryException(string, Exception)</a></li>
+</ul>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.html">CaptureDevice</a></li>
+<ul>
+<li><a href="Vox.CaptureDevice.Format.html">Format</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.Frequency.html">Frequency</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.BufferSize.html">BufferSize</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.IsCapturing.html">IsCapturing</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.AvailableSamples.html">AvailableSamples</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.BytesPerSample.html">BytesPerSample</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.IsDisposed.html">IsDisposed</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.CaptureDevice().html">CaptureDevice()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.CaptureDevice(string,int,PCM,int,ArrayPool{byte}).html">CaptureDevice(string, int, PCM, int, ArrayPool&lt;byte&gt;)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.Close().html">Close()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.Dispose().html">Dispose()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.Equals(object).html">Equals(object)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.GetCaptureDevices().html">GetCaptureDevices()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.GetDefaultCaptureDevice().html">GetDefaultCaptureDevice()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.GetHashCode().html">GetHashCode()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.ProcessSamples(Action{byte[],int}).html">ProcessSamples(Action&lt;byte[], int&gt;)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.ProcessSamples(int,Action{byte[],int}).html">ProcessSamples(int, Action&lt;byte[], int&gt;)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.StartCapture().html">StartCapture()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.StopCapture().html">StopCapture()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.CaptureDevice.ToggleCapture().html">ToggleCapture()</a></li>
+</ul>
+</ul>
+<ul>
+<li><a href="Vox.OutputDevice.html">OutputDevice</a></li>
+<ul>
+<li><a href="Vox.OutputDevice.Current.html">Current</a></li>
+</ul>
+<ul>
+<li><a href="Vox.OutputDevice.Listener.html">Listener</a></li>
+</ul>
+<ul>
+<li><a href="Vox.OutputDevice.DistanceModel.html">DistanceModel</a></li>
+</ul>
+<ul>
+<li><a href="Vox.OutputDevice.IsDisposed.html">IsDisposed</a></li>
+</ul>
+<ul>
+<li><a href="Vox.OutputDevice.OutputDevice().html">OutputDevice()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.OutputDevice.OutputDevice(string).html">OutputDevice(string)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.OutputDevice.Close().html">Close()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.OutputDevice.Dispose().html">Dispose()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.OutputDevice.Equals(object).html">Equals(object)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.OutputDevice.GetDefaultOutputDevice().html">GetDefaultOutputDevice()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.OutputDevice.GetHashCode().html">GetHashCode()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.OutputDevice.GetOutputDevices().html">GetOutputDevices()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.OutputDevice.IsCurrent().html">IsCurrent()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.OutputDevice.MakeCurrent().html">MakeCurrent()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.OutputDevice.ResumeProcessing().html">ResumeProcessing()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.OutputDevice.SuspendProcessing().html">SuspendProcessing()</a></li>
+</ul>
+</ul>
+<ul>
+<li><a href="Vox.SoundBuffer.html">SoundBuffer</a></li>
+<ul>
+<li><a href="Vox.SoundBuffer.Owner.html">Owner</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundBuffer.IsDisposed.html">IsDisposed</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundBuffer.SoundBuffer(OutputDevice).html">SoundBuffer(OutputDevice)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundBuffer.Dispose().html">Dispose()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundBuffer.Equals(object).html">Equals(object)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundBuffer.GetHashCode().html">GetHashCode()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundBuffer.SetData(PCM,byte[],int,int).html">SetData(PCM, byte[], int, int)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundBuffer.SetData(PCM,byte[],int).html">SetData(PCM, byte[], int)</a></li>
+</ul>
+</ul>
+<ul>
+<li><a href="Vox.SoundBufferFactory.html">SoundBufferFactory</a></li>
+<ul>
+<li><a href="Vox.SoundBufferFactory.Create(int,OutputDevice).html">Create(int, OutputDevice)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundBufferFactory.Create(int).html">Create(int)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundBufferFactory.Delete(IEnumerable{SoundBuffer}).html">Delete(IEnumerable&lt;SoundBuffer&gt;)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundBufferFactory.Delete(SoundBuffer[]).html">Delete(SoundBuffer[])</a></li>
+</ul>
+</ul>
+<ul>
+<li><a href="Vox.SoundListener.html">SoundListener</a></li>
+<ul>
+<li><a href="Vox.SoundListener.Current.html">Current</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundListener.Gain.html">Gain</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundListener.Position.html">Position</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundListener.Velocity.html">Velocity</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundListener.GetOrientation(Vector3,Vector3).html">GetOrientation(Vector3, Vector3)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundListener.SetOrientation(Vector3,Vector3).html">SetOrientation(Vector3, Vector3)</a></li>
+</ul>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.html">SoundSource</a></li>
+<ul>
+<li><a href="Vox.SoundSource.Owner.html">Owner</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.State.html">State</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.IsRelative.html">IsRelative</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.IsLooping.html">IsLooping</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.CurrentBuffer.html">CurrentBuffer</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.QueuedBuffers.html">QueuedBuffers</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.ProcessedBuffers.html">ProcessedBuffers</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.MinGain.html">MinGain</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.MaxGain.html">MaxGain</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.ReferenceDistance.html">ReferenceDistance</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.RolloffFactor.html">RolloffFactor</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.MaxDistance.html">MaxDistance</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.Pitch.html">Pitch</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.Direction.html">Direction</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.InnerAngle.html">InnerAngle</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.OuterAngle.html">OuterAngle</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.OuterGain.html">OuterGain</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.OffsetInSeconds.html">OffsetInSeconds</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.OffsetInSamples.html">OffsetInSamples</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.OffsetInBytes.html">OffsetInBytes</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.IsDisposed.html">IsDisposed</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.SoundSource().html">SoundSource()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.SoundSource(OutputDevice).html">SoundSource(OutputDevice)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.Dispose().html">Dispose()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.Enqueue(SoundBuffer[]).html">Enqueue(SoundBuffer[])</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.Equals(object).html">Equals(object)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.GetHashCode().html">GetHashCode()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.Pause().html">Pause()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.Play().html">Play()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.Rewind().html">Rewind()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.Stop().html">Stop()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSource.Unqueue(int,SoundBuffer[]).html">Unqueue(int, SoundBuffer[])</a></li>
+</ul>
+</ul>
+<ul>
+<li><a href="Vox.SoundSourceFactory.html">SoundSourceFactory</a></li>
+<ul>
+<li><a href="Vox.SoundSourceFactory.Create(int,OutputDevice).html">Create(int, OutputDevice)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSourceFactory.Create(int).html">Create(int)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSourceFactory.Delete(IEnumerable{SoundSource}).html">Delete(IEnumerable&lt;SoundSource&gt;)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SoundSourceFactory.Delete(SoundSource[]).html">Delete(SoundSource[])</a></li>
+</ul>
+</ul>
+<ul>
+<li><a href="Vox.SystemInfo.html">SystemInfo</a></li>
+<ul>
+<li><a href="Vox.SystemInfo.OpenALVendor.html">OpenALVendor</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SystemInfo.OpenALRenderer.html">OpenALRenderer</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SystemInfo.OpenALVersion.html">OpenALVersion</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SystemInfo.OpenALExtensions.html">OpenALExtensions</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SystemInfo.ALCVersion.html">ALCVersion</a></li>
+</ul>
+</ul>
+<ul>
+<li><a href="Vox.DistanceModel.html">DistanceModel</a></li>
+</ul>
+<ul>
+<li><a href="Vox.PCM.html">PCM</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SourceState.html">SourceState</a></li>
+</ul>
+<ul>
+<li><a href="Vox.SourceType.html">SourceType</a></li>
+</ul>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.html">Vox.Decoders</a></li>
+<ul>
+<li><a href="Vox.Decoders.AudioImportException.html">AudioImportException</a></li>
+<ul>
+<li><a href="Vox.Decoders.AudioImportException.AudioImportException().html">AudioImportException()</a></li>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.AudioImportException.AudioImportException(string).html">AudioImportException(string)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.AudioImportException.AudioImportException(string,Exception).html">AudioImportException(string, Exception)</a></li>
+</ul>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.Mp3.html">Mp3</a></li>
+<ul>
+<li><a href="Vox.Decoders.Mp3.ArrayPool.html">ArrayPool</a></li>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.Mp3.Load(Stream,SampleQuality,bool).html">Load(Stream, SampleQuality, bool)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.Mp3.Load(string,SampleQuality).html">Load(string, SampleQuality)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.Mp3.LoadFromMp3(SoundBuffer,Stream,SampleQuality,bool).html">LoadFromMp3(SoundBuffer, Stream, SampleQuality, bool)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.Mp3.LoadFromMp3(SoundBuffer,string,SampleQuality).html">LoadFromMp3(SoundBuffer, string, SampleQuality)</a></li>
+</ul>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.Ogg.html">Ogg</a></li>
+<ul>
+<li><a href="Vox.Decoders.Ogg.ArrayPool.html">ArrayPool</a></li>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.Ogg.Load(Stream,SampleQuality,bool).html">Load(Stream, SampleQuality, bool)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.Ogg.Load(string,SampleQuality).html">Load(string, SampleQuality)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.Ogg.LoadFromOgg(SoundBuffer,Stream,SampleQuality,bool).html">LoadFromOgg(SoundBuffer, Stream, SampleQuality, bool)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.Ogg.LoadFromOgg(SoundBuffer,string,SampleQuality).html">LoadFromOgg(SoundBuffer, string, SampleQuality)</a></li>
+</ul>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.Wav.html">Wav</a></li>
+<ul>
+<li><a href="Vox.Decoders.Wav.Load(Stream).html">Load(Stream)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.Wav.Load(string).html">Load(string)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.Wav.LoadFromWav(SoundBuffer,Stream,bool).html">LoadFromWav(SoundBuffer, Stream, bool)</a></li>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.Wav.LoadFromWav(SoundBuffer,string).html">LoadFromWav(SoundBuffer, string)</a></li>
+</ul>
+</ul>
+<ul>
+<li><a href="Vox.Decoders.SampleQuality.html">SampleQuality</a></li>
+</ul>
+</ul>
+<hr>
+<a href="https://github.com/RaZeR-RBI/dotbook">Generated with DotBook</a>
+
+<script>
+            var code = document.getElementsByTagName('code');
+            for (i = 0; i < code.length; i++) hljs.highlightBlock(code[i]);
+        </script>
+</body></html>
