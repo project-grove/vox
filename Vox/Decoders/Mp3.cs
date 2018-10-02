@@ -12,6 +12,9 @@ using static Vox.Internal.Util;
 /// </summary>
 namespace Vox.Decoders
 {
+    /// <summary>
+    /// Contains various methods to aid SoundBuffer creation from MP3 data.
+    /// </summary>
     public static class Mp3
     {
         // byte size = sizeof(float) * BufferSize * channels
@@ -25,7 +28,7 @@ namespace Vox.Decoders
 
         /// <summary>
         /// Creates new SoundBuffer for the current output device and loads
-        /// data from an .ogg file.
+        /// data from an .mp3 file.
         /// </summary>
         public static SoundBuffer Load(string path, SampleQuality quality = SampleQuality.EightBits)
         {
@@ -36,7 +39,7 @@ namespace Vox.Decoders
 
         /// <summary>
         /// Creates new SoundBuffer for the current output device and loads
-        /// data from OGG stream.
+        /// data from MP3 stream.
         /// </summary>
         /// <remarks>
         /// The stream should be finite.
@@ -50,14 +53,14 @@ namespace Vox.Decoders
         }
 
         /// <summary>
-        /// Loads and resamples the data from an .ogg file to the specified SoundBuffer.
+        /// Loads and resamples the data from an .mp3 file to the specified SoundBuffer.
         /// </summary>
         public static void LoadFromMp3(this SoundBuffer buffer, string path,
             SampleQuality quality = SampleQuality.EightBits) =>
             buffer.LoadFromMp3(new FileStream(path, FileMode.Open), quality, true);
 
         /// <summary>
-        /// Loads and resamples the data from OGG stream to the specified SoundBuffer.
+        /// Loads and resamples the data from MP3 stream to the specified SoundBuffer.
         /// </summary>
         /// <remarks>
         /// The stream should be finite.

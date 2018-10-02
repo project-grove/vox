@@ -5,6 +5,10 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Vox.Decoders;
 
+/// <summary>
+/// Internal namespace. If something from here will be in the API docs,
+/// then we have a problem.
+/// </summary>
 namespace Vox.Internal
 {
     internal static class Util

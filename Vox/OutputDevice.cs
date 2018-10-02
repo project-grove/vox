@@ -36,6 +36,9 @@ namespace Vox
         private static readonly IntPtr NULL = IntPtr.Zero;
 
         private static OutputDevice s_current;
+        /// <summary>
+        /// Returns the currently active output device, if it exists.
+        /// </summary>
         public static OutputDevice Current => s_current;
 
         internal IntPtr _handle;
@@ -69,14 +72,16 @@ namespace Vox
         /// <summary>
         /// Opens the default sound device and makes it current.
         /// </summary>
+        /// <seealso cref="GetOutputDevices()" />
+        /// <seealso cref="GetDefaultOutputDevice()" />
         public OutputDevice() : this(null) => MakeCurrent();
 
         /// <summary>
         /// Opens a sound device with the specified name.
         /// </summary>
         /// <param name="name">Device name</param>
-        /// <seealso cref="GetOutputDevices" />
-        /// <seealso cref="GetCaptureDevices" />
+        /// <seealso cref="GetOutputDevices()" />
+        /// <seealso cref="GetDefaultOutputDevice()" />
         public OutputDevice(string name)
         {
             _handle = ALC(() => alcOpenDevice(name), "alcOpenDevice", IntPtr.Zero);
@@ -178,6 +183,9 @@ namespace Vox
         public void SuspendProcessing() => _context.SuspendProcessing();
 
         bool disposed = false;
+        /// <summary>
+        /// Returns true if this object is disposed.
+        /// </summary>
         public bool IsDisposed => disposed;
         /// <summary>
         /// Closes the device and disposes the context.
@@ -200,7 +208,14 @@ namespace Vox
             if (other == null) return false;
             return _handle == other._handle;
         }
+        /// <summary>
+        /// Checks the object for equality.
+        /// </summary>
         public override bool Equals(object obj) => Equals(obj as OutputDevice);
+
+        /// <summary>
+        /// Returns the object's hash code.
+        /// </summary>
         public override int GetHashCode() => _handle.GetHashCode();
 
         internal OutputDevice Swap()

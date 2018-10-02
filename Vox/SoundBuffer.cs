@@ -6,7 +6,7 @@ using static Vox.Internal.Util;
 namespace Vox
 {
     /// <summary>
-    /// Describes possible formats for <see cref="SoundBuffer">.
+    /// Describes possible formats for <see cref="SoundBuffer" />.
     /// </summary>
     public enum PCM
     {
@@ -22,6 +22,9 @@ namespace Vox
     public class SoundBuffer : IDisposable
     {
         internal uint _bufferId;
+        /// <summary>
+        /// Returns the sound output device which owns this sound buffer.
+        /// </summary>
         public OutputDevice Owner { get; private set; }
 
         /// <summary>
@@ -99,8 +102,14 @@ namespace Vox
         }
 
         private bool disposed = false;
+        /// <summary>
+        /// Returns true if this object is disposed.
+        /// </summary>
         public bool IsDisposed => disposed;
 
+        /// <summary>
+        /// Disposes this object.
+        /// </summary>
         public void Dispose()
         {
             if (!disposed)
@@ -117,7 +126,14 @@ namespace Vox
                 Owner == other.Owner;
         }
 
+        /// <summary>
+        /// Checks the object for equality.
+        /// </summary>
         public override bool Equals(object obj) => Equals(obj as SoundBuffer);
+
+        /// <summary>
+        /// Returns the object's hash code.
+        /// </summary>
         public override int GetHashCode()
         {
             unchecked

@@ -85,6 +85,8 @@ namespace Vox
         /// <summary>
         /// Creates and opens the default sound input device.
         /// </summary>
+        /// <seealso cref="GetCaptureDevices()" />
+        /// <seealso cref="GetDefaultCaptureDevice()" />
         public CaptureDevice() : this(null) { }
 
         /// <summary>
@@ -95,6 +97,8 @@ namespace Vox
         /// <param name="format">Sound format</param>
         /// <param name="bufSize">Buffer size</param>
         /// <param name="bufferPool">Array pool for buffers.false. If null, defaults to shared.</param>
+        /// <seealso cref="GetCaptureDevices()" />
+        /// <seealso cref="GetDefaultCaptureDevice()" />
         public CaptureDevice(string name, int frequency = 44100,
             PCM format = PCM.Mono8, int bufSize = 22050, ArrayPool<byte> bufferPool = null)
         {
@@ -225,7 +229,11 @@ namespace Vox
 
         bool disposed = false;
         /// <summary>
-        /// Disposes and closes the device.
+        /// Returns true if this object is disposed.
+        /// </summary>
+        public bool IsDisposed => disposed;
+        /// <summary>
+        /// Disposes this object.
         /// </summary>
         public void Dispose()
         {
@@ -240,7 +248,13 @@ namespace Vox
             if (other == null) return false;
             return _handle == other._handle;
         }
+        /// <summary>
+        /// Checks the object for equality.
+        /// </summary>
         public override bool Equals(object obj) => Equals(obj as CaptureDevice);
+        /// <summary>
+        /// Returns the object's hash code.
+        /// </summary>
         public override int GetHashCode() => _handle.GetHashCode();
     }
 }

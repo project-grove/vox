@@ -11,6 +11,9 @@ using static Vox.Internal.Util;
 /// </summary>
 namespace Vox.Decoders
 {
+    /// <summary>
+    /// Contains various methods to aid SoundBuffer creation from OGG data.
+    /// </summary>
     public static class Ogg
     {
         // byte size = sizeof(float) * BufferSize * channels

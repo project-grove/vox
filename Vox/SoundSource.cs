@@ -40,7 +40,6 @@ namespace Vox
         /// <summary>
         /// Returns the sound output device which owns this sound source.
         /// </summary>
-        /// <returns></returns>
         public OutputDevice Owner { get; private set; }
 
         /// <summary>
@@ -515,13 +514,41 @@ namespace Vox
         }
 
         private bool disposed = false;
+        /// <summary>
+        /// Returns true if this object is disposed.
+        /// </summary>
         public bool IsDisposed => disposed;
+        /// <summary>
+        /// Disposes this object.
+        /// </summary>
         public void Dispose()
         {
             if (!disposed)
             {
                 DeleteSource();
                 AfterDelete();
+            }
+        }
+
+        private bool Equals(SoundSource other)
+        {
+            if (other == null) return false;
+            return _handle == other._handle &&
+                Owner == other.Owner;
+        }
+
+        /// <summary>
+        /// Checks the object for equality.
+        /// </summary>
+        public override bool Equals(object obj) => Equals(obj as SoundSource);
+        /// <summary>
+        /// Returns the object's hash code.
+        /// </summary>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (int)_handle * 17 + Owner.GetHashCode();
             }
         }
     }

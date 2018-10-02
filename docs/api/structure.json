@@ -1,0 +1,855 @@
+{
+  "name": "",
+  "fullName": "",
+  "type": "Root",
+  "link": "",
+  "children": [
+    {
+      "name": "Vox",
+      "fullName": "Vox",
+      "type": "Namespace",
+      "link": "Vox",
+      "children": [
+        {
+          "name": "AudioLibraryException",
+          "fullName": "Vox.AudioLibraryException",
+          "type": "Class",
+          "link": "Vox.AudioLibraryException",
+          "children": [
+            {
+              "name": "AudioLibraryException()",
+              "fullName": "Vox.AudioLibraryException.AudioLibraryException()",
+              "type": "Constructor",
+              "link": "Vox.AudioLibraryException.AudioLibraryException()"
+            },
+            {
+              "name": "AudioLibraryException(string)",
+              "fullName": "Vox.AudioLibraryException.AudioLibraryException(string)",
+              "type": "Constructor",
+              "link": "Vox.AudioLibraryException.AudioLibraryException(string)"
+            },
+            {
+              "name": "AudioLibraryException(string, Exception)",
+              "fullName": "Vox.AudioLibraryException.AudioLibraryException(string, Exception)",
+              "type": "Constructor",
+              "link": "Vox.AudioLibraryException.AudioLibraryException(string,Exception)"
+            }
+          ]
+        },
+        {
+          "name": "CaptureDevice",
+          "fullName": "Vox.CaptureDevice",
+          "type": "Class",
+          "link": "Vox.CaptureDevice",
+          "children": [
+            {
+              "name": "Format",
+              "fullName": "Vox.CaptureDevice.Format",
+              "type": "Property",
+              "link": "Vox.CaptureDevice.Format"
+            },
+            {
+              "name": "Frequency",
+              "fullName": "Vox.CaptureDevice.Frequency",
+              "type": "Property",
+              "link": "Vox.CaptureDevice.Frequency"
+            },
+            {
+              "name": "BufferSize",
+              "fullName": "Vox.CaptureDevice.BufferSize",
+              "type": "Property",
+              "link": "Vox.CaptureDevice.BufferSize"
+            },
+            {
+              "name": "IsCapturing",
+              "fullName": "Vox.CaptureDevice.IsCapturing",
+              "type": "Property",
+              "link": "Vox.CaptureDevice.IsCapturing"
+            },
+            {
+              "name": "AvailableSamples",
+              "fullName": "Vox.CaptureDevice.AvailableSamples",
+              "type": "Property",
+              "link": "Vox.CaptureDevice.AvailableSamples"
+            },
+            {
+              "name": "BytesPerSample",
+              "fullName": "Vox.CaptureDevice.BytesPerSample",
+              "type": "Property",
+              "link": "Vox.CaptureDevice.BytesPerSample"
+            },
+            {
+              "name": "IsDisposed",
+              "fullName": "Vox.CaptureDevice.IsDisposed",
+              "type": "Property",
+              "link": "Vox.CaptureDevice.IsDisposed"
+            },
+            {
+              "name": "CaptureDevice()",
+              "fullName": "Vox.CaptureDevice.CaptureDevice()",
+              "type": "Constructor",
+              "link": "Vox.CaptureDevice.CaptureDevice()"
+            },
+            {
+              "name": "CaptureDevice(string, int, PCM, int, ArrayPool<byte>)",
+              "fullName": "Vox.CaptureDevice.CaptureDevice(string, int, PCM, int, ArrayPool<byte>)",
+              "type": "Constructor",
+              "link": "Vox.CaptureDevice.CaptureDevice(string,int,PCM,int,ArrayPool{byte})"
+            },
+            {
+              "name": "Close()",
+              "fullName": "Vox.CaptureDevice.Close()",
+              "type": "Method",
+              "link": "Vox.CaptureDevice.Close()"
+            },
+            {
+              "name": "Dispose()",
+              "fullName": "Vox.CaptureDevice.Dispose()",
+              "type": "Method",
+              "link": "Vox.CaptureDevice.Dispose()"
+            },
+            {
+              "name": "Equals(object)",
+              "fullName": "Vox.CaptureDevice.Equals(object)",
+              "type": "Method",
+              "link": "Vox.CaptureDevice.Equals(object)"
+            },
+            {
+              "name": "GetCaptureDevices()",
+              "fullName": "Vox.CaptureDevice.GetCaptureDevices()",
+              "type": "Method",
+              "link": "Vox.CaptureDevice.GetCaptureDevices()"
+            },
+            {
+              "name": "GetDefaultCaptureDevice()",
+              "fullName": "Vox.CaptureDevice.GetDefaultCaptureDevice()",
+              "type": "Method",
+              "link": "Vox.CaptureDevice.GetDefaultCaptureDevice()"
+            },
+            {
+              "name": "GetHashCode()",
+              "fullName": "Vox.CaptureDevice.GetHashCode()",
+              "type": "Method",
+              "link": "Vox.CaptureDevice.GetHashCode()"
+            },
+            {
+              "name": "ProcessSamples(Action<byte[], int>)",
+              "fullName": "Vox.CaptureDevice.ProcessSamples(Action<byte[], int>)",
+              "type": "Method",
+              "link": "Vox.CaptureDevice.ProcessSamples(Action{byte[],int})"
+            },
+            {
+              "name": "ProcessSamples(int, Action<byte[], int>)",
+              "fullName": "Vox.CaptureDevice.ProcessSamples(int, Action<byte[], int>)",
+              "type": "Method",
+              "link": "Vox.CaptureDevice.ProcessSamples(int,Action{byte[],int})"
+            },
+            {
+              "name": "StartCapture()",
+              "fullName": "Vox.CaptureDevice.StartCapture()",
+              "type": "Method",
+              "link": "Vox.CaptureDevice.StartCapture()"
+            },
+            {
+              "name": "StopCapture()",
+              "fullName": "Vox.CaptureDevice.StopCapture()",
+              "type": "Method",
+              "link": "Vox.CaptureDevice.StopCapture()"
+            },
+            {
+              "name": "ToggleCapture()",
+              "fullName": "Vox.CaptureDevice.ToggleCapture()",
+              "type": "Method",
+              "link": "Vox.CaptureDevice.ToggleCapture()"
+            }
+          ]
+        },
+        {
+          "name": "OutputDevice",
+          "fullName": "Vox.OutputDevice",
+          "type": "Class",
+          "link": "Vox.OutputDevice",
+          "children": [
+            {
+              "name": "Current",
+              "fullName": "Vox.OutputDevice.Current",
+              "type": "Property",
+              "link": "Vox.OutputDevice.Current"
+            },
+            {
+              "name": "Listener",
+              "fullName": "Vox.OutputDevice.Listener",
+              "type": "Property",
+              "link": "Vox.OutputDevice.Listener"
+            },
+            {
+              "name": "DistanceModel",
+              "fullName": "Vox.OutputDevice.DistanceModel",
+              "type": "Property",
+              "link": "Vox.OutputDevice.DistanceModel"
+            },
+            {
+              "name": "IsDisposed",
+              "fullName": "Vox.OutputDevice.IsDisposed",
+              "type": "Property",
+              "link": "Vox.OutputDevice.IsDisposed"
+            },
+            {
+              "name": "OutputDevice()",
+              "fullName": "Vox.OutputDevice.OutputDevice()",
+              "type": "Constructor",
+              "link": "Vox.OutputDevice.OutputDevice()"
+            },
+            {
+              "name": "OutputDevice(string)",
+              "fullName": "Vox.OutputDevice.OutputDevice(string)",
+              "type": "Constructor",
+              "link": "Vox.OutputDevice.OutputDevice(string)"
+            },
+            {
+              "name": "Close()",
+              "fullName": "Vox.OutputDevice.Close()",
+              "type": "Method",
+              "link": "Vox.OutputDevice.Close()"
+            },
+            {
+              "name": "Dispose()",
+              "fullName": "Vox.OutputDevice.Dispose()",
+              "type": "Method",
+              "link": "Vox.OutputDevice.Dispose()"
+            },
+            {
+              "name": "Equals(object)",
+              "fullName": "Vox.OutputDevice.Equals(object)",
+              "type": "Method",
+              "link": "Vox.OutputDevice.Equals(object)"
+            },
+            {
+              "name": "GetDefaultOutputDevice()",
+              "fullName": "Vox.OutputDevice.GetDefaultOutputDevice()",
+              "type": "Method",
+              "link": "Vox.OutputDevice.GetDefaultOutputDevice()"
+            },
+            {
+              "name": "GetHashCode()",
+              "fullName": "Vox.OutputDevice.GetHashCode()",
+              "type": "Method",
+              "link": "Vox.OutputDevice.GetHashCode()"
+            },
+            {
+              "name": "GetOutputDevices()",
+              "fullName": "Vox.OutputDevice.GetOutputDevices()",
+              "type": "Method",
+              "link": "Vox.OutputDevice.GetOutputDevices()"
+            },
+            {
+              "name": "IsCurrent()",
+              "fullName": "Vox.OutputDevice.IsCurrent()",
+              "type": "Method",
+              "link": "Vox.OutputDevice.IsCurrent()"
+            },
+            {
+              "name": "MakeCurrent()",
+              "fullName": "Vox.OutputDevice.MakeCurrent()",
+              "type": "Method",
+              "link": "Vox.OutputDevice.MakeCurrent()"
+            },
+            {
+              "name": "ResumeProcessing()",
+              "fullName": "Vox.OutputDevice.ResumeProcessing()",
+              "type": "Method",
+              "link": "Vox.OutputDevice.ResumeProcessing()"
+            },
+            {
+              "name": "SuspendProcessing()",
+              "fullName": "Vox.OutputDevice.SuspendProcessing()",
+              "type": "Method",
+              "link": "Vox.OutputDevice.SuspendProcessing()"
+            }
+          ]
+        },
+        {
+          "name": "SoundBuffer",
+          "fullName": "Vox.SoundBuffer",
+          "type": "Class",
+          "link": "Vox.SoundBuffer",
+          "children": [
+            {
+              "name": "Owner",
+              "fullName": "Vox.SoundBuffer.Owner",
+              "type": "Property",
+              "link": "Vox.SoundBuffer.Owner"
+            },
+            {
+              "name": "IsDisposed",
+              "fullName": "Vox.SoundBuffer.IsDisposed",
+              "type": "Property",
+              "link": "Vox.SoundBuffer.IsDisposed"
+            },
+            {
+              "name": "SoundBuffer(OutputDevice)",
+              "fullName": "Vox.SoundBuffer.SoundBuffer(OutputDevice)",
+              "type": "Constructor",
+              "link": "Vox.SoundBuffer.SoundBuffer(OutputDevice)"
+            },
+            {
+              "name": "Dispose()",
+              "fullName": "Vox.SoundBuffer.Dispose()",
+              "type": "Method",
+              "link": "Vox.SoundBuffer.Dispose()"
+            },
+            {
+              "name": "Equals(object)",
+              "fullName": "Vox.SoundBuffer.Equals(object)",
+              "type": "Method",
+              "link": "Vox.SoundBuffer.Equals(object)"
+            },
+            {
+              "name": "GetHashCode()",
+              "fullName": "Vox.SoundBuffer.GetHashCode()",
+              "type": "Method",
+              "link": "Vox.SoundBuffer.GetHashCode()"
+            },
+            {
+              "name": "SetData(PCM, byte[], int, int)",
+              "fullName": "Vox.SoundBuffer.SetData(PCM, byte[], int, int)",
+              "type": "Method",
+              "link": "Vox.SoundBuffer.SetData(PCM,byte[],int,int)"
+            },
+            {
+              "name": "SetData(PCM, byte[], int)",
+              "fullName": "Vox.SoundBuffer.SetData(PCM, byte[], int)",
+              "type": "Method",
+              "link": "Vox.SoundBuffer.SetData(PCM,byte[],int)"
+            }
+          ]
+        },
+        {
+          "name": "SoundBufferFactory",
+          "fullName": "Vox.SoundBufferFactory",
+          "type": "Class",
+          "link": "Vox.SoundBufferFactory",
+          "children": [
+            {
+              "name": "Create(int, OutputDevice)",
+              "fullName": "Vox.SoundBufferFactory.Create(int, OutputDevice)",
+              "type": "Method",
+              "link": "Vox.SoundBufferFactory.Create(int,OutputDevice)"
+            },
+            {
+              "name": "Create(int)",
+              "fullName": "Vox.SoundBufferFactory.Create(int)",
+              "type": "Method",
+              "link": "Vox.SoundBufferFactory.Create(int)"
+            },
+            {
+              "name": "Delete(IEnumerable<SoundBuffer>)",
+              "fullName": "Vox.SoundBufferFactory.Delete(IEnumerable<SoundBuffer>)",
+              "type": "Method",
+              "link": "Vox.SoundBufferFactory.Delete(IEnumerable{SoundBuffer})"
+            },
+            {
+              "name": "Delete(SoundBuffer[])",
+              "fullName": "Vox.SoundBufferFactory.Delete(SoundBuffer[])",
+              "type": "Method",
+              "link": "Vox.SoundBufferFactory.Delete(SoundBuffer[])"
+            }
+          ]
+        },
+        {
+          "name": "SoundListener",
+          "fullName": "Vox.SoundListener",
+          "type": "Class",
+          "link": "Vox.SoundListener",
+          "children": [
+            {
+              "name": "Current",
+              "fullName": "Vox.SoundListener.Current",
+              "type": "Property",
+              "link": "Vox.SoundListener.Current"
+            },
+            {
+              "name": "Gain",
+              "fullName": "Vox.SoundListener.Gain",
+              "type": "Property",
+              "link": "Vox.SoundListener.Gain"
+            },
+            {
+              "name": "Position",
+              "fullName": "Vox.SoundListener.Position",
+              "type": "Property",
+              "link": "Vox.SoundListener.Position"
+            },
+            {
+              "name": "Velocity",
+              "fullName": "Vox.SoundListener.Velocity",
+              "type": "Property",
+              "link": "Vox.SoundListener.Velocity"
+            },
+            {
+              "name": "GetOrientation(Vector3, Vector3)",
+              "fullName": "Vox.SoundListener.GetOrientation(Vector3, Vector3)",
+              "type": "Method",
+              "link": "Vox.SoundListener.GetOrientation(Vector3,Vector3)"
+            },
+            {
+              "name": "SetOrientation(Vector3, Vector3)",
+              "fullName": "Vox.SoundListener.SetOrientation(Vector3, Vector3)",
+              "type": "Method",
+              "link": "Vox.SoundListener.SetOrientation(Vector3,Vector3)"
+            }
+          ]
+        },
+        {
+          "name": "SoundSource",
+          "fullName": "Vox.SoundSource",
+          "type": "Class",
+          "link": "Vox.SoundSource",
+          "children": [
+            {
+              "name": "Owner",
+              "fullName": "Vox.SoundSource.Owner",
+              "type": "Property",
+              "link": "Vox.SoundSource.Owner"
+            },
+            {
+              "name": "State",
+              "fullName": "Vox.SoundSource.State",
+              "type": "Property",
+              "link": "Vox.SoundSource.State"
+            },
+            {
+              "name": "IsRelative",
+              "fullName": "Vox.SoundSource.IsRelative",
+              "type": "Property",
+              "link": "Vox.SoundSource.IsRelative"
+            },
+            {
+              "name": "IsLooping",
+              "fullName": "Vox.SoundSource.IsLooping",
+              "type": "Property",
+              "link": "Vox.SoundSource.IsLooping"
+            },
+            {
+              "name": "CurrentBuffer",
+              "fullName": "Vox.SoundSource.CurrentBuffer",
+              "type": "Property",
+              "link": "Vox.SoundSource.CurrentBuffer"
+            },
+            {
+              "name": "QueuedBuffers",
+              "fullName": "Vox.SoundSource.QueuedBuffers",
+              "type": "Property",
+              "link": "Vox.SoundSource.QueuedBuffers"
+            },
+            {
+              "name": "ProcessedBuffers",
+              "fullName": "Vox.SoundSource.ProcessedBuffers",
+              "type": "Property",
+              "link": "Vox.SoundSource.ProcessedBuffers"
+            },
+            {
+              "name": "MinGain",
+              "fullName": "Vox.SoundSource.MinGain",
+              "type": "Property",
+              "link": "Vox.SoundSource.MinGain"
+            },
+            {
+              "name": "MaxGain",
+              "fullName": "Vox.SoundSource.MaxGain",
+              "type": "Property",
+              "link": "Vox.SoundSource.MaxGain"
+            },
+            {
+              "name": "ReferenceDistance",
+              "fullName": "Vox.SoundSource.ReferenceDistance",
+              "type": "Property",
+              "link": "Vox.SoundSource.ReferenceDistance"
+            },
+            {
+              "name": "RolloffFactor",
+              "fullName": "Vox.SoundSource.RolloffFactor",
+              "type": "Property",
+              "link": "Vox.SoundSource.RolloffFactor"
+            },
+            {
+              "name": "MaxDistance",
+              "fullName": "Vox.SoundSource.MaxDistance",
+              "type": "Property",
+              "link": "Vox.SoundSource.MaxDistance"
+            },
+            {
+              "name": "Pitch",
+              "fullName": "Vox.SoundSource.Pitch",
+              "type": "Property",
+              "link": "Vox.SoundSource.Pitch"
+            },
+            {
+              "name": "Direction",
+              "fullName": "Vox.SoundSource.Direction",
+              "type": "Property",
+              "link": "Vox.SoundSource.Direction"
+            },
+            {
+              "name": "InnerAngle",
+              "fullName": "Vox.SoundSource.InnerAngle",
+              "type": "Property",
+              "link": "Vox.SoundSource.InnerAngle"
+            },
+            {
+              "name": "OuterAngle",
+              "fullName": "Vox.SoundSource.OuterAngle",
+              "type": "Property",
+              "link": "Vox.SoundSource.OuterAngle"
+            },
+            {
+              "name": "OuterGain",
+              "fullName": "Vox.SoundSource.OuterGain",
+              "type": "Property",
+              "link": "Vox.SoundSource.OuterGain"
+            },
+            {
+              "name": "OffsetInSeconds",
+              "fullName": "Vox.SoundSource.OffsetInSeconds",
+              "type": "Property",
+              "link": "Vox.SoundSource.OffsetInSeconds"
+            },
+            {
+              "name": "OffsetInSamples",
+              "fullName": "Vox.SoundSource.OffsetInSamples",
+              "type": "Property",
+              "link": "Vox.SoundSource.OffsetInSamples"
+            },
+            {
+              "name": "OffsetInBytes",
+              "fullName": "Vox.SoundSource.OffsetInBytes",
+              "type": "Property",
+              "link": "Vox.SoundSource.OffsetInBytes"
+            },
+            {
+              "name": "IsDisposed",
+              "fullName": "Vox.SoundSource.IsDisposed",
+              "type": "Property",
+              "link": "Vox.SoundSource.IsDisposed"
+            },
+            {
+              "name": "SoundSource()",
+              "fullName": "Vox.SoundSource.SoundSource()",
+              "type": "Constructor",
+              "link": "Vox.SoundSource.SoundSource()"
+            },
+            {
+              "name": "SoundSource(OutputDevice)",
+              "fullName": "Vox.SoundSource.SoundSource(OutputDevice)",
+              "type": "Constructor",
+              "link": "Vox.SoundSource.SoundSource(OutputDevice)"
+            },
+            {
+              "name": "Dispose()",
+              "fullName": "Vox.SoundSource.Dispose()",
+              "type": "Method",
+              "link": "Vox.SoundSource.Dispose()"
+            },
+            {
+              "name": "Enqueue(SoundBuffer[])",
+              "fullName": "Vox.SoundSource.Enqueue(SoundBuffer[])",
+              "type": "Method",
+              "link": "Vox.SoundSource.Enqueue(SoundBuffer[])"
+            },
+            {
+              "name": "Equals(object)",
+              "fullName": "Vox.SoundSource.Equals(object)",
+              "type": "Method",
+              "link": "Vox.SoundSource.Equals(object)"
+            },
+            {
+              "name": "GetHashCode()",
+              "fullName": "Vox.SoundSource.GetHashCode()",
+              "type": "Method",
+              "link": "Vox.SoundSource.GetHashCode()"
+            },
+            {
+              "name": "Pause()",
+              "fullName": "Vox.SoundSource.Pause()",
+              "type": "Method",
+              "link": "Vox.SoundSource.Pause()"
+            },
+            {
+              "name": "Play()",
+              "fullName": "Vox.SoundSource.Play()",
+              "type": "Method",
+              "link": "Vox.SoundSource.Play()"
+            },
+            {
+              "name": "Rewind()",
+              "fullName": "Vox.SoundSource.Rewind()",
+              "type": "Method",
+              "link": "Vox.SoundSource.Rewind()"
+            },
+            {
+              "name": "Stop()",
+              "fullName": "Vox.SoundSource.Stop()",
+              "type": "Method",
+              "link": "Vox.SoundSource.Stop()"
+            },
+            {
+              "name": "Unqueue(int, SoundBuffer[])",
+              "fullName": "Vox.SoundSource.Unqueue(int, SoundBuffer[])",
+              "type": "Method",
+              "link": "Vox.SoundSource.Unqueue(int,SoundBuffer[])"
+            }
+          ]
+        },
+        {
+          "name": "SoundSourceFactory",
+          "fullName": "Vox.SoundSourceFactory",
+          "type": "Class",
+          "link": "Vox.SoundSourceFactory",
+          "children": [
+            {
+              "name": "Create(int, OutputDevice)",
+              "fullName": "Vox.SoundSourceFactory.Create(int, OutputDevice)",
+              "type": "Method",
+              "link": "Vox.SoundSourceFactory.Create(int,OutputDevice)"
+            },
+            {
+              "name": "Create(int)",
+              "fullName": "Vox.SoundSourceFactory.Create(int)",
+              "type": "Method",
+              "link": "Vox.SoundSourceFactory.Create(int)"
+            },
+            {
+              "name": "Delete(IEnumerable<SoundSource>)",
+              "fullName": "Vox.SoundSourceFactory.Delete(IEnumerable<SoundSource>)",
+              "type": "Method",
+              "link": "Vox.SoundSourceFactory.Delete(IEnumerable{SoundSource})"
+            },
+            {
+              "name": "Delete(SoundSource[])",
+              "fullName": "Vox.SoundSourceFactory.Delete(SoundSource[])",
+              "type": "Method",
+              "link": "Vox.SoundSourceFactory.Delete(SoundSource[])"
+            }
+          ]
+        },
+        {
+          "name": "SystemInfo",
+          "fullName": "Vox.SystemInfo",
+          "type": "Class",
+          "link": "Vox.SystemInfo",
+          "children": [
+            {
+              "name": "OpenALVendor",
+              "fullName": "Vox.SystemInfo.OpenALVendor",
+              "type": "Property",
+              "link": "Vox.SystemInfo.OpenALVendor"
+            },
+            {
+              "name": "OpenALRenderer",
+              "fullName": "Vox.SystemInfo.OpenALRenderer",
+              "type": "Property",
+              "link": "Vox.SystemInfo.OpenALRenderer"
+            },
+            {
+              "name": "OpenALVersion",
+              "fullName": "Vox.SystemInfo.OpenALVersion",
+              "type": "Property",
+              "link": "Vox.SystemInfo.OpenALVersion"
+            },
+            {
+              "name": "OpenALExtensions",
+              "fullName": "Vox.SystemInfo.OpenALExtensions",
+              "type": "Property",
+              "link": "Vox.SystemInfo.OpenALExtensions"
+            },
+            {
+              "name": "ALCVersion",
+              "fullName": "Vox.SystemInfo.ALCVersion",
+              "type": "Property",
+              "link": "Vox.SystemInfo.ALCVersion"
+            }
+          ]
+        },
+        {
+          "name": "DistanceModel",
+          "fullName": "Vox.DistanceModel",
+          "type": "Enum",
+          "link": "Vox.DistanceModel"
+        },
+        {
+          "name": "PCM",
+          "fullName": "Vox.PCM",
+          "type": "Enum",
+          "link": "Vox.PCM"
+        },
+        {
+          "name": "SourceState",
+          "fullName": "Vox.SourceState",
+          "type": "Enum",
+          "link": "Vox.SourceState"
+        },
+        {
+          "name": "SourceType",
+          "fullName": "Vox.SourceType",
+          "type": "Enum",
+          "link": "Vox.SourceType"
+        }
+      ]
+    },
+    {
+      "name": "Vox.Decoders",
+      "fullName": "Vox.Decoders",
+      "type": "Namespace",
+      "link": "Vox.Decoders",
+      "children": [
+        {
+          "name": "AudioImportException",
+          "fullName": "Vox.Decoders.AudioImportException",
+          "type": "Class",
+          "link": "Vox.Decoders.AudioImportException",
+          "children": [
+            {
+              "name": "AudioImportException()",
+              "fullName": "Vox.Decoders.AudioImportException.AudioImportException()",
+              "type": "Constructor",
+              "link": "Vox.Decoders.AudioImportException.AudioImportException()"
+            },
+            {
+              "name": "AudioImportException(string)",
+              "fullName": "Vox.Decoders.AudioImportException.AudioImportException(string)",
+              "type": "Constructor",
+              "link": "Vox.Decoders.AudioImportException.AudioImportException(string)"
+            },
+            {
+              "name": "AudioImportException(string, Exception)",
+              "fullName": "Vox.Decoders.AudioImportException.AudioImportException(string, Exception)",
+              "type": "Constructor",
+              "link": "Vox.Decoders.AudioImportException.AudioImportException(string,Exception)"
+            }
+          ]
+        },
+        {
+          "name": "Mp3",
+          "fullName": "Vox.Decoders.Mp3",
+          "type": "Class",
+          "link": "Vox.Decoders.Mp3",
+          "children": [
+            {
+              "name": "ArrayPool",
+              "fullName": "Vox.Decoders.Mp3.ArrayPool",
+              "type": "Property",
+              "link": "Vox.Decoders.Mp3.ArrayPool"
+            },
+            {
+              "name": "Load(Stream, SampleQuality, bool)",
+              "fullName": "Vox.Decoders.Mp3.Load(Stream, SampleQuality, bool)",
+              "type": "Method",
+              "link": "Vox.Decoders.Mp3.Load(Stream,SampleQuality,bool)"
+            },
+            {
+              "name": "Load(string, SampleQuality)",
+              "fullName": "Vox.Decoders.Mp3.Load(string, SampleQuality)",
+              "type": "Method",
+              "link": "Vox.Decoders.Mp3.Load(string,SampleQuality)"
+            },
+            {
+              "name": "LoadFromMp3(SoundBuffer, Stream, SampleQuality, bool)",
+              "fullName": "Vox.Decoders.Mp3.LoadFromMp3(SoundBuffer, Stream, SampleQuality, bool)",
+              "type": "Method",
+              "link": "Vox.Decoders.Mp3.LoadFromMp3(SoundBuffer,Stream,SampleQuality,bool)"
+            },
+            {
+              "name": "LoadFromMp3(SoundBuffer, string, SampleQuality)",
+              "fullName": "Vox.Decoders.Mp3.LoadFromMp3(SoundBuffer, string, SampleQuality)",
+              "type": "Method",
+              "link": "Vox.Decoders.Mp3.LoadFromMp3(SoundBuffer,string,SampleQuality)"
+            }
+          ]
+        },
+        {
+          "name": "Ogg",
+          "fullName": "Vox.Decoders.Ogg",
+          "type": "Class",
+          "link": "Vox.Decoders.Ogg",
+          "children": [
+            {
+              "name": "ArrayPool",
+              "fullName": "Vox.Decoders.Ogg.ArrayPool",
+              "type": "Property",
+              "link": "Vox.Decoders.Ogg.ArrayPool"
+            },
+            {
+              "name": "Load(Stream, SampleQuality, bool)",
+              "fullName": "Vox.Decoders.Ogg.Load(Stream, SampleQuality, bool)",
+              "type": "Method",
+              "link": "Vox.Decoders.Ogg.Load(Stream,SampleQuality,bool)"
+            },
+            {
+              "name": "Load(string, SampleQuality)",
+              "fullName": "Vox.Decoders.Ogg.Load(string, SampleQuality)",
+              "type": "Method",
+              "link": "Vox.Decoders.Ogg.Load(string,SampleQuality)"
+            },
+            {
+              "name": "LoadFromOgg(SoundBuffer, Stream, SampleQuality, bool)",
+              "fullName": "Vox.Decoders.Ogg.LoadFromOgg(SoundBuffer, Stream, SampleQuality, bool)",
+              "type": "Method",
+              "link": "Vox.Decoders.Ogg.LoadFromOgg(SoundBuffer,Stream,SampleQuality,bool)"
+            },
+            {
+              "name": "LoadFromOgg(SoundBuffer, string, SampleQuality)",
+              "fullName": "Vox.Decoders.Ogg.LoadFromOgg(SoundBuffer, string, SampleQuality)",
+              "type": "Method",
+              "link": "Vox.Decoders.Ogg.LoadFromOgg(SoundBuffer,string,SampleQuality)"
+            }
+          ]
+        },
+        {
+          "name": "Wav",
+          "fullName": "Vox.Decoders.Wav",
+          "type": "Class",
+          "link": "Vox.Decoders.Wav",
+          "children": [
+            {
+              "name": "Load(Stream)",
+              "fullName": "Vox.Decoders.Wav.Load(Stream)",
+              "type": "Method",
+              "link": "Vox.Decoders.Wav.Load(Stream)"
+            },
+            {
+              "name": "Load(string)",
+              "fullName": "Vox.Decoders.Wav.Load(string)",
+              "type": "Method",
+              "link": "Vox.Decoders.Wav.Load(string)"
+            },
+            {
+              "name": "LoadFromWav(SoundBuffer, Stream, bool)",
+              "fullName": "Vox.Decoders.Wav.LoadFromWav(SoundBuffer, Stream, bool)",
+              "type": "Method",
+              "link": "Vox.Decoders.Wav.LoadFromWav(SoundBuffer,Stream,bool)"
+            },
+            {
+              "name": "LoadFromWav(SoundBuffer, string)",
+              "fullName": "Vox.Decoders.Wav.LoadFromWav(SoundBuffer, string)",
+              "type": "Method",
+              "link": "Vox.Decoders.Wav.LoadFromWav(SoundBuffer,string)"
+            }
+          ]
+        },
+        {
+          "name": "SampleQuality",
+          "fullName": "Vox.Decoders.SampleQuality",
+          "type": "Enum",
+          "link": "Vox.Decoders.SampleQuality"
+        }
+      ]
+    },
+    {
+      "name": "Vox.Internal",
+      "fullName": "Vox.Internal",
+      "type": "Namespace",
+      "link": "Vox.Internal",
+      "children": []
+    }
+  ]
+}

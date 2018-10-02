@@ -6,15 +6,27 @@ using static OpenAL.ALC10;
 
 namespace Vox
 {
+    /// <summary>
+    /// Represents an Vox library exception.
+    /// </summary>
     public class AudioLibraryException : Exception
     {
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public AudioLibraryException() { }
+        /// <summary>
+        /// Constructor which accepts a message.
+        /// </summary>
         public AudioLibraryException(string message) : base(message) { }
+        /// <summary>
+        /// Constructor which accepts a message and wraps an existing exception.
+        /// </summary>
         public AudioLibraryException(string message, Exception innerException)
             : base(message, innerException) { }
     }
 
-    public static class ErrorHandler
+    internal static class ErrorHandler
     {
         private static Dictionary<int, string> messagesAL = new Dictionary<int, string>()
         {

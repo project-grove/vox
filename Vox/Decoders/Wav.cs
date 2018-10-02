@@ -3,6 +3,9 @@ using static Vox.Internal.Util;
 
 namespace Vox.Decoders
 {
+    /// <summary>
+    /// Contains various methods to aid SoundBuffer creation from WAV data.
+    /// </summary>
     public static class Wav
     {
         /// <summary>
