@@ -1,7 +1,7 @@
 ![Stability: alpha](https://img.shields.io/badge/stability-alpha-orange.svg)
 
 # About
-This projects is a cross-platform .NET Core/Standard 3D audio engine based on OpenAL.
+This project is a cross-platform .NET Core/Standard 3D audio engine based on OpenAL.
 
 ----
 ### Features
