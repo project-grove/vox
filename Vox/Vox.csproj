@@ -1,4 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>Vox</PackageId>
+    <PackageVersion>0.5-dev</PackageVersion>
+    <Authors>Vilkov Adel and contributors</Authors>
+    <Summary>Cross-platform 3D sound engine based on OpenAL</Summary>
+    <PackageLicenseUrl>MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/RaZeR-RBI/vox</PackageProjectUrl>
+    <PackageTags>net;netcore;gamedev;sound;openal</PackageTags>
+    <RepositoryUrl>https://github.com/project-grove/vox</RepositoryUrl>
+  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\External\NVorbis\NVorbis\NVorbis.Core.csproj" />
