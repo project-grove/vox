@@ -32,7 +32,7 @@
               "name": "AudioLibraryException(string, Exception)",
               "fullName": "Vox.AudioLibraryException.AudioLibraryException(string, Exception)",
               "type": "Constructor",
-              "link": "Vox.AudioLibraryException.AudioLibraryException(string,Exception)"
+              "link": "Vox.AudioLibraryException.AudioLibraryException(string, Exception)"
             }
           ]
         },
@@ -94,7 +94,7 @@
               "name": "CaptureDevice(string, int, PCM, int, ArrayPool<byte>)",
               "fullName": "Vox.CaptureDevice.CaptureDevice(string, int, PCM, int, ArrayPool<byte>)",
               "type": "Constructor",
-              "link": "Vox.CaptureDevice.CaptureDevice(string,int,PCM,int,ArrayPool{byte})"
+              "link": "Vox.CaptureDevice.CaptureDevice(string, int, PCM, int, ArrayPool_byte_)"
             },
             {
               "name": "Close()",
@@ -136,13 +136,13 @@
               "name": "ProcessSamples(Action<byte[], int>)",
               "fullName": "Vox.CaptureDevice.ProcessSamples(Action<byte[], int>)",
               "type": "Method",
-              "link": "Vox.CaptureDevice.ProcessSamples(Action{byte[],int})"
+              "link": "Vox.CaptureDevice.ProcessSamples(Action_byte[], int_)"
             },
             {
               "name": "ProcessSamples(int, Action<byte[], int>)",
               "fullName": "Vox.CaptureDevice.ProcessSamples(int, Action<byte[], int>)",
               "type": "Method",
-              "link": "Vox.CaptureDevice.ProcessSamples(int,Action{byte[],int})"
+              "link": "Vox.CaptureDevice.ProcessSamples(int, Action_byte[], int_)"
             },
             {
               "name": "StartCapture()",
@@ -314,13 +314,13 @@
               "name": "SetData(PCM, byte[], int, int)",
               "fullName": "Vox.SoundBuffer.SetData(PCM, byte[], int, int)",
               "type": "Method",
-              "link": "Vox.SoundBuffer.SetData(PCM,byte[],int,int)"
+              "link": "Vox.SoundBuffer.SetData(PCM, byte[], int, int)"
             },
             {
               "name": "SetData(PCM, byte[], int)",
               "fullName": "Vox.SoundBuffer.SetData(PCM, byte[], int)",
               "type": "Method",
-              "link": "Vox.SoundBuffer.SetData(PCM,byte[],int)"
+              "link": "Vox.SoundBuffer.SetData(PCM, byte[], int)"
             }
           ]
         },
@@ -334,7 +334,7 @@
               "name": "Create(int, OutputDevice)",
               "fullName": "Vox.SoundBufferFactory.Create(int, OutputDevice)",
               "type": "Method",
-              "link": "Vox.SoundBufferFactory.Create(int,OutputDevice)"
+              "link": "Vox.SoundBufferFactory.Create(int, OutputDevice)"
             },
             {
               "name": "Create(int)",
@@ -346,7 +346,7 @@
               "name": "Delete(IEnumerable<SoundBuffer>)",
               "fullName": "Vox.SoundBufferFactory.Delete(IEnumerable<SoundBuffer>)",
               "type": "Method",
-              "link": "Vox.SoundBufferFactory.Delete(IEnumerable{SoundBuffer})"
+              "link": "Vox.SoundBufferFactory.Delete(IEnumerable_SoundBuffer_)"
             },
             {
               "name": "Delete(SoundBuffer[])",
@@ -390,13 +390,13 @@
               "name": "GetOrientation(Vector3, Vector3)",
               "fullName": "Vox.SoundListener.GetOrientation(Vector3, Vector3)",
               "type": "Method",
-              "link": "Vox.SoundListener.GetOrientation(Vector3,Vector3)"
+              "link": "Vox.SoundListener.GetOrientation(Vector3, Vector3)"
             },
             {
               "name": "SetOrientation(Vector3, Vector3)",
               "fullName": "Vox.SoundListener.SetOrientation(Vector3, Vector3)",
               "type": "Method",
-              "link": "Vox.SoundListener.SetOrientation(Vector3,Vector3)"
+              "link": "Vox.SoundListener.SetOrientation(Vector3, Vector3)"
             }
           ]
         },
@@ -483,6 +483,18 @@
               "fullName": "Vox.SoundSource.Pitch",
               "type": "Property",
               "link": "Vox.SoundSource.Pitch"
+            },
+            {
+              "name": "Gain",
+              "fullName": "Vox.SoundSource.Gain",
+              "type": "Property",
+              "link": "Vox.SoundSource.Gain"
+            },
+            {
+              "name": "Position",
+              "fullName": "Vox.SoundSource.Position",
+              "type": "Property",
+              "link": "Vox.SoundSource.Position"
             },
             {
               "name": "Direction",
@@ -596,7 +608,7 @@
               "name": "Unqueue(int, SoundBuffer[])",
               "fullName": "Vox.SoundSource.Unqueue(int, SoundBuffer[])",
               "type": "Method",
-              "link": "Vox.SoundSource.Unqueue(int,SoundBuffer[])"
+              "link": "Vox.SoundSource.Unqueue(int, SoundBuffer[])"
             }
           ]
         },
@@ -610,7 +622,7 @@
               "name": "Create(int, OutputDevice)",
               "fullName": "Vox.SoundSourceFactory.Create(int, OutputDevice)",
               "type": "Method",
-              "link": "Vox.SoundSourceFactory.Create(int,OutputDevice)"
+              "link": "Vox.SoundSourceFactory.Create(int, OutputDevice)"
             },
             {
               "name": "Create(int)",
@@ -622,7 +634,7 @@
               "name": "Delete(IEnumerable<SoundSource>)",
               "fullName": "Vox.SoundSourceFactory.Delete(IEnumerable<SoundSource>)",
               "type": "Method",
-              "link": "Vox.SoundSourceFactory.Delete(IEnumerable{SoundSource})"
+              "link": "Vox.SoundSourceFactory.Delete(IEnumerable_SoundSource_)"
             },
             {
               "name": "Delete(SoundSource[])",
@@ -724,7 +736,7 @@
               "name": "AudioImportException(string, Exception)",
               "fullName": "Vox.Decoders.AudioImportException.AudioImportException(string, Exception)",
               "type": "Constructor",
-              "link": "Vox.Decoders.AudioImportException.AudioImportException(string,Exception)"
+              "link": "Vox.Decoders.AudioImportException.AudioImportException(string, Exception)"
             }
           ]
         },
@@ -744,25 +756,25 @@
               "name": "Load(Stream, SampleQuality, bool)",
               "fullName": "Vox.Decoders.Mp3.Load(Stream, SampleQuality, bool)",
               "type": "Method",
-              "link": "Vox.Decoders.Mp3.Load(Stream,SampleQuality,bool)"
+              "link": "Vox.Decoders.Mp3.Load(Stream, SampleQuality, bool)"
             },
             {
               "name": "Load(string, SampleQuality)",
               "fullName": "Vox.Decoders.Mp3.Load(string, SampleQuality)",
               "type": "Method",
-              "link": "Vox.Decoders.Mp3.Load(string,SampleQuality)"
+              "link": "Vox.Decoders.Mp3.Load(string, SampleQuality)"
             },
             {
               "name": "LoadFromMp3(SoundBuffer, Stream, SampleQuality, bool)",
               "fullName": "Vox.Decoders.Mp3.LoadFromMp3(SoundBuffer, Stream, SampleQuality, bool)",
               "type": "Method",
-              "link": "Vox.Decoders.Mp3.LoadFromMp3(SoundBuffer,Stream,SampleQuality,bool)"
+              "link": "Vox.Decoders.Mp3.LoadFromMp3(SoundBuffer, Stream, SampleQuality, bool)"
             },
             {
               "name": "LoadFromMp3(SoundBuffer, string, SampleQuality)",
               "fullName": "Vox.Decoders.Mp3.LoadFromMp3(SoundBuffer, string, SampleQuality)",
               "type": "Method",
-              "link": "Vox.Decoders.Mp3.LoadFromMp3(SoundBuffer,string,SampleQuality)"
+              "link": "Vox.Decoders.Mp3.LoadFromMp3(SoundBuffer, string, SampleQuality)"
             }
           ]
         },
@@ -782,25 +794,25 @@
               "name": "Load(Stream, SampleQuality, bool)",
               "fullName": "Vox.Decoders.Ogg.Load(Stream, SampleQuality, bool)",
               "type": "Method",
-              "link": "Vox.Decoders.Ogg.Load(Stream,SampleQuality,bool)"
+              "link": "Vox.Decoders.Ogg.Load(Stream, SampleQuality, bool)"
             },
             {
               "name": "Load(string, SampleQuality)",
               "fullName": "Vox.Decoders.Ogg.Load(string, SampleQuality)",
               "type": "Method",
-              "link": "Vox.Decoders.Ogg.Load(string,SampleQuality)"
+              "link": "Vox.Decoders.Ogg.Load(string, SampleQuality)"
             },
             {
               "name": "LoadFromOgg(SoundBuffer, Stream, SampleQuality, bool)",
               "fullName": "Vox.Decoders.Ogg.LoadFromOgg(SoundBuffer, Stream, SampleQuality, bool)",
               "type": "Method",
-              "link": "Vox.Decoders.Ogg.LoadFromOgg(SoundBuffer,Stream,SampleQuality,bool)"
+              "link": "Vox.Decoders.Ogg.LoadFromOgg(SoundBuffer, Stream, SampleQuality, bool)"
             },
             {
               "name": "LoadFromOgg(SoundBuffer, string, SampleQuality)",
               "fullName": "Vox.Decoders.Ogg.LoadFromOgg(SoundBuffer, string, SampleQuality)",
               "type": "Method",
-              "link": "Vox.Decoders.Ogg.LoadFromOgg(SoundBuffer,string,SampleQuality)"
+              "link": "Vox.Decoders.Ogg.LoadFromOgg(SoundBuffer, string, SampleQuality)"
             }
           ]
         },
@@ -826,13 +838,13 @@
               "name": "LoadFromWav(SoundBuffer, Stream, bool)",
               "fullName": "Vox.Decoders.Wav.LoadFromWav(SoundBuffer, Stream, bool)",
               "type": "Method",
-              "link": "Vox.Decoders.Wav.LoadFromWav(SoundBuffer,Stream,bool)"
+              "link": "Vox.Decoders.Wav.LoadFromWav(SoundBuffer, Stream, bool)"
             },
             {
               "name": "LoadFromWav(SoundBuffer, string)",
               "fullName": "Vox.Decoders.Wav.LoadFromWav(SoundBuffer, string)",
               "type": "Method",
-              "link": "Vox.Decoders.Wav.LoadFromWav(SoundBuffer,string)"
+              "link": "Vox.Decoders.Wav.LoadFromWav(SoundBuffer, string)"
             }
           ]
         },

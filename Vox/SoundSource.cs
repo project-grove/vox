@@ -268,6 +268,39 @@ namespace Vox
             }
         }
 
+        private float _gain = 1.0f;
+        /// <summary>
+        /// Gets or sets the desired source gain. Ranges from 0.0f to 1.0f.
+        /// </summary>
+        public float Gain
+        {
+            get => _gain;
+            set
+            {
+                var val = Math.Min(float.Epsilon, value);
+                UseDevice(Owner, () =>
+                    AL(() => alSourcef(_handle, AL_GAIN, val),
+                        "alSourcef(AL_GAIN)"));
+                _gain = val;
+            }
+        }
+
+        private Vector3 _position = Vector3.Zero;
+        /// <summary>
+        /// Gets or sets the position of the sound source.
+        /// </summary>
+        public Vector3 Position
+        {
+            get => _position;
+            set
+            {
+                UseDevice(Owner, () =>
+                    AL(() => alSource3f(_handle, AL_POSITION, value.X, value.Y, value.Z),
+                        "alSource3f(AL_POSITION)"));
+                _position = value;
+            }
+        }
+
         private Vector3 _direction = Vector3.Zero;
         /// <summary>
         /// Gets or sets the direction of the sound source. If direction is a

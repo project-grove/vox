@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html><head><title>Vox.SoundBufferFactory</title>
+<html><head><title>Vox.Decoders.Ogg.Load(Stream, SampleQuality, bool)</title>
 <meta charset="utf-8">
 <link rel="stylesheet" href="index.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <style>
@@ -11,26 +11,30 @@
             display: inline;
         }</style>
 </head><body>
-<h1>SoundBufferFactory</h1>
+<h1>Load(Stream, SampleQuality, bool)</h1>
 <p>
-<b>Class</b></p>
+<b>Method</b></p>
 <p>
-<b>Namespace:</b> <a href="Vox.html">Vox</a>
+<b>Namespace:</b> <a href="Vox.Decoders.html">Vox.Decoders</a>
 </p>
 <p>
-<b>Declared in:</b> <a href="Vox.html">Vox</a>
+<b>Declared in:</b> <a href="Vox.Decoders.Ogg.html">Vox.Decoders.Ogg</a>
 </p>
 <hr>
 <p>
 
-Provides helper methods to create sound output buffers.
+Creates new SoundBuffer for the current output device and loads
+data from OGG stream.
 </p>
-<h2>Members</h2>
-<h3>Method</h3>
-<li><a href="Vox.SoundSourceFactory.Create(int, OutputDevice).html">Create(int, OutputDevice)</a></li>
-<li><a href="Vox.SoundSourceFactory.Create(int).html">Create(int)</a></li>
-<li><a href="Vox.SoundBufferFactory.Delete(IEnumerable_SoundBuffer_).html">Delete(IEnumerable&lt;SoundBuffer&gt;)</a></li>
-<li><a href="Vox.SoundBufferFactory.Delete(SoundBuffer[]).html">Delete(SoundBuffer[])</a></li>
+<h2>Syntax</h2>
+<pre><code>public static SoundBuffer Load(
+	Stream stream,
+	SampleQuality quality,
+	bool closeStream
+)</code></pre>
+<h2>Remarks</h2>
+
+The stream should be finite.
 <hr>
 <a href="index.html">Back to index</a>
 <script>
