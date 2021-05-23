@@ -1,3 +1,5 @@
+#undef TRACE // remove to enable AL call tracing
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
