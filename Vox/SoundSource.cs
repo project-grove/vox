@@ -178,7 +178,7 @@ namespace Vox
             }
         }
 
-        private float _maxGain = 0.0f;
+        private float _maxGain = 1.0f;
         /// <summary>
         /// Gets or sets the maximum gain for the source ranging
         /// from 0.0 to 1.0. Setting it to 0.0 mutes the source.
@@ -205,7 +205,7 @@ namespace Vox
             get => _referenceDistance;
             set
             {
-                var val = Math.Min(0.0f, value);
+                var val = Math.Max(float.Epsilon, value);
                 UseDevice(Owner, () =>
                     AL(() => alSourcef(_handle, AL_REFERENCE_DISTANCE, val),
                         "alSourcef(AL_REFERENCE_DISTANCE)"));
@@ -222,7 +222,7 @@ namespace Vox
             get => _rolloffFactor;
             set
             {
-                var val = Math.Min(0.0f, value);
+                var val = Math.Max(0.0f, value);
                 UseDevice(Owner, () =>
                     AL(() => alSourcef(_handle, AL_ROLLOFF_FACTOR, val),
                         "alSourcef(AL_ROLLOFF_FACTOR)"));
@@ -240,7 +240,7 @@ namespace Vox
             get => _maxDistance;
             set
             {
-                var val = Math.Min(0.0f, value);
+                var val = Math.Max(float.Epsilon, value);
                 UseDevice(Owner, () =>
                     AL(() => alSourcef(_handle, AL_MAX_DISTANCE, val),
                         "alSourcef(AL_MAX_DISTANCE)"));
@@ -260,7 +260,7 @@ namespace Vox
             get => _pitch;
             set
             {
-                var val = Math.Min(float.Epsilon, value);
+                var val = Math.Max(float.Epsilon, value);
                 UseDevice(Owner, () =>
                     AL(() => alSourcef(_handle, AL_PITCH, val),
                         "alSourcef(AL_PITCH)"));
@@ -270,14 +270,14 @@ namespace Vox
 
         private float _gain = 1.0f;
         /// <summary>
-        /// Gets or sets the desired source gain. Ranges from 0.0f to 1.0f.
+        /// Gets or sets the desired source gain. Must be positive.
         /// </summary>
         public float Gain
         {
             get => _gain;
             set
             {
-                var val = Math.Min(float.Epsilon, value);
+                var val = Math.Max(0f, value);
                 UseDevice(Owner, () =>
                     AL(() => alSourcef(_handle, AL_GAIN, val),
                         "alSourcef(AL_GAIN)"));
@@ -362,7 +362,7 @@ namespace Vox
             get => _coneOuterGain;
             set
             {
-                var val = Math.Min(0.0f, Math.Max(1.0f, value));
+                var val = Math.Max(0.0f, Math.Min(1.0f, value));
                 UseDevice(Owner, () =>
                     AL(() => alSourcef(_handle, AL_CONE_OUTER_GAIN, val),
                         "alSourcef(AL_CONE_OUTER_GAIN)"));
@@ -385,7 +385,7 @@ namespace Vox
             }
             set
             {
-                float val = Math.Min(0.0f, value);
+                float val = Math.Max(0.0f, value);
                 UseDevice(Owner, () =>
                     AL(() => alSourcef(_handle, AL_SEC_OFFSET, val),
                         "alSourcef(AL_SEC_OFFSET)"));
@@ -407,7 +407,7 @@ namespace Vox
             }
             set
             {
-                float val = Math.Min(0.0f, value);
+                float val = Math.Max(0.0f, value);
                 UseDevice(Owner, () =>
                     AL(() => alSourcef(_handle, AL_SAMPLE_OFFSET, val),
                         "alSourcef(AL_SAMPLE_OFFSET)"));
@@ -429,7 +429,7 @@ namespace Vox
             }
             set
             {
-                int val = Math.Min(0, value);
+                int val = Math.Max(0, value);
                 UseDevice(Owner, () =>
                     AL(() => alSourcei(_handle, AL_BYTE_OFFSET, val),
                         "alSourcei(AL_BYTE_OFFSET)"));
@@ -458,7 +458,7 @@ namespace Vox
 
         /// <summary>
         /// Plays or restarts (if already playing) the queued sound buffers.
-        /// </summary>    
+        /// </summary>
         public void Play()
         {
             if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
