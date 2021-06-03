@@ -77,7 +77,7 @@ public class SoundListener
 		}
 	}
 
-	private float[] _orientation;
+	private float[] _orientation = new float[6];
 
 	private readonly OutputDevice _owner;
 
@@ -114,27 +114,29 @@ public class SoundListener
 			             "alListenerfv(AL_ORIENTATION)", v), _orientation);
 	}
 
+	private Vector3 _rVector3 = Vector3.Zero;
+	private float[] _rOrientation = new float[6];
+
 	internal void UpdateValues()
 	{
-		AL(() => alGetListenerf(AL_GAIN, out _gain), "alGetListenerf(AL_GAIN)");
+		AL((p) => alGetListenerf(AL_GAIN, out p._gain), "alGetListenerf(AL_GAIN)", this);
 
-		var position = new Vector3();
-		AL(() =>
-			   alGetListener3f(AL_POSITION, out position.X, out position.Y, out position.Z),
-		   "alGetListener3f(AL_POSITION)");
-		_position = position;
+		AL((p) =>
+			   alGetListener3f(AL_POSITION, out p._rVector3.X, out p._rVector3.Y,
+			                   out p._rVector3.Z),
+		   "alGetListener3f(AL_POSITION)", this);
+		_position = _rVector3;
 
-		var velocity = new Vector3();
-		AL(() =>
-			   alGetListener3f(AL_VELOCITY, out velocity.X, out velocity.Y, out velocity.Z),
-		   "alGetListener3f(AL_VELOCITY)");
-		_velocity = velocity;
+		AL((p) =>
+			   alGetListener3f(AL_VELOCITY, out p._rVector3.X, out p._rVector3.Y,
+			                   out p._rVector3.Z),
+		   "alGetListener3f(AL_VELOCITY)", this);
+		_velocity = _rVector3;
 
-		var orientation = new float[6];
-		AL(() =>
-			   alGetListenerfv(AL_ORIENTATION, orientation),
-		   "alGetListenerfv(AL_ORIENTATION)");
-		_orientation = orientation;
+		AL((p) =>
+			   alGetListenerfv(AL_ORIENTATION, p),
+		   "alGetListenerfv(AL_ORIENTATION)", _rOrientation);
+		_rOrientation.AsSpan().CopyTo(_orientation);
 	}
 }
 }

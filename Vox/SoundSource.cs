@@ -1,4 +1,6 @@
 using System;
+using System.Buffers;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using static OpenAL.AL10;
@@ -38,6 +40,10 @@ public class SoundSource : IDisposable
 {
 	internal uint _handle;
 
+	private int _rInt;
+	private float _rFloat;
+	private uint[] _singleUint = new uint[1];
+
 	/// <summary>
 	/// Returns the sound output device which owns this sound source.
 	/// </summary>
@@ -50,11 +56,12 @@ public class SoundSource : IDisposable
 	{
 		get
 		{
-			var result = AL_INITIAL;
-			UseDevice(Owner, () =>
-				          AL(() => alGetSourcei(_handle, AL_SOURCE_STATE, out result),
-				             "alGetSourcei(AL_SOURCE_STATE)"));
-			return (SourceState) result;
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
+			_rInt = AL_INITIAL;
+			UseDevice(Owner, (v) =>
+				          AL((p) => alGetSourcei(p._handle, AL_SOURCE_STATE, out p._rInt),
+				             "alGetSourcei(AL_SOURCE_STATE)", v), this);
+			return (SourceState) _rInt;
 		}
 	}
 
@@ -69,9 +76,10 @@ public class SoundSource : IDisposable
 		get => _isRelative;
 		set
 		{
-			UseDevice(Owner, () =>
-				          AL(() => alSourcei(_handle, AL_SOURCE_RELATIVE, value ? 1 : 0),
-				             "alSourcei(AL_SOURCE_RELATIVE)"));
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alSourcei(p.Item1._handle, AL_SOURCE_RELATIVE, p.value ? 1 : 0),
+				             "alSourcei(AL_SOURCE_RELATIVE)", v), (this, value));
 			_isRelative = value;
 		}
 	}
@@ -86,9 +94,11 @@ public class SoundSource : IDisposable
 		get => _isLooping;
 		set
 		{
-			UseDevice(Owner, () =>
-				          AL(() => alSourcei(_handle, AL_LOOPING, value ? 1 : 0),
-				             "alSourcei(AL_LOOPING)"));
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alSourcei(p.Item1._handle, AL_LOOPING, p.value ? 1 : 0),
+				             "alSourcei(AL_LOOPING)", v), (this, value));
+			_isLooping = value;
 		}
 	}
 
@@ -100,34 +110,38 @@ public class SoundSource : IDisposable
 	{
 		set
 		{
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
 			if (value == null)
 				switch (State)
 				{
 				case SourceState.Initial:
 				case SourceState.Stopped:
-					UseDevice(Owner, () =>
-						          AL(() => alSourcei(_handle, AL_BUFFER, AL_NONE),
-						             "alSourcei(AL_BUFFER)"));
+					UseDevice(Owner, (v) =>
+						          AL((p) => alSourcei(p, AL_BUFFER, AL_NONE),
+						             "alSourcei(AL_BUFFER)", v), _handle);
 					return;
 				default:
 					throw new AudioLibraryException(
 					"Could not empty queue on an active sound source");
 				}
 
-			UseDevice(Owner, () =>
-				          AL(() => alSourcei(_handle, AL_BUFFER, (int) value._bufferId),
-				             "alSourcei(AL_BUFFER)"));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alSourcei(p._handle, AL_BUFFER, (int) p.value._bufferId),
+				             "alSourcei(AL_BUFFER)", v), (_handle, value));
 		}
 		get
 		{
-			var bufferId = AL_NONE;
-			UseDevice(Owner, () =>
-				          AL(() => alGetSourcei(_handle, AL_BUFFER, out bufferId),
-				             "alGetsourcei(AL_BUFFER)"));
-			if (bufferId == AL_NONE) return null;
-			return Owner._resources
-			            .OfType<SoundBuffer>()
-			            .FirstOrDefault(buf => buf._bufferId == bufferId);
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alGetSourcei(p._handle, AL_BUFFER, out p._rInt),
+				             "alGetsourcei(AL_BUFFER)", v), this);
+			foreach (var res in Owner._resources)
+			{
+				if (!(res is SoundBuffer buffer)) continue;
+				if (buffer._bufferId == _rInt) return buffer;
+			}
+
+			return null;
 		}
 	}
 
@@ -139,11 +153,11 @@ public class SoundSource : IDisposable
 	{
 		get
 		{
-			var result = 0;
-			UseDevice(Owner, () =>
-				          AL(() => alGetSourcei(_handle, AL_BUFFERS_QUEUED, out result),
-				             "alGetSourcei(AL_BUFFERS_QUEUED)"));
-			return result;
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alGetSourcei(p._handle, AL_BUFFERS_QUEUED, out p._rInt),
+				             "alGetSourcei(AL_BUFFERS_QUEUED)", v), this);
+			return _rInt;
 		}
 	}
 
@@ -154,11 +168,11 @@ public class SoundSource : IDisposable
 	{
 		get
 		{
-			var result = 0;
-			UseDevice(Owner, () =>
-				          AL(() => alGetSourcei(_handle, AL_BUFFERS_PROCESSED, out result),
-				             "alGetSourcei(AL_BUFFERS_PROCESSED)"));
-			return result;
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alGetSourcei(p._handle, AL_BUFFERS_PROCESSED, out p._rInt),
+				             "alGetSourcei(AL_BUFFERS_PROCESSED)", v), this);
+			return _rInt;
 		}
 	}
 
@@ -173,10 +187,11 @@ public class SoundSource : IDisposable
 		get => _minGain;
 		set
 		{
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
 			var val = Math.Max(0.0f, Math.Min(1.0f, value));
-			UseDevice(Owner, () =>
-				          AL(() => alSourcef(_handle, AL_MIN_GAIN, val),
-				             "alSourcef(AL_MIN_GAIN)"));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alSourcef(p._handle, AL_MIN_GAIN, p.val),
+				             "alSourcef(AL_MIN_GAIN)", v), (_handle, val));
 			_minGain = val;
 		}
 	}
@@ -192,10 +207,11 @@ public class SoundSource : IDisposable
 		get => _maxGain;
 		set
 		{
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
 			var val = Math.Max(0.0f, Math.Min(1.0f, value));
-			UseDevice(Owner, () =>
-				          AL(() => alSourcef(_handle, AL_MAX_GAIN, val),
-				             "alSourcef(AL_MAX_GAIN)"));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alSourcef(p._handle, AL_MAX_GAIN, p.val),
+				             "alSourcef(AL_MAX_GAIN)", v), (_handle, val));
 			_maxGain = val;
 		}
 	}
@@ -210,10 +226,11 @@ public class SoundSource : IDisposable
 		get => _referenceDistance;
 		set
 		{
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
 			var val = Math.Max(float.Epsilon, value);
-			UseDevice(Owner, () =>
-				          AL(() => alSourcef(_handle, AL_REFERENCE_DISTANCE, val),
-				             "alSourcef(AL_REFERENCE_DISTANCE)"));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alSourcef(p._handle, AL_REFERENCE_DISTANCE, p.val),
+				             "alSourcef(AL_REFERENCE_DISTANCE)", v), (_handle, val));
 			_referenceDistance = val;
 		}
 	}
@@ -228,10 +245,11 @@ public class SoundSource : IDisposable
 		get => _rolloffFactor;
 		set
 		{
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
 			var val = Math.Max(0.0f, value);
-			UseDevice(Owner, () =>
-				          AL(() => alSourcef(_handle, AL_ROLLOFF_FACTOR, val),
-				             "alSourcef(AL_ROLLOFF_FACTOR)"));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alSourcef(p._handle, AL_ROLLOFF_FACTOR, p.val),
+				             "alSourcef(AL_ROLLOFF_FACTOR)", v), (_handle, val));
 			_rolloffFactor = val;
 		}
 	}
@@ -247,10 +265,11 @@ public class SoundSource : IDisposable
 		get => _maxDistance;
 		set
 		{
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
 			var val = Math.Max(float.Epsilon, value);
-			UseDevice(Owner, () =>
-				          AL(() => alSourcef(_handle, AL_MAX_DISTANCE, val),
-				             "alSourcef(AL_MAX_DISTANCE)"));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alSourcef(p._handle, AL_MAX_DISTANCE, p.val),
+				             "alSourcef(AL_MAX_DISTANCE)", v), (_handle, val));
 			_maxDistance = val;
 		}
 	}
@@ -268,10 +287,11 @@ public class SoundSource : IDisposable
 		get => _pitch;
 		set
 		{
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
 			var val = Math.Max(float.Epsilon, value);
-			UseDevice(Owner, () =>
-				          AL(() => alSourcef(_handle, AL_PITCH, val),
-				             "alSourcef(AL_PITCH)"));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alSourcef(p._handle, AL_PITCH, p.val),
+				             "alSourcef(AL_PITCH)", v), (_handle, val));
 			_pitch = val;
 		}
 	}
@@ -286,10 +306,11 @@ public class SoundSource : IDisposable
 		get => _gain;
 		set
 		{
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
 			var val = Math.Max(0f, value);
-			UseDevice(Owner, () =>
-				          AL(() => alSourcef(_handle, AL_GAIN, val),
-				             "alSourcef(AL_GAIN)"));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alSourcef(p._handle, AL_GAIN, p.val),
+				             "alSourcef(AL_GAIN)", v), (_handle, val));
 			_gain = val;
 		}
 	}
@@ -304,9 +325,12 @@ public class SoundSource : IDisposable
 		get => _position;
 		set
 		{
-			UseDevice(Owner, () =>
-				          AL(() => alSource3f(_handle, AL_POSITION, value.X, value.Y, value.Z),
-				             "alSource3f(AL_POSITION)"));
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
+			UseDevice(Owner, (v) =>
+				          AL(
+				          (p) => alSource3f(p._handle, AL_POSITION, p.value.X, p.value.Y,
+				                            p.value.Z),
+				          "alSource3f(AL_POSITION)", v), (_handle, value));
 			_position = value;
 		}
 	}
@@ -322,9 +346,12 @@ public class SoundSource : IDisposable
 		get => _direction;
 		set
 		{
-			UseDevice(Owner, () =>
-				          AL(() => alSource3f(_handle, AL_DIRECTION, value.X, value.Y, value.Z),
-				             "alSource3f(AL_DIRECTION)"));
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
+			UseDevice(Owner, (v) =>
+				          AL(
+				          (p) => alSource3f(p._handle, AL_DIRECTION, p.value.X, p.value.Y,
+				                            p.value.Z),
+				          "alSource3f(AL_DIRECTION)", v), (_handle, value));
 			_direction = value;
 		}
 	}
@@ -340,9 +367,10 @@ public class SoundSource : IDisposable
 		get => _innerAngle;
 		set
 		{
-			UseDevice(Owner, () =>
-				          AL(() => alSourcef(_handle, AL_CONE_INNER_ANGLE, value),
-				             "alSource3f(AL_CONE_INNER_ANGLE)"));
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alSourcef(p._handle, AL_CONE_INNER_ANGLE, p.value),
+				             "alSource3f(AL_CONE_INNER_ANGLE)", v), (_handle, value));
 			_innerAngle = value;
 		}
 	}
@@ -357,9 +385,10 @@ public class SoundSource : IDisposable
 		get => _outerAngle;
 		set
 		{
-			UseDevice(Owner, () =>
-				          AL(() => alSourcef(_handle, AL_CONE_OUTER_ANGLE, value),
-				             "alSource3f(AL_CONE_OUTER_ANGLE)"));
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alSourcef(p._handle, AL_CONE_OUTER_ANGLE, p.value),
+				             "alSource3f(AL_CONE_OUTER_ANGLE)", v), (_handle, value));
 			_outerAngle = value;
 		}
 	}
@@ -376,10 +405,11 @@ public class SoundSource : IDisposable
 		get => _coneOuterGain;
 		set
 		{
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
 			var val = Math.Max(0.0f, Math.Min(1.0f, value));
-			UseDevice(Owner, () =>
-				          AL(() => alSourcef(_handle, AL_CONE_OUTER_GAIN, val),
-				             "alSourcef(AL_CONE_OUTER_GAIN)"));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alSourcef(p._handle, AL_CONE_OUTER_GAIN, p.val),
+				             "alSourcef(AL_CONE_OUTER_GAIN)", v), (_handle, val));
 			_coneOuterGain = val;
 		}
 	}
@@ -391,18 +421,19 @@ public class SoundSource : IDisposable
 	{
 		get
 		{
-			var result = 0.0f;
-			UseDevice(Owner, () =>
-				          AL(() => alGetSourcef(_handle, AL_SEC_OFFSET, out result),
-				             "alGetSourcef(AL_SEC_OFFSET)"));
-			return result;
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alGetSourcef(p._handle, AL_SEC_OFFSET, out p._rFloat),
+				             "alGetSourcef(AL_SEC_OFFSET)", v), this);
+			return _rFloat;
 		}
 		set
 		{
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
 			var val = Math.Max(0.0f, value);
-			UseDevice(Owner, () =>
-				          AL(() => alSourcef(_handle, AL_SEC_OFFSET, val),
-				             "alSourcef(AL_SEC_OFFSET)"));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alSourcef(p._handle, AL_SEC_OFFSET, p.val),
+				             "alSourcef(AL_SEC_OFFSET)", v), (_handle, val));
 		}
 	}
 
@@ -413,18 +444,19 @@ public class SoundSource : IDisposable
 	{
 		get
 		{
-			var result = 0.0f;
-			UseDevice(Owner, () =>
-				          AL(() => alGetSourcef(_handle, AL_SAMPLE_OFFSET, out result),
-				             "alGetSourcef(AL_SAMPLE_OFFSET)"));
-			return result;
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alGetSourcef(p._handle, AL_SAMPLE_OFFSET, out p._rFloat),
+				             "alGetSourcef(AL_SAMPLE_OFFSET)", v), this);
+			return _rFloat;
 		}
 		set
 		{
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
 			var val = Math.Max(0.0f, value);
-			UseDevice(Owner, () =>
-				          AL(() => alSourcef(_handle, AL_SAMPLE_OFFSET, val),
-				             "alSourcef(AL_SAMPLE_OFFSET)"));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alSourcef(p._handle, AL_SAMPLE_OFFSET, p.val),
+				             "alSourcef(AL_SAMPLE_OFFSET)", v), (_handle, val));
 		}
 	}
 
@@ -435,18 +467,19 @@ public class SoundSource : IDisposable
 	{
 		get
 		{
-			var result = 0;
-			UseDevice(Owner, () =>
-				          AL(() => alGetSourcei(_handle, AL_BYTE_OFFSET, out result),
-				             "alGetSourcei(AL_BYTE_OFFSET)"));
-			return result;
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alGetSourcei(p._handle, AL_BYTE_OFFSET, out p._rInt),
+				             "alGetSourcei(AL_BYTE_OFFSET)", v), this);
+			return _rInt;
 		}
 		set
 		{
+			if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
 			var val = Math.Max(0, value);
-			UseDevice(Owner, () =>
-				          AL(() => alSourcei(_handle, AL_BYTE_OFFSET, val),
-				             "alSourcei(AL_BYTE_OFFSET)"));
+			UseDevice(Owner, (v) =>
+				          AL((p) => alSourcei(p._handle, AL_BYTE_OFFSET, p.val),
+				             "alSourcei(AL_BYTE_OFFSET)", v), (_handle, val));
 		}
 	}
 
@@ -463,12 +496,13 @@ public class SoundSource : IDisposable
 	/// </summary>
 	public SoundSource(OutputDevice owner)
 	{
-		UseDevice(owner, () =>
-		{
-			var id = new uint[1];
-			AL(() => alGenSources(1, id), "alGenSources");
-			Setup(id[0], owner);
-		});
+		if (owner.IsDisposed) throw new ObjectDisposedException(nameof(OutputDevice));
+		UseDevice(owner, (p) =>
+		          {
+			          var id = new uint[1];
+			          AL((a) => alGenSources(1, a), "alGenSources", id);
+			          p.@this.Setup(id[0], p.owner);
+		          }, (@this: this, owner));
 	}
 
 	/// <summary>
@@ -477,7 +511,7 @@ public class SoundSource : IDisposable
 	public void Play()
 	{
 		if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
-		UseDevice(Owner, () => AL(() => alSourcePlay(_handle), "alSourcePlay"));
+		UseDevice(Owner, (v) => AL((h) => alSourcePlay(h), "alSourcePlay", v), _handle);
 	}
 
 	/// <summary>
@@ -486,7 +520,7 @@ public class SoundSource : IDisposable
 	public void Pause()
 	{
 		if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
-		UseDevice(Owner, () => AL(() => alSourcePause(_handle), "alSourcePause"));
+		UseDevice(Owner, (v) => AL((h) => alSourcePause(h), "alSourcePause", v), _handle);
 	}
 
 	/// <summary>
@@ -495,7 +529,7 @@ public class SoundSource : IDisposable
 	public void Stop()
 	{
 		if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
-		UseDevice(Owner, () => AL(() => alSourceStop(_handle), "alSourceStop"));
+		UseDevice(Owner, (v) => AL((h) => alSourceStop(h), "alSourceStop", v), _handle);
 	}
 
 	/// <summary>
@@ -505,7 +539,15 @@ public class SoundSource : IDisposable
 	public void Rewind()
 	{
 		if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
-		UseDevice(Owner, () => AL(() => alSourceRewind(_handle), "alSourceRewind"));
+		UseDevice(Owner, (v) => AL((h) => alSourceRewind(h), "alSourceRewind", v), _handle);
+	}
+
+	/// <summary>
+	/// Adds the specified buffer to the source playback queue.
+	/// </summary>
+	public void Enqueue(SoundBuffer buffer)
+	{
+		Enqueue(Enumerable.Repeat(buffer, 1));
 	}
 
 	/// <summary>
@@ -513,35 +555,57 @@ public class SoundSource : IDisposable
 	/// </summary>
 	public void Enqueue(params SoundBuffer[] buffers)
 	{
-		if (buffers.Length == 1)
+		Enqueue(buffers.AsEnumerable());
+	}
+
+#pragma warning disable HAA0401
+
+	/// <summary>
+	/// Adds the specified buffers to the source playback queue.
+	/// </summary>
+	public void Enqueue(IEnumerable<SoundBuffer> buffers)
+	{
+		if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
+		var count = buffers.Count();
+		if (count == 1)
 		{
-			UseDevice(Owner, () =>
+			_singleUint[0] = buffers.First()._bufferId;
+			UseDevice(Owner, (v) =>
 				          AL(
-				          () => alSourceQueueBuffers(_handle, 1, new uint[] {buffers[0]._bufferId}),
-				          "alSourceQueueBuffers"));
+				          (p) => alSourceQueueBuffers(p._handle, 1, p._singleUint),
+				          "alSourceQueueBuffers", v), (_handle, _singleUint));
 			return;
 		}
 
-		var bufHandles = new uint[buffers.Length];
-		for (var i = 0; i < bufHandles.Length; i++)
-			bufHandles[i] = buffers[i]._bufferId;
-		UseDevice(Owner, () =>
-			          AL(() => alSourceQueueBuffers(_handle, bufHandles.Length, bufHandles),
-			             "alSourceQueueBuffers"));
+		var bufHandles = ArrayPool<uint>.Shared.Rent(count);
+		var i = 0;
+		foreach (var buffer in buffers)
+			bufHandles[i++] = buffer._bufferId;
+
+		UseDevice(Owner, (v) =>
+			          AL((p) => alSourceQueueBuffers(p._handle, p.count, p.bufHandles),
+			             "alSourceQueueBuffers", v), (_handle, bufHandles, count));
+
+		ArrayPool<uint>.Shared.Return(bufHandles);
 	}
 
 	/// <summary>
-	/// removes a number of buffers entries that have
-	/// finished processing, in the order of appearance, from the queue.
+	/// Remove specified buffers from the playback queue.
 	/// </summary>
-	public void Unqueue(int entries, params SoundBuffer[] buffers)
+	public void Unqueue(IEnumerable<SoundBuffer> buffers)
 	{
-		var bufHandles = new uint[buffers.Length];
-		for (var i = 0; i < bufHandles.Length; i++)
-			bufHandles[i] = buffers[i]._bufferId;
-		UseDevice(Owner, () =>
-			          AL(() => alSourceUnqueueBuffers(_handle, entries, bufHandles),
-			             "alSourceUnqueueBuffers"));
+		if (disposed) throw new ObjectDisposedException(nameof(SoundSource));
+		var count = buffers.Count();
+		var bufHandles = ArrayPool<uint>.Shared.Rent(count);
+		var i = 0;
+		foreach (var buffer in buffers)
+			bufHandles[i++] = buffer._bufferId;
+
+		UseDevice(Owner, (v) =>
+			          AL((p) => alSourceUnqueueBuffers(p._handle, p.count, p.bufHandles),
+			             "alSourceUnqueueBuffers", v), (_handle, count, bufHandles));
+
+		ArrayPool<uint>.Shared.Return(bufHandles);
 	}
 
 	internal SoundSource(uint handle, OutputDevice owner)
@@ -557,9 +621,9 @@ public class SoundSource : IDisposable
 
 	private void DeleteSource()
 	{
-		UseDevice(Owner, () =>
-			          AL(() => alDeleteSources(1, new uint[] {_handle}),
-			             "alDeleteSources"));
+		_singleUint[0] = _handle;
+		UseDevice(Owner, (v) => AL((p) => alDeleteSources(1, p), "alDeleteSources", v),
+		          _singleUint);
 	}
 
 	internal void AfterDelete()
@@ -585,6 +649,11 @@ public class SoundSource : IDisposable
 			DeleteSource();
 			AfterDelete();
 		}
+	}
+
+	~SoundSource()
+	{
+		Dispose();
 	}
 
 	private bool Equals(SoundSource other)

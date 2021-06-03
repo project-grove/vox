@@ -52,13 +52,20 @@ internal class Program
 
 		// Create a new sound source, enqueue our buffer on it and play
 		var source = new SoundSource();
-		source.IsLooping = true;
+		Debug.Assert(source.State == SourceState.Initial, "source has initial state on creation");
+		Debug.Assert(source.QueuedBuffers == 0, "source has zero enqueued buffers at creation");
 		source.Enqueue(buffer);
+		Debug.Assert(source.QueuedBuffers == 1, "source has an enqueued buffer");
+		Debug.Assert(source.ProcessedBuffers == 0, "source hasn't processed a buffer yet");
 		source.Play();
+		Debug.Assert(source.State == SourceState.Playing);
 		// Since the audio plays in another thread, we must wait a little bit,
 		// otherwise the program will exit without waiting for playback to
 		// complete
-		Thread.Sleep(samples.Length * 1000 / 44100);
+		while (source.State == SourceState.Playing)
+			Thread.Sleep(100);
+
+		Debug.Assert(source.ProcessedBuffers == 1, "source has processed the buffer after playing");
 
 		// Don't forget to clean up
 		inputDevice.Close();

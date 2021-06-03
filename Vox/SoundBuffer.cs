@@ -34,6 +34,7 @@ public class SoundBuffer : IDisposable
 	/// <param name="device"></param>
 	public SoundBuffer(OutputDevice device)
 	{
+		if (device.IsDisposed) throw new ObjectDisposedException(nameof(OutputDevice));
 		UseDevice(device, (p) =>
 		          {
 			          var id = new uint[1];

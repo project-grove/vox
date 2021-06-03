@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 set -o xtrace
 target="${1}cleanupcode.sh"
 $target vox.sln -s="vox.sln.DotSettings" --exclude="tools/**/*;External/**/*" --profile="Built-in: Reformat & Apply Syntax Style" $2

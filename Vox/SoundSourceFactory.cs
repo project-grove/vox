@@ -18,8 +18,8 @@ public static class SoundSourceFactory
 	{
 		var ids = new uint[count];
 		var sources = new SoundSource[count];
-		UseDevice(device, () =>
-			          AL(() => alGenSources(count, ids), "alGenSources"));
+		UseDevice(device, (v) =>
+			          AL((p) => alGenSources(p.count, p.ids), "alGenSources", v), (count, ids));
 		for (var i = 0; i < count; i++)
 			sources[i] = new SoundSource(ids[i], device);
 		return sources;
@@ -35,7 +35,7 @@ public static class SoundSourceFactory
 
 	/// <summary>
 	/// Deletes the specified sound sources. If they belong to the same output
-	/// device, deletes them efficiently with one native call, otherwise 
+	/// device, deletes them efficiently with one native call, otherwise
 	/// falling back to Dispose. Already disposed sources are skipped.
 	/// </summary>
 	public static void Delete(params SoundSource[] sources)
@@ -43,9 +43,10 @@ public static class SoundSourceFactory
 		Delete((IEnumerable<SoundSource>) sources);
 	}
 
+#pragma warning disable HAA0401
 	/// <summary>
 	/// Deletes the specified sound sources. If they belong to the same output
-	/// device, deletes them efficiently with one native call, otherwise 
+	/// device, deletes them efficiently with one native call, otherwise
 	/// falling back to Dispose.
 	/// </summary>
 	public static void Delete(IEnumerable<SoundSource> sources)
@@ -58,8 +59,8 @@ public static class SoundSourceFactory
 			var ids = new uint[sourceArray.Length];
 			for (var i = 0; i < ids.Length; i++)
 				ids[i] = sourceArray[i]._handle;
-			UseDevice(sourceArray[0].Owner, () =>
-				          AL(() => alDeleteSources(ids.Length, ids), "alDeleteSources"));
+			UseDevice(sourceArray[0].Owner, (v) =>
+				          AL((p) => alDeleteSources(p.Length, p), "alDeleteSources", v), ids);
 			foreach (var buf in sourceArray)
 				buf.AfterDelete();
 		}

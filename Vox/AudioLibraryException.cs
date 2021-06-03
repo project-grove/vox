@@ -34,9 +34,20 @@ public class AudioLibraryException : Exception
 	}
 }
 
+/// <summary>
+/// Event tracing utilities.
+/// </summary>
 public static class VoxEvents
 {
+	/// <summary>
+	/// Enables or disables the logging of OpenAL calls to <see cref="OpenALTraceSource" />.
+	/// </summary>
 	public static bool EnableTracing = false;
+
+	/// <summary>
+	/// Event trace source for OpenAL calls' logging.
+	/// Make sure that <see cref="EnableTracing" /> is set to true.
+	/// </summary>
 	public static readonly TraceSource OpenALTraceSource = new TraceSource("OpenAL");
 }
 
@@ -94,14 +105,6 @@ internal static class ErrorHandler
 		}
 	}
 
-	public static void AL(Action action, string methodName)
-	{
-		ResetAL();
-		action();
-		Trace(methodName);
-		CheckAL(methodName);
-	}
-
 	public static void AL<T>(Action<T> action, string methodName, T data)
 	{
 		ResetAL();
@@ -117,14 +120,6 @@ internal static class ErrorHandler
 		Trace($"{methodName}: {result}");
 		CheckAL(methodName);
 		return result;
-	}
-
-	public static void ALC(Action action, string methodName, IntPtr device)
-	{
-		ResetALC(device);
-		action();
-		Trace(methodName);
-		CheckALC(methodName, device);
 	}
 
 	public static void ALC(Action<IntPtr> action, string methodName, IntPtr device)

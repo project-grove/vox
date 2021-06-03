@@ -269,6 +269,9 @@ public class CaptureDevice : IDisposable
 		Dispose(false);
 	}
 
+	/// <summary>
+	/// Disposes the device.
+	/// </summary>
 	public void Dispose()
 	{
 		Dispose(true);
