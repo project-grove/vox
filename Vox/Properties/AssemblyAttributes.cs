@@ -1,8 +1,10 @@
 using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("Tests")]
+[assembly: InternalsVisibleTo("Tests")]
 
 /// <summary>
 /// The main namespace.
 /// </summary>
-namespace Vox {}
+namespace Vox
+{
+}

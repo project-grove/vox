@@ -14,216 +14,239 @@ using Vox.Internal;
 
 namespace Vox
 {
-    /// <summary>
-    /// Declares possible sound attenuation models.
-    /// </summary>
-    public enum DistanceModel
-    {
-        None = AL_NONE,
-        InverseDistance = AL_INVERSE_DISTANCE,
-        InverseDistanceClamped = AL_INVERSE_DISTANCE_CLAMPED,
-        LinearDistance = AL_LINEAR_DISTANCE,
-        LinearDistanceClamped = AL_LINEAR_DISTANCE_CLAMPED,
-        ExponentDistance = AL_EXPONENT_DISTANCE,
-        ExponentDistanceClamped = AL_EXPONENT_DISTANCE_CLAMPED
-    }
+/// <summary>
+/// Declares possible sound attenuation models.
+/// </summary>
+public enum DistanceModel
+{
+	None = AL_NONE,
+	InverseDistance = AL_INVERSE_DISTANCE,
+	InverseDistanceClamped = AL_INVERSE_DISTANCE_CLAMPED,
+	LinearDistance = AL_LINEAR_DISTANCE,
+	LinearDistanceClamped = AL_LINEAR_DISTANCE_CLAMPED,
+	ExponentDistance = AL_EXPONENT_DISTANCE,
+	ExponentDistanceClamped = AL_EXPONENT_DISTANCE_CLAMPED
+}
 
-    /// <summary>
-    /// Represents a sound output device.
-    /// </summary>
-    public class OutputDevice : IDisposable
-    {
-        private static readonly IntPtr NULL = IntPtr.Zero;
+/// <summary>
+/// Represents a sound output device.
+/// </summary>
+public class OutputDevice : IDisposable
+{
+	private static readonly IntPtr NULL = IntPtr.Zero;
 
-        private static OutputDevice s_current;
-        /// <summary>
-        /// Returns the currently active output device, if it exists.
-        /// </summary>
-        public static OutputDevice Current => s_current;
+	private static OutputDevice s_current;
 
-        internal IntPtr _handle;
-        private readonly DeviceContext _context;
-        internal HashSet<IDisposable> _resources = new HashSet<IDisposable>();
+	/// <summary>
+	/// Returns the currently active output device, if it exists.
+	/// </summary>
+	public static OutputDevice Current => s_current;
 
-        private readonly SoundListener _listener;
+	internal IntPtr _handle;
+	private readonly DeviceContext _context;
+	internal HashSet<IDisposable> _resources = new HashSet<IDisposable>();
 
-        /// <summary>
-        /// Returns the listener associated with this device.
-        /// </summary>
-        public SoundListener Listener => _listener;
+	private readonly SoundListener _listener;
 
-        private DistanceModel _distanceModel;
-        /// <summary>
-        /// Gets or sets the sound attenuation model.
-        /// </summary>
-        /// <remarks>Throws an exception if the device is inactive.</remarks>
-        public DistanceModel DistanceModel
-        {
-            get => _distanceModel;
-            set
-            {
-                if (s_current != this)
-                    throw new AudioLibraryException("Cannot get distance model of inactive device");
-                AL(() => alDistanceModel((int)value), "alDistanceModel");
-                _distanceModel = value;
-            }
-        }
+	/// <summary>
+	/// Returns the listener associated with this device.
+	/// </summary>
+	public SoundListener Listener => _listener;
 
-        /// <summary>
-        /// Opens the default sound device and makes it current.
-        /// </summary>
-        /// <seealso cref="GetOutputDevices()" />
-        /// <seealso cref="GetDefaultOutputDevice()" />
-        public OutputDevice() : this(null) => MakeCurrent();
+	private DistanceModel _distanceModel;
 
-        /// <summary>
-        /// Opens a sound device with the specified name.
-        /// </summary>
-        /// <param name="name">Device name</param>
-        /// <seealso cref="GetOutputDevices()" />
-        /// <seealso cref="GetDefaultOutputDevice()" />
-        public OutputDevice(string name)
-        {
-            _handle = ALC(() => alcOpenDevice(name), "alcOpenDevice", IntPtr.Zero);
-            _context = new DeviceContext(this);
-            _listener = new SoundListener(this);
-        }
+	/// <summary>
+	/// Gets or sets the sound attenuation model.
+	/// </summary>
+	/// <remarks>Throws an exception if the device is inactive.</remarks>
+	public DistanceModel DistanceModel
+	{
+		get => _distanceModel;
+		set
+		{
+			if (s_current != this)
+				throw new AudioLibraryException("Cannot get distance model of inactive device");
+			AL(() => alDistanceModel((int) value), "alDistanceModel");
+			_distanceModel = value;
+		}
+	}
 
-        /// <summary>
-        /// Makes this sound device current.
-        /// </summary>
-        public void MakeCurrent()
-        {
-            if (IsCurrent()) return;
-            if (disposed) throw new ObjectDisposedException(nameof(OutputDevice));
-            _context.MakeCurrent();
-            _listener.UpdateValues();
-            _distanceModel = (DistanceModel)AL(() =>
-                alGetInteger(AL_DISTANCE_MODEL),
-                "alGetInteger(AL_DISTANCE_MODEL)");
-            s_current = this;
-        }
+	/// <summary>
+	/// Opens the default sound device and makes it current.
+	/// </summary>
+	/// <seealso cref="GetOutputDevices()" />
+	/// <seealso cref="GetDefaultOutputDevice()" />
+	public OutputDevice() : this(null)
+	{
+		MakeCurrent();
+	}
 
-        /// <summary>
-        /// Returns true if this device is currently selected.
-        /// </summary>
-        public bool IsCurrent() => s_current == this;
+	/// <summary>
+	/// Opens a sound device with the specified name.
+	/// </summary>
+	/// <param name="name">Device name</param>
+	/// <seealso cref="GetOutputDevices()" />
+	/// <seealso cref="GetDefaultOutputDevice()" />
+	public OutputDevice(string name)
+	{
+		_handle = ALC(() => alcOpenDevice(name), "alcOpenDevice", IntPtr.Zero);
+		_context = new DeviceContext(this);
+		_listener = new SoundListener(this);
+	}
 
-        /// <summary>
-        /// Closes the device.
-        /// </summary>
-        public void Close()
-        {
-            if (disposed) throw new ObjectDisposedException(nameof(OutputDevice));
-            var successful = ALC(() => alcCloseDevice(_handle), "alcCloseDevice", _handle);
-            if (!successful)
-                throw new AudioLibraryException("Could not close the device");
-            s_current = null;
-        }
+	/// <summary>
+	/// Makes this sound device current.
+	/// </summary>
+	public void MakeCurrent()
+	{
+		if (IsCurrent()) return;
+		if (disposed) throw new ObjectDisposedException(nameof(OutputDevice));
+		_context.MakeCurrent();
+		_listener.UpdateValues();
+		_distanceModel = (DistanceModel) AL(() =>
+			                                    alGetInteger(AL_DISTANCE_MODEL),
+		                                    "alGetInteger(AL_DISTANCE_MODEL)");
+		s_current = this;
+	}
 
+	/// <summary>
+	/// Returns true if this device is currently selected.
+	/// </summary>
+	public bool IsCurrent()
+	{
+		return s_current == this;
+	}
 
-        /// <summary>
-        /// Returns the default output device.
-        /// </summary>
-        public static string GetDefaultOutputDevice()
-        {
-            var ptr = ALC(() =>
-                alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER),
-                "alcGetString(ALC_DEFAULT_DEVICE_SPECIFIER)", NULL);
-            if (ptr == IntPtr.Zero || ptr == null) return null;
-            return Marshal.PtrToStringAnsi(ptr);
-        }
-
-        /// <summary>
-        /// Returns a list of available output devices.
-        /// </summary>
-        public static IEnumerable<string> GetOutputDevices()
-        {
-            var NULL = IntPtr.Zero;
-            var extPresent = ALC(() =>
-                alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT"),
-                "alcIsExtensionPresent(ALC_ENUMERATION_EXT)",
-                NULL);
-
-            if (extPresent)
-            {
-                var result = new List<string>(5);
-                unsafe
-                {
-                    var enumerateAll = ALC(() =>
-                        alcIsExtensionPresent(NULL, "ALC_ENUMERATE_ALL_EXT"),
-                        "alcIsExtensionPresent(ALC_ENUMERATE_ALL_EXT)",
-                        NULL);
-
-                    ErrorHandler.ResetALC(NULL);
-                    byte* listData = enumerateAll ?
-                        (byte*)alcGetString(NULL, ALC_ALL_DEVICES_SPECIFIER) :
-                        (byte*)alcGetString(NULL, ALC_DEVICE_SPECIFIER);
-                    ErrorHandler.CheckALC("alcGetString", NULL);
-                    return ParseDeviceString(listData);
-                }
-            }
-            else
-            {
-                return Enumerable.Empty<string>();
-            }
-        }
+	/// <summary>
+	/// Closes the device.
+	/// </summary>
+	public void Close()
+	{
+		if (disposed) throw new ObjectDisposedException(nameof(OutputDevice));
+		var successful = ALC(() => alcCloseDevice(_handle), "alcCloseDevice", _handle);
+		if (!successful)
+			throw new AudioLibraryException("Could not close the device");
+		s_current = null;
+	}
 
 
-        /// <summary>
-        /// Resumes the output device processing (if was suspended). That means
-        /// the sound playback offsets will be incremented.
-        /// </summary>
-        public void ResumeProcessing() => _context.ResumeProcessing();
+	/// <summary>
+	/// Returns the default output device.
+	/// </summary>
+	public static string GetDefaultOutputDevice()
+	{
+		var ptr = ALC(() =>
+			              alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER),
+		              "alcGetString(ALC_DEFAULT_DEVICE_SPECIFIER)", NULL);
+		if (ptr == IntPtr.Zero || ptr == null) return null;
+		return Marshal.PtrToStringAnsi(ptr);
+	}
 
-        /// <summary>
-        /// Suspends the output device processing (if wasn't suspended). That
-        /// means the sound playback offsets will NOT be incremented.
-        /// </summary>
-        public void SuspendProcessing() => _context.SuspendProcessing();
+	/// <summary>
+	/// Returns a list of available output devices.
+	/// </summary>
+	public static IEnumerable<string> GetOutputDevices()
+	{
+		var NULL = IntPtr.Zero;
+		var extPresent = ALC(() =>
+			                     alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT"),
+		                     "alcIsExtensionPresent(ALC_ENUMERATION_EXT)",
+		                     NULL);
 
-        bool disposed = false;
-        /// <summary>
-        /// Returns true if this object is disposed.
-        /// </summary>
-        public bool IsDisposed => disposed;
-        /// <summary>
-        /// Closes the device and disposes the context.
-        /// </summary>
-        public void Dispose()
-        {
-            if (!disposed)
-            {
-                foreach(var disposable in _resources)
-                    disposable.Dispose();
-                _resources = null;
-                _context.Dispose();
-                Close();
-                disposed = true;
-            }
-        }
+		if (extPresent)
+		{
+			var result = new List<string>(5);
+			unsafe
+			{
+				var enumerateAll = ALC(() =>
+					                       alcIsExtensionPresent(NULL, "ALC_ENUMERATE_ALL_EXT"),
+				                       "alcIsExtensionPresent(ALC_ENUMERATE_ALL_EXT)",
+				                       NULL);
 
-        private bool Equals(OutputDevice other)
-        {
-            if (other == null) return false;
-            return _handle == other._handle;
-        }
-        /// <summary>
-        /// Checks the object for equality.
-        /// </summary>
-        public override bool Equals(object obj) => Equals(obj as OutputDevice);
+				ResetALC(NULL);
+				var listData = enumerateAll
+					               ? (byte*) alcGetString(NULL, ALC_ALL_DEVICES_SPECIFIER)
+					               : (byte*) alcGetString(NULL, ALC_DEVICE_SPECIFIER);
+				CheckALC("alcGetString", NULL);
+				return ParseDeviceString(listData);
+			}
+		}
+		else
+		{
+			return Enumerable.Empty<string>();
+		}
+	}
 
-        /// <summary>
-        /// Returns the object's hash code.
-        /// </summary>
-        public override int GetHashCode() => _handle.GetHashCode();
 
-        internal OutputDevice Swap()
-        {
-            if (s_current == this) return this;
-            var current = s_current;
-            MakeCurrent();
-            return current;
-        }
-    }
+	/// <summary>
+	/// Resumes the output device processing (if was suspended). That means
+	/// the sound playback offsets will be incremented.
+	/// </summary>
+	public void ResumeProcessing()
+	{
+		_context.ResumeProcessing();
+	}
+
+	/// <summary>
+	/// Suspends the output device processing (if wasn't suspended). That
+	/// means the sound playback offsets will NOT be incremented.
+	/// </summary>
+	public void SuspendProcessing()
+	{
+		_context.SuspendProcessing();
+	}
+
+	private bool disposed = false;
+
+	/// <summary>
+	/// Returns true if this object is disposed.
+	/// </summary>
+	public bool IsDisposed => disposed;
+
+	/// <summary>
+	/// Closes the device and disposes the context.
+	/// </summary>
+	public void Dispose()
+	{
+		if (!disposed)
+		{
+			foreach (var disposable in _resources)
+				disposable.Dispose();
+			_resources = null;
+			_context.Dispose();
+			Close();
+			disposed = true;
+		}
+	}
+
+	private bool Equals(OutputDevice other)
+	{
+		if (other == null) return false;
+		return _handle == other._handle;
+	}
+
+	/// <summary>
+	/// Checks the object for equality.
+	/// </summary>
+	public override bool Equals(object obj)
+	{
+		return Equals(obj as OutputDevice);
+	}
+
+	/// <summary>
+	/// Returns the object's hash code.
+	/// </summary>
+	public override int GetHashCode()
+	{
+		return _handle.GetHashCode();
+	}
+
+	internal OutputDevice Swap()
+	{
+		if (s_current == this) return this;
+		var current = s_current;
+		MakeCurrent();
+		return current;
+	}
+}
 }

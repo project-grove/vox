@@ -5,43 +5,55 @@ using static Vox.ErrorHandler;
 
 namespace Vox.Internal
 {
-    internal class DeviceContext : IDisposable
-    {
-        internal OutputDevice _device;
-        internal IntPtr _handle;
-        
-        internal DeviceContext(OutputDevice device)
-        {
-            _handle = ALC(() => 
-                alcCreateContext(device._handle, null),
-                "alcCreateContext", device._handle);
-            _device = device;
-        }
+internal class DeviceContext : IDisposable
+{
+	internal OutputDevice _device;
+	internal IntPtr _handle;
 
-        internal void MakeCurrent()
-        {
-            var successful = ALC(() => 
-                alcMakeContextCurrent(_handle),
-                "alcMakeContextCurrent", _device._handle);
-            if (!successful)
-                throw new AudioLibraryException("Failed to set current context");
-        }
+	internal DeviceContext(OutputDevice device)
+	{
+		_handle = ALC(() =>
+			              alcCreateContext(device._handle, null),
+		              "alcCreateContext", device._handle);
+		_device = device;
+	}
 
-        internal void ResumeProcessing() =>
-            ALC(() => alcProcessContext(_handle),
-                "alcProcessContext", _device._handle);
+	internal void MakeCurrent()
+	{
+		var successful = ALC(() =>
+			                     alcMakeContextCurrent(_handle),
+		                     "alcMakeContextCurrent", _device._handle);
+		if (!successful)
+			throw new AudioLibraryException("Failed to set current context");
+	}
 
-        internal void SuspendProcessing() => 
-            ALC(() => alcSuspendContext(_handle),
-                "alcSuspendContext", _device._handle);
+	internal void ResumeProcessing()
+	{
+		ALC(() => alcProcessContext(_handle),
+		    "alcProcessContext", _device._handle);
+	}
 
-        internal bool IsCurrent() => OutputDevice.Current == _device;
+	internal void SuspendProcessing()
+	{
+		ALC(() => alcSuspendContext(_handle),
+		    "alcSuspendContext", _device._handle);
+	}
 
-        public void Dispose() => Destroy();
+	internal bool IsCurrent()
+	{
+		return OutputDevice.Current == _device;
+	}
 
-        internal void Destroy() =>
-            ALC(() => 
-                alcDestroyContext(_handle),
-                "alcDestroyContext", _device._handle);
-    }
+	public void Dispose()
+	{
+		Destroy();
+	}
+
+	internal void Destroy()
+	{
+		ALC(() =>
+			    alcDestroyContext(_handle),
+		    "alcDestroyContext", _device._handle);
+	}
+}
 }
