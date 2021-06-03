@@ -1,5 +1,3 @@
-#undef TRACE // remove to enable AL call tracing
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,9 +34,15 @@ public class AudioLibraryException : Exception
 	}
 }
 
+public static class VoxEvents
+{
+	public static bool EnableTracing = false;
+	public static readonly TraceSource OpenALTraceSource = new TraceSource("OpenAL");
+}
+
 internal static class ErrorHandler
 {
-	private static Dictionary<int, string> messagesAL = new Dictionary<int, string>()
+	private static Dictionary<int, string> s_messagesAL = new Dictionary<int, string>()
 	{
 		{AL_INVALID_NAME, "Invalid name"},
 		{AL_INVALID_ENUM, "Invalid enum"},
@@ -47,7 +51,7 @@ internal static class ErrorHandler
 		{AL_OUT_OF_MEMORY, "Out of memory"}
 	};
 
-	private static Dictionary<int, string> messagesALC = new Dictionary<int, string>()
+	private static Dictionary<int, string> s_messagesALC = new Dictionary<int, string>()
 	{
 		{ALC_INVALID_CONTEXT, "Invalid context"},
 		{ALC_INVALID_DEVICE, "Invalid device"},
@@ -70,21 +74,39 @@ internal static class ErrorHandler
 	{
 		var code = alGetError();
 		if (code != AL_NO_ERROR)
-			throw new AudioLibraryException($"{methodName}: {messagesAL[code]}");
+		{
+			var msg = s_messagesAL.ContainsKey(code) ? s_messagesAL[code] : code.ToString();
+			var traceMsg = $"{methodName}: {msg}";
+			Trace(TraceEventType.Error, code, traceMsg);
+			throw new AudioLibraryException(traceMsg);
+		}
 	}
 
 	public static void CheckALC(string methodName, IntPtr device)
 	{
 		var code = alcGetError(device);
 		if (code != ALC_NO_ERROR)
-			throw new AudioLibraryException($"{methodName}: {messagesALC[code]}");
+		{
+			var msg = s_messagesALC.ContainsKey(code) ? s_messagesALC[code] : code.ToString();
+			var traceMsg = $"{methodName}: {msg}";
+			Trace(TraceEventType.Error, code, traceMsg);
+			throw new AudioLibraryException(traceMsg);
+		}
 	}
 
 	public static void AL(Action action, string methodName)
 	{
 		ResetAL();
 		action();
-		Trace.WriteLine(methodName);
+		Trace(methodName);
+		CheckAL(methodName);
+	}
+
+	public static void AL<T>(Action<T> action, string methodName, T data)
+	{
+		ResetAL();
+		action(data);
+		Trace(methodName);
 		CheckAL(methodName);
 	}
 
@@ -92,7 +114,7 @@ internal static class ErrorHandler
 	{
 		ResetAL();
 		var result = function();
-		Trace.WriteLine($"{methodName}: {result}");
+		Trace($"{methodName}: {result}");
 		CheckAL(methodName);
 		return result;
 	}
@@ -101,7 +123,23 @@ internal static class ErrorHandler
 	{
 		ResetALC(device);
 		action();
-		Trace.WriteLine(methodName);
+		Trace(methodName);
+		CheckALC(methodName, device);
+	}
+
+	public static void ALC(Action<IntPtr> action, string methodName, IntPtr device)
+	{
+		ResetALC(device);
+		action(device);
+		Trace(methodName);
+		CheckALC(methodName, device);
+	}
+
+	public static void ALC<T>(Action<T> action, string methodName, IntPtr device, T data)
+	{
+		ResetALC(device);
+		action(data);
+		Trace(methodName);
 		CheckALC(methodName, device);
 	}
 
@@ -109,9 +147,38 @@ internal static class ErrorHandler
 	{
 		ResetALC(device);
 		var result = function();
-		Trace.WriteLine($"{methodName}: {result}");
+		Trace($"{methodName}: {result}");
 		CheckALC(methodName, device);
 		return result;
+	}
+
+	public static T ALC<T>(Func<IntPtr, T> function, string methodName, IntPtr device)
+	{
+		ResetALC(device);
+		var result = function(device);
+		Trace($"{methodName}: {result}");
+		CheckALC(methodName, device);
+		return result;
+	}
+
+	public static R ALC<T, R>(Func<T, R> function, string methodName, IntPtr device, T data)
+	{
+		ResetALC(device);
+		var result = function(data);
+		Trace($"{methodName}: {result}");
+		CheckALC(methodName, device);
+		return result;
+	}
+
+	private static void Trace(string message)
+	{
+		Trace(TraceEventType.Verbose, 0, message);
+	}
+
+	private static void Trace(TraceEventType type, int id, string message)
+	{
+		if (!VoxEvents.EnableTracing) return;
+		VoxEvents.OpenALTraceSource.TraceEvent(type, id, message);
 	}
 }
 }

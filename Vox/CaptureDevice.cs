@@ -23,6 +23,7 @@ public class CaptureDevice : IDisposable
 	private static readonly IntPtr NULL = IntPtr.Zero;
 	private readonly ArrayPool<byte> _arrayPool;
 	internal IntPtr _handle;
+	private bool _disposed;
 
 	/// <summary>
 	/// Gets the sound format.
@@ -46,6 +47,8 @@ public class CaptureDevice : IDisposable
 	/// <returns></returns>
 	public bool IsCapturing { get; private set; }
 
+	private readonly int[] _rInt = new int[1];
+
 	/// <summary>
 	/// Returns count of the available samples which can be requested.
 	/// If application requests more samples, an exception will be thrown.
@@ -54,11 +57,9 @@ public class CaptureDevice : IDisposable
 	{
 		get
 		{
-			var data = new int[1];
-			ALC(() =>
-				    alcGetIntegerv(_handle, ALC_CAPTURE_SAMPLES, 1, data),
-			    "alcGetIntegerv(ALC_CAPTURE_SAMPLES)", _handle);
-			return data[0];
+			ALC((p) => alcGetIntegerv(p._handle, ALC_CAPTURE_SAMPLES, 1, p._rInt),
+			    "alcGetIntegerv(ALC_CAPTURE_SAMPLES)", _handle, (_handle, _rInt));
+			return _rInt[0];
 		}
 	}
 
@@ -109,9 +110,9 @@ public class CaptureDevice : IDisposable
 	{
 		if (frequency <= 0)
 			throw new ArgumentException("Frequency cannot be zero or negative");
-		_handle = ALC(() =>
-			              alcCaptureOpenDevice(name, (uint) frequency, (int) format, bufSize),
-		              "alcCaptureOpenDevice", NULL);
+		_handle = ALC(
+		(p) => alcCaptureOpenDevice(p.name, (uint) p.frequency, (int) p.format, p.bufSize),
+		"alcCaptureOpenDevice", NULL, (name, frequency, format, bufSize));
 		Format = format;
 		Frequency = frequency;
 		BufferSize = bufSize;
@@ -123,9 +124,9 @@ public class CaptureDevice : IDisposable
 	/// </summary>
 	public void StartCapture()
 	{
-		if (disposed) throw new ObjectDisposedException(nameof(OutputDevice));
+		if (_disposed) throw new ObjectDisposedException(nameof(OutputDevice));
 		if (IsCapturing) return;
-		ALC(() => alcCaptureStart(_handle), "alcCaptureStart", _handle);
+		ALC((h) => alcCaptureStart(h), "alcCaptureStart", _handle);
 		IsCapturing = true;
 	}
 
@@ -134,9 +135,9 @@ public class CaptureDevice : IDisposable
 	/// </summary>
 	public void StopCapture()
 	{
-		if (disposed) throw new ObjectDisposedException(nameof(OutputDevice));
+		if (_disposed) throw new ObjectDisposedException(nameof(OutputDevice));
 		if (!IsCapturing) return;
-		ALC(() => alcCaptureStop(_handle), "alcCaptureStop", _handle);
+		ALC((h) => alcCaptureStop(h), "alcCaptureStop", _handle);
 		IsCapturing = false;
 	}
 
@@ -145,7 +146,7 @@ public class CaptureDevice : IDisposable
 	/// </summary>
 	public void ToggleCapture()
 	{
-		if (disposed) throw new ObjectDisposedException(nameof(OutputDevice));
+		if (_disposed) throw new ObjectDisposedException(nameof(OutputDevice));
 		if (IsCapturing) StopCapture();
 		else StartCapture();
 	}
@@ -168,7 +169,7 @@ public class CaptureDevice : IDisposable
 	/// <remarks>If you intend to use sample data later, <b>copy it</b>, because the buffer is pooled and will be reused.</remarks>
 	public void ProcessSamples(int sampleCount, Action<byte[], int> callback)
 	{
-		if (disposed) throw new ObjectDisposedException(nameof(OutputDevice));
+		if (_disposed) throw new ObjectDisposedException(nameof(OutputDevice));
 		if (AvailableSamples < sampleCount)
 			throw new AudioLibraryException("Too many samples requested");
 		var buffer = _arrayPool.Rent(BytesPerSample * sampleCount);
@@ -229,28 +230,7 @@ public class CaptureDevice : IDisposable
 	/// </summary>
 	public void Close()
 	{
-		ALC(() =>
-			    alcCaptureCloseDevice(_handle),
-		    "alcCaptureCloseDevice", _handle);
-	}
-
-	private bool disposed = false;
-
-	/// <summary>
-	/// Returns true if this object is disposed.
-	/// </summary>
-	public bool IsDisposed => disposed;
-
-	/// <summary>
-	/// Disposes this object.
-	/// </summary>
-	public void Dispose()
-	{
-		if (!disposed)
-		{
-			Close();
-			disposed = true;
-		}
+		Dispose(true);
 	}
 
 	private bool Equals(CaptureDevice other)
@@ -273,6 +253,26 @@ public class CaptureDevice : IDisposable
 	public override int GetHashCode()
 	{
 		return _handle.GetHashCode();
+	}
+
+	protected virtual void Dispose(bool disposing)
+	{
+		if (!_disposed)
+		{
+			ALC((h) => alcCaptureCloseDevice(h), "alcCaptureCloseDevice", _handle);
+			_disposed = true;
+		}
+	}
+
+	~CaptureDevice()
+	{
+		Dispose(false);
+	}
+
+	public void Dispose()
+	{
+		Dispose(true);
+		GC.SuppressFinalize(this);
 	}
 }
 }

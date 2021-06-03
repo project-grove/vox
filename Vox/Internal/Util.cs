@@ -53,6 +53,27 @@ internal static class Util
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static void UseDevice(OutputDevice device, Action<OutputDevice> action)
+	{
+		UseDevice(device, action, device);
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static void UseDevice<T>(OutputDevice device, Action<T> action, T data)
+	{
+		if (device == null) throw new AudioLibraryException("No active output device is set");
+		var oldDevice = device.Swap();
+		try
+		{
+			action(data);
+		}
+		finally
+		{
+			oldDevice?.MakeCurrent();
+		}
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static T[] EnlargePooledArray<T>(this ArrayPool<T> pool, T[] src, int sizeIncrement)
 	{
 		var dst = pool.Rent(src.Length + sizeIncrement);

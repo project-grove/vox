@@ -18,8 +18,8 @@ public static class SoundBufferFactory
 	{
 		var ids = new uint[count];
 		var buffers = new SoundBuffer[count];
-		UseDevice(device, () =>
-			          AL(() => alGenBuffers(count, ids), "alGenBuffers"));
+		UseDevice(device, (v) =>
+			          AL((p) => alGenBuffers(p.count, p.ids), "alGenBuffers", v), (count, ids));
 		for (var i = 0; i < count; i++)
 			buffers[i] = new SoundBuffer(ids[i], device);
 		return buffers;
@@ -35,7 +35,7 @@ public static class SoundBufferFactory
 
 	/// <summary>
 	/// Deletes the specified sound buffers. If they belong to the same output
-	/// device, deletes them efficiently with one native call, otherwise 
+	/// device, deletes them efficiently with one native call, otherwise
 	/// falling back to Dispose. Already disposed buffers are skipped.
 	/// </summary>
 	public static void Delete(params SoundBuffer[] buffers)
@@ -43,9 +43,10 @@ public static class SoundBufferFactory
 		Delete((IEnumerable<SoundBuffer>) buffers);
 	}
 
+#pragma warning disable HAA0401
 	/// <summary>
 	/// Deletes the specified sound buffers. If they belong to the same output
-	/// device, deletes them efficiently with one native call, otherwise 
+	/// device, deletes them efficiently with one native call, otherwise
 	/// falling back to Dispose.
 	/// </summary>
 	public static void Delete(IEnumerable<SoundBuffer> buffers)
@@ -58,8 +59,8 @@ public static class SoundBufferFactory
 			var ids = new uint[bufArray.Length];
 			for (var i = 0; i < ids.Length; i++)
 				ids[i] = bufArray[i]._bufferId;
-			UseDevice(bufArray[0].Owner, () =>
-				          AL(() => alDeleteBuffers(ids.Length, ids), "alDeleteBuffers"));
+			UseDevice(bufArray[0].Owner, (v) =>
+				          AL((p) => alDeleteBuffers(p.Length, p), "alDeleteBuffers", v), ids);
 			foreach (var buf in bufArray)
 				buf.AfterDelete();
 		}

@@ -37,6 +37,9 @@ public static class SystemInfo
 	public static string OpenALExtensions =>
 		AL(() => alGetString(AL_EXTENSIONS), "alGetString(AL_EXTENSIONS)");
 
+	private static readonly int[] s_major = new int[1];
+	private static readonly int[] s_minor = new int[1];
+
 	/// <summary>
 	/// Gets the ALC version for the currently used sound device
 	/// </summary>
@@ -47,16 +50,12 @@ public static class SystemInfo
 		{
 			unsafe
 			{
-				var major = new int[1];
-				var minor = new int[1];
 				var device = OutputDevice.Current._handle;
-				ALC(() =>
-					    alcGetIntegerv(device, ALC_MAJOR_VERSION, 1, major),
-				    "alcGetIntegerv(ALC_MAJOR_VERSION)", device);
-				ALC(() =>
-					    alcGetIntegerv(device, ALC_MINOR_VERSION, 1, major),
-				    "alcGetIntegerv(ALC_MINOR_VERSION)", device);
-				return $"{major[0]}.{minor[0]}";
+				ALC((p) => alcGetIntegerv(p.device, ALC_MAJOR_VERSION, 1, p.s_major),
+				    "alcGetIntegerv(ALC_MAJOR_VERSION)", device, (device, s_major));
+				ALC((p) => alcGetIntegerv(p.device, ALC_MINOR_VERSION, 1, p.s_minor),
+				    "alcGetIntegerv(ALC_MINOR_VERSION)", device, (device, s_minor));
+				return string.Format("{0}.{1}", s_major[0].ToString(), s_minor[0].ToString());
 			}
 		}
 	}

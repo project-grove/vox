@@ -17,7 +17,7 @@ public enum PCM
 }
 
 /// <summary>
-/// Represent a buffer with PCM sound data.
+/// Represents a buffer with PCM sound data.
 /// </summary>
 public class SoundBuffer : IDisposable
 {
@@ -34,12 +34,12 @@ public class SoundBuffer : IDisposable
 	/// <param name="device"></param>
 	public SoundBuffer(OutputDevice device)
 	{
-		UseDevice(device, () =>
-		{
-			var id = new uint[1];
-			AL(() => alGenBuffers(1, id), "alGenBuffers");
-			Setup(id[0], device);
-		});
+		UseDevice(device, (p) =>
+		          {
+			          var id = new uint[1];
+			          AL((v) => alGenBuffers(1, v), "alGenBuffers", id);
+			          p.Item1.Setup(id[0], p.device);
+		          }, (this, device));
 	}
 
 	internal SoundBuffer(uint id, OutputDevice device)
@@ -55,10 +55,9 @@ public class SoundBuffer : IDisposable
 
 	private void DeleteBuffer()
 	{
-		UseDevice(Owner, () =>
-			          AL(() =>
-				             alDeleteBuffers(1, new uint[] {_bufferId}),
-			             "alDeleteBuffers"));
+		UseDevice(
+		Owner, (id) => AL((i) => alDeleteBuffers(1, new uint[] {i}), "alDeleteBuffers", id),
+		_bufferId);
 	}
 
 	internal void AfterDelete()
@@ -102,10 +101,10 @@ public class SoundBuffer : IDisposable
 	public void SetData(PCM format, byte[] data, int size, int frequency)
 	{
 		if (disposed) throw new ObjectDisposedException(nameof(SoundBuffer));
-		UseDevice(Owner, () =>
-			          AL(() =>
-				             alBufferData(_bufferId, (int) format, data, size, frequency),
-			             "alBufferData"));
+		UseDevice(
+		Owner,
+		(v) => AL((p) => alBufferData(p._bufferId, (int) p.format, p.data, p.size, p.frequency),
+		          "alBufferData", v), (_bufferId, format, data, size, frequency));
 	}
 
 	private bool disposed = false;
@@ -125,6 +124,11 @@ public class SoundBuffer : IDisposable
 			DeleteBuffer();
 			AfterDelete();
 		}
+	}
+
+	~SoundBuffer()
+	{
+		Dispose();
 	}
 
 	private bool Equals(SoundBuffer other)

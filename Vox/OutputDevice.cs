@@ -66,7 +66,7 @@ public class OutputDevice : IDisposable
 		{
 			if (s_current != this)
 				throw new AudioLibraryException("Cannot get distance model of inactive device");
-			AL(() => alDistanceModel((int) value), "alDistanceModel");
+			AL((v) => alDistanceModel((int) v), "alDistanceModel", (int) value);
 			_distanceModel = value;
 		}
 	}
@@ -89,7 +89,7 @@ public class OutputDevice : IDisposable
 	/// <seealso cref="GetDefaultOutputDevice()" />
 	public OutputDevice(string name)
 	{
-		_handle = ALC(() => alcOpenDevice(name), "alcOpenDevice", IntPtr.Zero);
+		_handle = ALC((n) => alcOpenDevice(n), "alcOpenDevice", IntPtr.Zero, name);
 		_context = new DeviceContext(this);
 		_listener = new SoundListener(this);
 	}
@@ -122,8 +122,13 @@ public class OutputDevice : IDisposable
 	/// </summary>
 	public void Close()
 	{
+		Dispose();
+	}
+
+	private void DoClose()
+	{
 		if (disposed) throw new ObjectDisposedException(nameof(OutputDevice));
-		var successful = ALC(() => alcCloseDevice(_handle), "alcCloseDevice", _handle);
+		var successful = ALC((h) => alcCloseDevice(h), "alcCloseDevice", _handle);
 		if (!successful)
 			throw new AudioLibraryException("Could not close the device");
 		s_current = null;
@@ -148,8 +153,8 @@ public class OutputDevice : IDisposable
 	public static IEnumerable<string> GetOutputDevices()
 	{
 		var NULL = IntPtr.Zero;
-		var extPresent = ALC(() =>
-			                     alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT"),
+		var extPresent = ALC((h) =>
+			                     alcIsExtensionPresent(h, "ALC_ENUMERATION_EXT"),
 		                     "alcIsExtensionPresent(ALC_ENUMERATION_EXT)",
 		                     NULL);
 
@@ -158,8 +163,8 @@ public class OutputDevice : IDisposable
 			var result = new List<string>(5);
 			unsafe
 			{
-				var enumerateAll = ALC(() =>
-					                       alcIsExtensionPresent(NULL, "ALC_ENUMERATE_ALL_EXT"),
+				var enumerateAll = ALC((h) =>
+					                       alcIsExtensionPresent(h, "ALC_ENUMERATE_ALL_EXT"),
 				                       "alcIsExtensionPresent(ALC_ENUMERATE_ALL_EXT)",
 				                       NULL);
 
@@ -210,13 +215,23 @@ public class OutputDevice : IDisposable
 	{
 		if (!disposed)
 		{
-			foreach (var disposable in _resources)
-				disposable.Dispose();
+			var sources = _resources.OfType<SoundSource>().ToList();
+			var buffers = _resources.OfType<SoundBuffer>().ToList();
+			foreach (var src in sources)
+				src.Dispose();
+			foreach (var buf in buffers)
+				buf.Dispose();
+			_resources.Clear();
 			_resources = null;
+			DoClose();
 			_context.Dispose();
-			Close();
 			disposed = true;
 		}
+	}
+
+	~OutputDevice()
+	{
+		Dispose();
 	}
 
 	private bool Equals(OutputDevice other)

@@ -30,9 +30,9 @@ public class SoundListener
 				throw new ArgumentOutOfRangeException("Gain must be a positive number");
 			if (_owner.IsDisposed)
 				throw new ObjectDisposedException(nameof(OutputDevice));
-			UseDevice(_owner, () =>
-				          AL(() =>
-					             alListenerf(AL_GAIN, value), "alListenerf(AL_GAIN)"));
+			UseDevice(_owner, (v) =>
+				          AL((p) =>
+					             alListenerf(AL_GAIN, p), "alListenerf(AL_GAIN)", v), value);
 			_gain = value;
 		}
 	}
@@ -49,10 +49,10 @@ public class SoundListener
 		{
 			if (_owner.IsDisposed)
 				throw new ObjectDisposedException(nameof(OutputDevice));
-			UseDevice(_owner, () =>
-				          AL(() =>
-					             alListener3f(AL_POSITION, value.X, value.Y, value.Z),
-				             "alListener3f(AL_POSITION)"));
+			UseDevice(_owner, (v) =>
+				          AL((p) =>
+					             alListener3f(AL_POSITION, p.X, p.Y, p.Z),
+				             "alListener3f(AL_POSITION)", v), value);
 			_position = value;
 		}
 	}
@@ -69,10 +69,10 @@ public class SoundListener
 		{
 			if (_owner.IsDisposed)
 				throw new ObjectDisposedException(nameof(OutputDevice));
-			UseDevice(_owner, () =>
-				          AL(() =>
-					             alListener3f(AL_VELOCITY, value.X, value.Y, value.Z),
-				             "alListener3f(AL_VELOCITY)"));
+			UseDevice(_owner, (v) =>
+				          AL((p) =>
+					             alListener3f(AL_VELOCITY, p.X, p.Y, p.Z),
+				             "alListener3f(AL_VELOCITY)", v), value);
 			_velocity = value;
 		}
 	}
@@ -108,10 +108,10 @@ public class SoundListener
 		_orientation[3] = up.X;
 		_orientation[4] = up.Y;
 		_orientation[5] = up.Z;
-		UseDevice(_owner, () =>
-			          AL(() =>
-				             alListenerfv(AL_ORIENTATION, _orientation),
-			             "alListenerfv(AL_ORIENTATION)"));
+		UseDevice(_owner, (v) =>
+			          AL((p) =>
+				             alListenerfv(AL_ORIENTATION, p),
+			             "alListenerfv(AL_ORIENTATION)", v), _orientation);
 	}
 
 	internal void UpdateValues()

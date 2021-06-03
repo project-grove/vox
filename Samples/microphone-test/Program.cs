@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Vox;
@@ -10,6 +11,13 @@ internal class Program
 {
 	private static void Main(string[] args)
 	{
+		if (args.Contains("--trace"))
+		{
+			VoxEvents.EnableTracing = true;
+			VoxEvents.OpenALTraceSource.Switch.Level = SourceLevels.All;
+			VoxEvents.OpenALTraceSource.Listeners.Add(new ConsoleTraceListener());
+		}
+
 		var inputDevice = new CaptureDevice();
 		var outputDevice = new OutputDevice();
 		WriteLine("Welcome to the microphone test sample.");

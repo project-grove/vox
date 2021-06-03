@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using static OpenAL.ALC10;
 using static OpenAL.ALC11;
 using static Vox.ErrorHandler;
@@ -12,31 +13,30 @@ internal class DeviceContext : IDisposable
 
 	internal DeviceContext(OutputDevice device)
 	{
-		_handle = ALC(() =>
-			              alcCreateContext(device._handle, null),
-		              "alcCreateContext", device._handle);
+		_handle = ALC((h) => alcCreateContext(h, null), "alcCreateContext", device._handle);
 		_device = device;
 	}
 
 	internal void MakeCurrent()
 	{
-		var successful = ALC(() =>
-			                     alcMakeContextCurrent(_handle),
-		                     "alcMakeContextCurrent", _device._handle);
+		const string msg = "Failed to set current context";
+		var successful = ALC((h) => alcMakeContextCurrent(h), "alcMakeContextCurrent",
+		                     _device._handle, _handle);
 		if (!successful)
-			throw new AudioLibraryException("Failed to set current context");
+		{
+			VoxEvents.OpenALTraceSource.TraceEvent(TraceEventType.Critical, -1, msg);
+			throw new AudioLibraryException(msg);
+		}
 	}
 
 	internal void ResumeProcessing()
 	{
-		ALC(() => alcProcessContext(_handle),
-		    "alcProcessContext", _device._handle);
+		ALC((h) => alcProcessContext(h), "alcProcessContext", _device._handle);
 	}
 
 	internal void SuspendProcessing()
 	{
-		ALC(() => alcSuspendContext(_handle),
-		    "alcSuspendContext", _device._handle);
+		ALC((h) => alcSuspendContext(h), "alcSuspendContext", _device._handle);
 	}
 
 	internal bool IsCurrent()
@@ -44,16 +44,29 @@ internal class DeviceContext : IDisposable
 		return OutputDevice.Current == _device;
 	}
 
-	public void Dispose()
+	private bool disposedValue;
+
+	protected virtual void Dispose(bool disposing)
 	{
-		Destroy();
+		if (!disposedValue)
+		{
+			var handle = _device._handle;
+			_device = null;
+			alcDestroyContext(handle);
+			alcGetError(handle);
+			disposedValue = true;
+		}
 	}
 
-	internal void Destroy()
+	~DeviceContext()
 	{
-		ALC(() =>
-			    alcDestroyContext(_handle),
-		    "alcDestroyContext", _device._handle);
+		Dispose(false);
+	}
+
+	public void Dispose()
+	{
+		Dispose(true);
+		GC.SuppressFinalize(this);
 	}
 }
 }
