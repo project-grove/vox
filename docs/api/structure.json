@@ -79,12 +79,6 @@
               "link": "Vox.CaptureDevice.BytesPerSample"
             },
             {
-              "name": "IsDisposed",
-              "fullName": "Vox.CaptureDevice.IsDisposed",
-              "type": "Property",
-              "link": "Vox.CaptureDevice.IsDisposed"
-            },
-            {
               "name": "CaptureDevice()",
               "fullName": "Vox.CaptureDevice.CaptureDevice()",
               "type": "Constructor",
@@ -563,6 +557,18 @@
               "link": "Vox.SoundSource.Dispose()"
             },
             {
+              "name": "Enqueue(IEnumerable<SoundBuffer>)",
+              "fullName": "Vox.SoundSource.Enqueue(IEnumerable<SoundBuffer>)",
+              "type": "Method",
+              "link": "Vox.SoundSource.Enqueue(IEnumerable_SoundBuffer_)"
+            },
+            {
+              "name": "Enqueue(SoundBuffer)",
+              "fullName": "Vox.SoundSource.Enqueue(SoundBuffer)",
+              "type": "Method",
+              "link": "Vox.SoundSource.Enqueue(SoundBuffer)"
+            },
+            {
               "name": "Enqueue(SoundBuffer[])",
               "fullName": "Vox.SoundSource.Enqueue(SoundBuffer[])",
               "type": "Method",
@@ -605,10 +611,10 @@
               "link": "Vox.SoundSource.Stop()"
             },
             {
-              "name": "Unqueue(int, SoundBuffer[])",
-              "fullName": "Vox.SoundSource.Unqueue(int, SoundBuffer[])",
+              "name": "Unqueue(IEnumerable<SoundBuffer>)",
+              "fullName": "Vox.SoundSource.Unqueue(IEnumerable<SoundBuffer>)",
               "type": "Method",
-              "link": "Vox.SoundSource.Unqueue(int, SoundBuffer[])"
+              "link": "Vox.SoundSource.Unqueue(IEnumerable_SoundBuffer_)"
             }
           ]
         },
@@ -679,6 +685,26 @@
               "fullName": "Vox.SystemInfo.ALCVersion",
               "type": "Property",
               "link": "Vox.SystemInfo.ALCVersion"
+            }
+          ]
+        },
+        {
+          "name": "VoxEvents",
+          "fullName": "Vox.VoxEvents",
+          "type": "Class",
+          "link": "Vox.VoxEvents",
+          "children": [
+            {
+              "name": "EnableTracing",
+              "fullName": "Vox.VoxEvents.EnableTracing",
+              "type": "Field",
+              "link": "Vox.VoxEvents.EnableTracing"
+            },
+            {
+              "name": "OpenALTraceSource",
+              "fullName": "Vox.VoxEvents.OpenALTraceSource",
+              "type": "Field",
+              "link": "Vox.VoxEvents.OpenALTraceSource"
             }
           ]
         },
