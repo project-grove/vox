@@ -77,18 +77,20 @@ public static class Ogg
 			// stream is seekable, we can get all the samples at once
 			if (reader.TotalSamples < long.MaxValue)
 			{
-				var data = ArrayPool.Rent((int) quality * (int) reader.TotalSamples);
-				var samples = new float[reader.TotalSamples];
-				reader.ReadSamples(samples, 0, (int) reader.TotalSamples);
+				var allSamples = reader.TotalSamples * channels;
+				var dataSize = (int) quality * (int) allSamples;
+				var data = ArrayPool.Rent(dataSize);
+				var samples = new float[allSamples];
+				var samplesRead = reader.ReadSamples(samples, 0, (int) allSamples);
 				ResampleToPCM(samples, data, samples.Length, quality);
-				buffer.SetData(GetFormat(channels, quality), data, reader.SampleRate);
+				buffer.SetData(GetFormat(channels, quality), data, dataSize, reader.SampleRate);
 				ArrayPool.Return(data);
 			}
 			else
 			{
 				// stream is not seekable, read using fixed buffer
-				var data = new byte[(int) quality * BufferSize * channels];
-				var samples = new float[BufferSize * channels];
+				var data = new byte[(int) quality * BufferSize];
+				var samples = new float[BufferSize];
 				var totalSamplesRead = 0;
 				var samplesRead = 0;
 				do
@@ -98,7 +100,7 @@ public static class Ogg
 					              0, totalSamplesRead);
 					totalSamplesRead += samplesRead;
 					if (samplesRead < BufferSize) break; // end of stream
-					data = ArrayPool.EnlargePooledArray(data, BufferSize * channels);
+					data = ArrayPool.EnlargePooledArray(data, BufferSize);
 				} while (samplesRead == BufferSize);
 
 				buffer.SetData(GetFormat(channels, quality), data,
