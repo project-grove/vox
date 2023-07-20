@@ -93,13 +93,19 @@ public static class Wav
 		default:
 			throw new AudioImportException("Only 8 and 16-bit data is supported");
 		}
-
-		// data subchunk
-		var subchunk2Id = reader.ReadInt32();
-		if (subchunk2Id != 0x61746164)
-			throw new AudioImportException("Invalid data, expected 'data' chunk");
-		var subchunk2Size = reader.ReadInt32();
-		data = reader.ReadBytes(subchunk2Size);
+ 		// find data subchunk
+ 		while (true)
+ 		{
+ 			var curChunkId = reader.ReadInt32();
+ 			var curChunkSize = reader.ReadInt32();
+ 			if (curChunkId != 0x61746164)
+ 				reader.ReadBytes(curChunkSize); // skip it
+ 			else
+ 			{
+ 				data = reader.ReadBytes(curChunkSize);
+ 				break;
+ 			}
+ 		}
 	}
 }
 }
