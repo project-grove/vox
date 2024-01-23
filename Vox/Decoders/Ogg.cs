@@ -112,7 +112,7 @@ public static class Ogg
 		if (closeStream) stream.Close();
 	}
 
-	private static void ResampleToPCM(float[] src, byte[] dst, int srcCount,
+	public static void ResampleToPCM(Span<float> src, Span<byte> dst, int srcCount,
 	                                  SampleQuality quality, int srcIndex = 0, int dstIndex = 0)
 	{
 		for (var i = 0; i < srcCount; i++)
@@ -135,13 +135,13 @@ public static class Ogg
 					var byte2 = (byte) (sample & 255);
 					if (BitConverter.IsLittleEndian)
 					{
-						dst[i * 2 + dstIndex] = byte1;
-						dst[i * 2 + dstIndex + 1] = byte2;
+						dst[i * 2 + dstIndex] = byte2;
+						dst[i * 2 + dstIndex + 1] = byte1;
 					}
 					else
 					{
-						dst[i * 2 + dstIndex] = byte2;
-						dst[i * 2 + dstIndex + 1] = byte1;
+						dst[i * 2 + dstIndex] = byte1;
+						dst[i * 2 + dstIndex + 1] = byte2;
 					}
 
 					break;
