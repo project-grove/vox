@@ -24,6 +24,11 @@ public class SoundBuffer : IDisposable
 	internal uint _bufferId;
 
 	/// <summary>
+	/// Returns the internal object ID used by OpenAL API.
+	/// </summary>
+	public uint Handle => _bufferId;
+
+	/// <summary>
 	/// Returns the sound output device which owns this sound buffer.
 	/// </summary>
 	public OutputDevice Owner { get; private set; }

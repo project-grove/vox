@@ -11,6 +11,11 @@ internal class DeviceContext : IDisposable
 	internal OutputDevice _device;
 	internal IntPtr _handle;
 
+	/// <summary>
+	/// Returns the internal object pointer used by OpenAL API.
+	/// </summary>
+	public IntPtr Handle => _handle;
+
 	internal DeviceContext(OutputDevice device)
 	{
 		_handle = ALC((h) => alcCreateContext(h, null), "alcCreateContext", device._handle);

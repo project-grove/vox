@@ -40,6 +40,11 @@ public class SoundSource : IDisposable
 {
 	internal uint _handle;
 
+	/// <summary>
+	/// Returns the internal object ID used by OpenAL API.
+	/// </summary>
+	public uint Handle => _handle;
+
 	private int _rInt;
 	private float _rFloat;
 	private uint[] _singleUint = new uint[1];

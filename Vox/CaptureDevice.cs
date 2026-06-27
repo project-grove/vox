@@ -23,6 +23,12 @@ public class CaptureDevice : IDisposable
 	private static readonly IntPtr NULL = IntPtr.Zero;
 	private readonly ArrayPool<byte> _arrayPool;
 	internal IntPtr _handle;
+
+	/// <summary>
+	/// Returns the internal object pointer used by OpenAL API.
+	/// </summary>
+	public IntPtr Handle => _handle;
+
 	private bool _disposed;
 
 	/// <summary>

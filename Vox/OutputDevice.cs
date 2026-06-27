@@ -43,6 +43,12 @@ public class OutputDevice : IDisposable
 	public static OutputDevice Current => s_current;
 
 	internal IntPtr _handle;
+
+	/// <summary>
+	/// Returns the internal object pointer used by OpenAL API.
+	/// </summary>
+	public IntPtr Handle => _handle;
+
 	private readonly DeviceContext _context;
 	internal HashSet<IDisposable> _resources = new HashSet<IDisposable>();
 
