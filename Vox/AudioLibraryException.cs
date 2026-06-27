@@ -51,7 +51,7 @@ public static class VoxEvents
 	public static readonly TraceSource OpenALTraceSource = new TraceSource("OpenAL");
 }
 
-internal static class ErrorHandler
+public static class ErrorHandler
 {
 	private static Dictionary<int, string> s_messagesAL = new Dictionary<int, string>()
 	{
